@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --font-body: 'Manrope', sans-serif;
+  --font-display: 'Sora', sans-serif;
+}
+
+/* ── CSS CUSTOM PROPERTIES ── */
+:root {
+  --purple: #9B5CF6;
+  --purple-dim: #7C3AED;
+  --purple-glow: rgba(155, 92, 246, 0.4);
+  --purple-soft: rgba(155, 92, 246, 0.15);
+  --white: #F8F8F8;
+  --off-white: #E8E8EC;
+  --light-gray: #C0BFC8;
+  --mid-gray: #6B6878;
+  --dark: #0A0A0F;
+  --dark-2: #111118;
+  --dark-3: #18181F;
+  --carbon: #1E1E28;
+  --carbon-2: #252530;
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.08);
+}
+
+/* ── BASE ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--dark);
+  color: var(--white);
+  font-family: 'Manrope', sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--purple-glow); color: #fff; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--dark); }
+::-webkit-scrollbar-thumb { background: var(--purple-dim); border-radius: 2px; }
+
+/* ── GRADIENT UTILITIES ── */
+.accent-gradient {
+  background: linear-gradient(135deg, #D4BAFF, var(--purple), #9B5CF6);
+}
+.accent-gradient-h {
+  background: linear-gradient(90deg, #D4BAFF 0%, var(--purple) 100%);
+}
+.text-accent-gradient {
+  background: linear-gradient(135deg, #D4BAFF, var(--purple), #9B5CF6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── KEYFRAMES ── */
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 8px var(--purple); }
+  50% { box-shadow: 0 0 20px var(--purple), 0 0 40px var(--purple-glow); }
+}
+@keyframes doorBreath {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+@keyframes scrollDown {
+  0% { opacity: 0; transform: scaleY(0); transform-origin: top; }
+  50% { opacity: 1; }
+  100% { opacity: 0; transform: scaleY(1); transform-origin: bottom; }
+}
+@keyframes roleFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── ANIMATION CLASSES ── */
+.animate-pulse-purple { animation: pulse 2s infinite; }
+.animate-door-breath { animation: doorBreath 4s ease-in-out infinite; }
+.animate-scroll-down { animation: scrollDown 1.5s ease-in-out infinite; }
+.animate-role-fade-in { animation: roleFadeIn 0.4s ease-out forwards; }
+
+/* ── SECTION BASE ── */
+section { padding: 100px 40px; }
+@media (max-width: 600px) { section { padding: 70px 24px; } }
+
+.container { max-width: 1100px; margin: 0 auto; }
+
+.section-label {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: 20px;
+  display: block;
+}
