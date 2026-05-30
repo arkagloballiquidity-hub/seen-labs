@@ -1,50 +1,87 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+SYNC IMPACT REPORT
+Version change: 0.0.0 (template) → 1.0.0 (initial ratification)
+Added sections: Core Principles, Tech Stack, Dev Workflow, Governance
+Modified principles: All (initialized from template placeholders)
+Templates requiring updates:
+  ✅ constitution.md — this file
+  ⚠ plan-template.md — review for SeenLabs-specific constraints
+  ⚠ spec-template.md — review for SeenLabs-specific constraints
+  ⚠ tasks-template.md — review for SeenLabs-specific constraints
+Deferred TODOs: none
+-->
+
+# Seen Labs Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Conversion-First (NON-NEGOTIABLE)
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+Every page, section, component, and copy element MUST serve a conversion goal.
+Visual beauty is secondary to clarity, trust, and action.
+No decorative element ships unless it reinforces the brand or guides the user toward a CTA.
+The primary conversion path is: Hero → Pricing → CTA. Everything else supports that path.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. Brand Fidelity
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+The Seen Labs visual identity is fixed and MUST NOT be altered without explicit approval:
+- **Colors**: Purple `#9B5CF6` (primary), `#7C3AED` (dim), dark backgrounds `#0A0A0F / #111118 / #18181F`
+- **Fonts**: `Sora` (headings, weight 600–800) · `Manrope` (body, weight 300–500)
+- **Style**: Dark mode only · purple glow effects · glass-border cards · sharp corners (no large border-radius)
+- **Tagline**: "Out of the Dark" — appears in hero, footer, and final CTA. Never omitted.
+- Logo dot with pulse animation is a brand signature. MUST appear in nav.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### III. Performance & Responsiveness
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+Every build MUST be mobile-first and fully responsive at 3 breakpoints: 1200px+, 900px, 600px.
+Core Web Vitals targets: LCP < 2.5s · CLS < 0.1 · FID < 100ms.
+Images MUST use modern formats (WebP/AVIF). No blocking render resources allowed.
+Animations MUST respect `prefers-reduced-motion`.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### IV. Content Integrity
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+Copy is locked from the reference HTML (`seen-labs.html`) and MUST NOT be paraphrased or simplified
+without explicit approval. This includes: manifesto lines, problem descriptions, pillar names,
+pricing descriptions, FAQ answers, and team bios.
+Placeholder text (`[REPLACE: ...]`) in the reference HTML flags items pending real assets —
+these MUST be tracked as open tasks and never shipped as-is.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### V. Simplicity & No Over-Engineering
+
+Stack MUST stay lean. No library is added unless it solves a real problem.
+Vanilla JS is preferred for interactions that don't require a framework.
+If a framework is used (Next.js), it MUST be justified by a specific need (SSR, routing, API routes).
+No CSS frameworks unless `/ui-ux-pro-max` recommends one aligned with the brand.
+
+## Tech Stack
+
+- **Primary stack**: Next.js 14+ (App Router) with TypeScript
+- **Styling**: Tailwind CSS with custom design tokens matching brand variables
+- **Fonts**: Google Fonts — Sora + Manrope (via `next/font`)
+- **Animations**: CSS animations + Intersection Observer (no heavy animation libs)
+- **Deployment**: Vercel (primary) · domain TBD
+- **Assets**: Screenshots of client sites (arkaglobalinvestments.com, alphadrivers.mx, arkaltd.io) — pending
+- **Payments/CTA**: Links to Hotmart (external) — no payment processing in this repo
+- **No**: Redux, GraphQL, CMS, or any database — this is a static marketing site
+
+## Dev Workflow
+
+1. Every feature starts with `/speckit-specify` on a dedicated feature branch
+2. UI components go through `/ui-ux-pro-max` before implementation
+3. Implementation via `/speckit-implement`
+4. Code review via `/code-review` before merging to `main`
+5. Security check via `/security-review` before any deploy
+6. Deploy checklist via `/engineering:deploy-checklist`
+
+Placeholder assets (`[REPLACE: ...]`) MUST be tracked as open tasks — never merged to main unfilled
+unless explicitly marked as `[DEFERRED]` with owner and date.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other conventions in this project.
+Amendments require: description of change + version bump + update to this file.
+All feature specs MUST reference applicable principles from this document.
+Complexity MUST be justified against Principle V — if it can be done simply, do it simply.
+The reference file `seen-labs.html` is the source of truth for content and design intent.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-05-30 | **Last Amended**: 2026-05-30
