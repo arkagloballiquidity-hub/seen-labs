@@ -46,23 +46,31 @@ pricing descriptions, FAQ answers, and team bios.
 Placeholder text (`[REPLACE: ...]`) in the reference HTML flags items pending real assets —
 these MUST be tracked as open tasks and never shipped as-is.
 
-### V. Simplicity & No Over-Engineering
+### V. Animation & Interaction Quality (NON-NEGOTIABLE)
 
-Stack MUST stay lean. No library is added unless it solves a real problem.
-Vanilla JS is preferred for interactions that don't require a framework.
-If a framework is used (Next.js), it MUST be justified by a specific need (SSR, routing, API routes).
-No CSS frameworks unless `/ui-ux-pro-max` recommends one aligned with the brand.
+The site MUST deliver a premium, cinematic experience. Every transition, entrance, and scroll
+interaction MUST feel intentional and polished. Animation libraries are justified by the product's
+positioning — Seen Labs sells premium digital experiences, so its own site MUST embody that.
+Required animation layers: loading screen counter, GSAP scroll-driven parallax, Framer Motion
+section entrances, HLS video backgrounds. No interaction may feel abrupt or unpolished.
+
+### VI. Simplicity Within Complexity
+
+No library is added beyond the approved stack. Every component MUST be decomposed into single-
+responsibility pieces. No inline logic in JSX that belongs in a hook or utility. Stack is fixed —
+no additions without explicit approval.
 
 ## Tech Stack
 
-- **Primary stack**: Next.js 14+ (App Router) with TypeScript
-- **Styling**: Tailwind CSS with custom design tokens matching brand variables
-- **Fonts**: Google Fonts — Sora + Manrope (via `next/font`)
-- **Animations**: CSS animations + Intersection Observer (no heavy animation libs)
+- **Primary stack**: React 18 + Vite + TypeScript
+- **Styling**: Tailwind CSS with custom design tokens matching brand variables (CSS custom properties)
+- **Fonts**: Google Fonts — Sora (headings 600–800) + Manrope (body 300–500)
+- **Animation**: GSAP (scroll-driven, entrance timelines) + Framer Motion (section reveals, AnimatePresence)
+- **Video**: hls.js — HLS video backgrounds (hero + footer). Placeholder video used until client provides asset.
 - **Deployment**: Vercel (primary) · domain TBD
 - **Assets**: Screenshots of client sites (arkaglobalinvestments.com, alphadrivers.mx, arkaltd.io) — pending
 - **Payments/CTA**: Links to Hotmart (external) — no payment processing in this repo
-- **No**: Redux, GraphQL, CMS, or any database — this is a static marketing site
+- **No**: Next.js, Redux, GraphQL, CMS, or any database — this is a static marketing SPA
 
 ## Dev Workflow
 
@@ -84,4 +92,4 @@ All feature specs MUST reference applicable principles from this document.
 Complexity MUST be justified against Principle V — if it can be done simply, do it simply.
 The reference file `seen-labs.html` is the source of truth for content and design intent.
 
-**Version**: 1.0.0 | **Ratified**: 2026-05-30 | **Last Amended**: 2026-05-30
+**Version**: 1.1.0 | **Ratified**: 2026-05-30 | **Last Amended**: 2026-05-30
