@@ -3,32 +3,34 @@ import { PricingCard } from '../ui/PricingCard'
 import { PRICING_PLANS } from '../../data/pricing'
 import { COMPARISON } from '../../data/comparison'
 
-export function PricingSection() {
+export function PricingSection({ hideHero }: { hideHero?: boolean }) {
   return (
     <section id="pricing" className="section" style={{ background: 'var(--carbon)' }}>
       <div className="container">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6 }}
-          style={{ textAlign: 'center', marginBottom: 64 }}
-        >
-          <div className="section-label" style={{ justifyContent: 'center' }}>Precios</div>
-          <h2 style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 'clamp(28px, 4vw, 52px)',
-            fontWeight: 800,
-            lineHeight: 1.1,
-            letterSpacing: '-0.03em',
-            marginBottom: 16,
-          }}>
-            Inversión, no gasto.
-          </h2>
-          <p style={{ fontSize: 16, color: 'var(--text-muted)', maxWidth: 440, margin: '0 auto' }}>
-            Cada plan incluye todo lo que necesitas para salir a la luz y generar resultados reales.
-          </p>
-        </motion.div>
+        {!hideHero && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.6 }}
+            style={{ textAlign: 'center', marginBottom: 64 }}
+          >
+            <div className="section-label" style={{ justifyContent: 'center' }}>Precios</div>
+            <h2 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(28px, 4vw, 52px)',
+              fontWeight: 800,
+              lineHeight: 1.1,
+              letterSpacing: '-0.03em',
+              marginBottom: 16,
+            }}>
+              Inversión, no gasto.
+            </h2>
+            <p style={{ fontSize: 16, color: 'var(--text-muted)', maxWidth: 440, margin: '0 auto' }}>
+              Cada plan incluye todo lo que necesitas para salir a la luz y generar resultados reales.
+            </p>
+          </motion.div>
+        )}
 
         {/* Cards */}
         <div style={{

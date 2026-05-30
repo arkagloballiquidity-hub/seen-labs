@@ -1,48 +1,63 @@
 import { useState } from 'react'
-import { AnimatePresence } from 'framer-motion'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
 import { LoadingScreen } from './components/LoadingScreen'
-import { Navbar } from './components/Navbar'
-import { HeroSection } from './components/sections/HeroSection'
-import { ManifestoSection } from './components/sections/ManifestoSection'
-import { ProblemSection } from './components/sections/ProblemSection'
-import { SolutionSection } from './components/sections/SolutionSection'
-import { SystemSection } from './components/sections/SystemSection'
-import { PricingSection } from './components/sections/PricingSection'
-import { DifferentiatorSection } from './components/sections/DifferentiatorSection'
-import { GuaranteeSection } from './components/sections/GuaranteeSection'
-import { CasesSection } from './components/sections/CasesSection'
-import { TeamSection } from './components/sections/TeamSection'
-import { FAQSection } from './components/sections/FAQSection'
-import { FinalCTASection } from './components/sections/FinalCTASection'
+import { Layout } from './components/Layout'
+import { HomePage } from './pages/HomePage'
+import { SolucionPage } from './pages/SolucionPage'
+import { PreciosPage } from './pages/PreciosPage'
+import { CasosPage } from './pages/CasosPage'
+import { FAQPage } from './pages/FAQPage'
+
+const pageVariants = {
+  initial: { opacity: 0, y: 16 },
+  animate: { opacity: 1, y: 0 },
+  exit:    { opacity: 0, y: -8 },
+}
+
+function AnimatedRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={
+        <motion.div key="home" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.4 }}>
+          <Layout><HomePage /></Layout>
+        </motion.div>
+      } />
+      <Route path="/solucion" element={
+        <motion.div key="solucion" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.4 }}>
+          <Layout><SolucionPage /></Layout>
+        </motion.div>
+      } />
+      <Route path="/precios" element={
+        <motion.div key="precios" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.4 }}>
+          <Layout><PreciosPage /></Layout>
+        </motion.div>
+      } />
+      <Route path="/casos" element={
+        <motion.div key="casos" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.4 }}>
+          <Layout><CasosPage /></Layout>
+        </motion.div>
+      } />
+      <Route path="/faq" element={
+        <motion.div key="faq" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.4 }}>
+          <Layout><FAQPage /></Layout>
+        </motion.div>
+      } />
+    </Routes>
+  )
+}
 
 export default function App() {
   const [loading, setLoading] = useState(true)
 
   return (
-    <>
-      <AnimatePresence>
-        {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
+    <BrowserRouter>
+      <AnimatePresence mode="wait">
+        {loading
+          ? <LoadingScreen key="loading" onComplete={() => setLoading(false)} />
+          : <AnimatedRoutes key="app" />
+        }
       </AnimatePresence>
-
-      {!loading && (
-        <>
-          <Navbar />
-          <main>
-            <HeroSection />
-            <ManifestoSection />
-            <ProblemSection />
-            <SolutionSection />
-            <SystemSection />
-            <PricingSection />
-            <DifferentiatorSection />
-            <GuaranteeSection />
-            <CasesSection />
-            <TeamSection />
-            <FAQSection />
-          </main>
-          <FinalCTASection />
-        </>
-      )}
-    </>
+    </BrowserRouter>
   )
 }

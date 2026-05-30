@@ -10,11 +10,11 @@ export const BRAND = {
 } as const
 
 export const NAV_LINKS = [
-  { label: 'Manifiesto', href: '#manifesto' },
-  { label: 'Solución',   href: '#solution' },
-  { label: 'Sistema',    href: '#system' },
-  { label: 'Precios',    href: '#pricing' },
-  { label: 'Casos',      href: '#cases' },
+  { label: 'Inicio',   href: '/' },
+  { label: 'Solución', href: '/solucion' },
+  { label: 'Precios',  href: '/precios' },
+  { label: 'Casos',    href: '/casos' },
+  { label: 'FAQ',      href: '/faq' },
 ] as const
 
 export const CYCLING_WORDS = ['Visibility', 'Automation', 'Results', 'Growth'] as const
