@@ -70,6 +70,20 @@ export function PricingCard({ plan, index }: Props) {
         </span>
       </div>
 
+      {plan.tagline && (
+        <p style={{
+          fontFamily: 'var(--font-sub)',
+          fontSize: 12,
+          fontWeight: 600,
+          color: isFeatured ? 'rgba(123,97,255,0.8)' : 'var(--text-dim)',
+          letterSpacing: '0.04em',
+          marginBottom: 6,
+          fontStyle: 'italic',
+        }}>
+          {plan.tagline}
+        </p>
+      )}
+
       <p style={{
         fontFamily: 'var(--font-sub)',
         fontSize: 12,

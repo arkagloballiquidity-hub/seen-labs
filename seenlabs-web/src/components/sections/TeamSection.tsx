@@ -12,23 +12,24 @@ export function TeamSection() {
           transition={{ duration: 0.6 }}
           style={{ marginBottom: 64 }}
         >
-          <div className="section-label">El Equipo</div>
+          <div className="section-label">El Equipo Elite</div>
           <h2 style={{
             fontFamily: 'var(--font-display)',
             fontSize: 'clamp(28px, 4vw, 52px)',
             fontWeight: 800,
             lineHeight: 1.1,
             letterSpacing: '-0.03em',
-            maxWidth: 500,
+            maxWidth: 560,
           }}>
-            Las personas detrás del sistema.
+            Las personas que te sacan de la oscuridad.
           </h2>
         </motion.div>
 
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-          gap: 24,
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: 1,
+          background: 'rgba(255,255,255,0.04)',
         }}>
           {TEAM.map((member, i) => (
             <motion.div
@@ -38,53 +39,69 @@ export function TeamSection() {
               viewport={{ once: true, margin: '-40px' }}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               style={{
-                padding: '32px 28px',
-                background: 'rgba(255,255,255,0.02)',
-                border: '1px solid rgba(255,255,255,0.06)',
+                padding: '40px 32px',
+                background: 'var(--carbon)',
                 transition: 'all 0.3s',
+                cursor: 'default',
               }}
               onMouseEnter={e => {
-                e.currentTarget.style.borderColor = 'rgba(123,97,255,0.25)'
                 e.currentTarget.style.background = 'rgba(123,97,255,0.04)'
               }}
               onMouseLeave={e => {
-                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'
-                e.currentTarget.style.background = 'rgba(255,255,255,0.02)'
+                e.currentTarget.style.background = 'var(--carbon)'
               }}
             >
+              {/* Area badge */}
+              <div style={{
+                display: 'inline-block',
+                fontFamily: 'var(--font-sub)',
+                fontSize: 9,
+                fontWeight: 700,
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: 'var(--purple)',
+                border: '1px solid rgba(123,97,255,0.25)',
+                padding: '3px 8px',
+                marginBottom: 20,
+              }}>
+                {member.area}
+              </div>
+
               {/* Avatar */}
               <div style={{
-                width: 56,
-                height: 56,
+                width: 60,
+                height: 60,
                 borderRadius: '50%',
-                background: 'linear-gradient(135deg, rgba(123,97,255,0.3), rgba(91,65,223,0.1))',
+                background: 'linear-gradient(135deg, rgba(123,97,255,0.25), rgba(91,65,223,0.08))',
                 border: '1px solid rgba(123,97,255,0.3)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontFamily: 'var(--font-display)',
-                fontSize: 22,
+                fontSize: 24,
                 fontWeight: 700,
                 color: 'var(--purple)',
-                marginBottom: 16,
-                boxShadow: '0 0 16px rgba(123,97,255,0.1)',
+                marginBottom: 20,
+                boxShadow: '0 0 20px rgba(123,97,255,0.1)',
               }}>
                 {member.initial}
               </div>
+
               <h3 style={{
                 fontFamily: 'var(--font-sub)',
-                fontSize: 16,
-                fontWeight: 700,
+                fontSize: 20,
+                fontWeight: 800,
                 color: 'var(--text-primary)',
-                marginBottom: 4,
+                marginBottom: 8,
+                letterSpacing: '-0.01em',
               }}>
                 {member.name}
               </h3>
+
               <p style={{
-                fontFamily: 'var(--font-sub)',
-                fontSize: 12,
+                fontSize: 13,
+                lineHeight: 1.6,
                 color: 'var(--text-dim)',
-                letterSpacing: '0.04em',
               }}>
                 {member.role}
               </p>
@@ -92,6 +109,15 @@ export function TeamSection() {
           ))}
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 900px) {
+          .team-grid { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 500px) {
+          .team-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </section>
   )
 }

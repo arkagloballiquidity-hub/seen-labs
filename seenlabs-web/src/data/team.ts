@@ -3,12 +3,37 @@ export interface TeamMember {
   initial: string
   name: string
   role: string
+  area: string
   photoUrl?: string
 }
 
 export const TEAM: TeamMember[] = [
-  { id: 'g', initial: 'G', name: 'Gabriel López',   role: 'CEO & Estrategia Digital' },
-  { id: 'l', initial: 'L', name: 'Luis Ramírez',     role: 'Director de Desarrollo' },
-  { id: 'd', initial: 'D', name: 'Diana Morales',    role: 'Head of AI & Automation' },
-  { id: 'a', initial: 'A', name: 'Alejandro Torres', role: 'Performance & Ads' },
+  {
+    id: 'gabriel',
+    initial: 'G',
+    name: 'Gabriel',
+    role: 'Código, Website & CRMs',
+    area: 'Dev & Systems',
+  },
+  {
+    id: 'luis',
+    initial: 'L',
+    name: 'Luis',
+    role: 'Audiovisuales, Videos & Ads',
+    area: 'Creative & Media',
+  },
+  {
+    id: 'david',
+    initial: 'D',
+    name: 'David',
+    role: 'AI Automations, Copywriting & Closer Strategy',
+    area: 'AI & Growth',
+  },
+  {
+    id: 'alejandro',
+    initial: 'A',
+    name: 'Alejandro',
+    role: 'Soporte, Testing & QA en cada avance',
+    area: 'Quality & Ops',
+  },
 ]

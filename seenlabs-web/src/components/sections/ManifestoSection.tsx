@@ -3,15 +3,18 @@ import { motion } from 'framer-motion'
 const lines = [
   {
     num: '01',
-    text: 'Cada negocio tiene algo real que ofrecer. El problema no es el producto. Es la invisibilidad.',
+    title: 'No es falta de talento.',
+    text: 'Negocios brillantes fracasan cada día porque nadie los ve. No porque su producto sea malo — sino porque están en la oscuridad digital mientras su competencia, con la mitad de calidad, acapara el mercado.',
   },
   {
     num: '02',
-    text: 'Un sistema digital bien construido no es un gasto. Es el activo más rentable que puedes tener.',
+    title: 'Un sistema digital bien construido no es un gasto.',
+    text: 'Es el activo más rentable que tu negocio puede tener. Una máquina que trabaja mientras duermes, que califica leads automáticamente, que vende antes de que hables con el cliente.',
   },
   {
     num: '03',
-    text: 'No necesitas más esfuerzo. Necesitas que tu esfuerzo sea visible, automatizado y escalable.',
+    title: 'No necesitas más tiempo. Necesitas un sistema.',
+    text: 'De 0 a fuera de la oscuridad en 7 días hábiles. Esa es nuestra promesa, nuestra garantía y nuestra forma de penetrar el mercado: precios muy por debajo, soluciones 100,000 veces por encima.',
   },
 ]
 
@@ -36,7 +39,7 @@ export function ManifestoSection() {
               marginBottom: 64,
             }}>
               Creemos en negocios que{' '}
-              <span className="text-chrome">salen a la luz</span>.
+              <span className="text-chrome">salen a la luz.</span>
             </h2>
           </motion.div>
 
@@ -64,19 +67,29 @@ export function ManifestoSection() {
                 letterSpacing: '0.15em',
                 color: 'var(--purple)',
                 paddingTop: 4,
+                flexShrink: 0,
               }}>
                 {line.num}
               </span>
-              <p style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(18px, 2.2vw, 28px)',
-                fontWeight: 600,
-                lineHeight: 1.5,
-                color: 'var(--text-primary)',
-                letterSpacing: '-0.01em',
-              }}>
-                {line.text}
-              </p>
+              <div>
+                <h3 style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 'clamp(17px, 1.8vw, 22px)',
+                  fontWeight: 700,
+                  color: 'var(--text-primary)',
+                  letterSpacing: '-0.01em',
+                  marginBottom: 10,
+                }}>
+                  {line.title}
+                </h3>
+                <p style={{
+                  fontSize: 15,
+                  lineHeight: 1.75,
+                  color: 'var(--text-muted)',
+                }}>
+                  {line.text}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>

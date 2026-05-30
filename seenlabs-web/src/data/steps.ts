@@ -6,16 +6,56 @@ export interface PathStep {
 }
 
 export const STEPS: PathStep[] = [
-  { num: '01', title: 'Discovery Call',          description: 'Sesión de 60 min para entender tu negocio, mercado objetivo y objetivos de conversión.' },
-  { num: '02', title: 'Auditoría Digital',        description: 'Análisis completo de tu presencia digital actual, competencia y oportunidades.' },
-  { num: '03', title: 'Estrategia de Sistema',    description: 'Diseñamos la arquitectura completa de tu sistema de ventas digital.' },
-  { num: '04', title: 'Copy & Estructura',        description: 'Desarrollamos el copy de conversión y la estructura de información de tu web.' },
-  { num: '05', title: 'Diseño UI/UX',             description: 'Diseño de alta conversión alineado con tu marca, enfocado en la acción del usuario.' },
-  { num: '06', title: 'Desarrollo Web',           description: 'Construimos tu web optimizada para velocidad, SEO y conversión máxima.' },
-  { num: '07', title: 'Embudo de IA',             description: 'Configuramos los flujos de calificación y nurturing con inteligencia artificial.' },
-  { num: '08', title: 'Automatizaciones',         description: 'Integramos y activamos todos los flujos automáticos de seguimiento y ventas.' },
-  { num: '09', title: 'Configuración de Anuncios',description: 'Estructuramos y lanzamos las campañas de pago con creativos optimizados.' },
-  { num: '10', title: 'QA & Testing',             description: 'Pruebas exhaustivas de todos los flujos, formularios, integraciones y velocidad.' },
-  { num: '11', title: 'Lanzamiento',              description: 'Tu sistema sale al mundo. Monitoreo activo las primeras 72 horas.', highlight: true },
-  { num: '12', title: 'Optimización Continua',    description: 'Iteramos basado en datos reales para maximizar tu retorno mes a mes.', highlight: true },
+  {
+    num: '01',
+    title: 'Elegir el programa',
+    description: 'Selecciona el paquete que se adapta a tu negocio. Luego llenas el precontrato en minutos — sin burocracia.',
+  },
+  {
+    num: '02',
+    title: 'Pagar y firmar',
+    description: 'Aceptamos crypto, tarjeta de crédito, MSI, débito o efectivo. Una vez confirmado el pago, ambas partes firman el contrato.',
+  },
+  {
+    num: '03',
+    title: 'Formulario A',
+    description: 'Llenas el brief de tu negocio: mercado, producto, competencia, diferenciadores y objetivos de conversión.',
+  },
+  {
+    num: '04',
+    title: 'Formulario B',
+    description: 'Accesos, activos digitales, identidad de marca, paleta de colores y referencias visuales que nos entregas.',
+  },
+  {
+    num: '05',
+    title: 'Llamada con tu equipo Elite',
+    description: 'Sesión en vivo con tu equipo asignado de Seen Labs para resolver dudas y alinear expectativas antes de arrancar.',
+  },
+  {
+    num: '06',
+    title: 'Revisión 1',
+    description: 'Primera entrega parcial: estructura, copy y diseño base. Tienes 24 horas para dar feedback y aprobación.',
+  },
+  {
+    num: '07',
+    title: 'Revisión 2',
+    description: 'Sistema completo con todas las automatizaciones y flujos activos. Segunda ronda de ajustes antes del lanzamiento.',
+  },
+  {
+    num: '08',
+    title: 'Prelanzamiento',
+    description: 'QA final, pruebas de flujos, verificación de integraciones y ensayo general con tráfico de prueba.',
+  },
+  {
+    num: '09',
+    title: 'Lanzamiento — Día 7',
+    description: 'Tu sistema sale al mundo. Monitoreo activo las primeras 72 horas por parte de Seen Labs.',
+    highlight: true,
+  },
+  {
+    num: '10',
+    title: 'Primer cliente facturado',
+    description: 'Bienvenido a la luz. El sistema genera su primera venta — y esto es solo el principio.',
+    highlight: true,
+  },
 ]
