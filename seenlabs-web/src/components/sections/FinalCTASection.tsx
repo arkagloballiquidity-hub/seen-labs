@@ -4,84 +4,118 @@ import { Marquee } from '../ui/Marquee'
 export function FinalCTASection() {
   return (
     <footer style={{ background: 'transparent' }}>
-      {/* Marquee band */}
+      {/* Marquee band — visible as you scroll to the bottom */}
       <div style={{ overflow: 'hidden', borderTop: '1px solid rgba(255,255,255,0.06)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
         <Marquee />
       </div>
 
-      {/* Empty space — video logo shows through here */}
-      <div style={{ height: 560 }} />
+      {/* Empty space — video logo shows through */}
+      <div style={{ height: 360 }} />
 
-      {/* CTA — centered below the logo */}
-      <section className="section" style={{ paddingTop: 0 }}>
+      {/* CTA — hero style: text directly on video, left-aligned */}
+      <section className="section" style={{ paddingTop: 0, paddingBottom: 80 }}>
         <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <motion.div
-              className="text-card"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.8 }}
-              style={{ maxWidth: 780, width: '100%', textAlign: 'center' }}
-            >
-              {/* Eyebrow */}
-              <div style={{
-                fontFamily: 'var(--font-sub)', fontSize: 11, fontWeight: 700,
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.8 }}
+            style={{ maxWidth: 700 }}
+          >
+            {/* Eyebrow — same as hero label */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
+              <span style={{ width: 24, height: 1, background: 'var(--purple)', display: 'inline-block' }} />
+              <span style={{
+                fontFamily: 'var(--font-sub)', fontSize: 11, fontWeight: 600,
                 letterSpacing: '0.35em', textTransform: 'uppercase', color: 'var(--purple)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 24,
-              }}>
-                <span style={{ width: 24, height: 1, background: 'var(--purple)', display: 'inline-block' }} />
-                El Camino
-                <span style={{ width: 24, height: 1, background: 'var(--purple)', display: 'inline-block' }} />
-              </div>
+              }}>El Camino</span>
+            </div>
 
-              {/* Headline */}
-              <h2 style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(32px, 5vw, 72px)',
-                fontWeight: 800, lineHeight: 1.02,
-                letterSpacing: '-0.04em', marginBottom: 20,
-              }}>
-                <span style={{ color: 'rgba(255,255,255,0.45)' }}>Es hora de salir</span>
-                <br />
-                <span className="text-chrome">de la oscuridad.</span>
-              </h2>
+            {/* Headline — hero scale */}
+            <h2 style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 'clamp(36px, 5.5vw, 76px)',
+              fontWeight: 800, lineHeight: 1.04,
+              letterSpacing: '-0.04em', marginBottom: 24,
+              textShadow: '0 2px 40px rgba(0,0,0,0.6)',
+            }}>
+              <span style={{ color: 'rgba(255,255,255,0.45)' }}>Es hora de salir</span>
+              <br />
+              <span className="text-chrome">de la oscuridad.</span>
+            </h2>
 
+            {/* Pain line — same style as hero */}
+            <div style={{ borderLeft: '3px solid var(--purple)', paddingLeft: 20, marginBottom: 24 }}>
               <p style={{
-                fontSize: 16, lineHeight: 1.75,
-                color: 'rgba(255,255,255,0.45)',
-                maxWidth: 520, margin: '0 auto 32px',
+                fontFamily: 'var(--font-sub)', fontSize: 'clamp(15px, 1.8vw, 19px)',
+                fontWeight: 600, color: '#fff', lineHeight: 1.45,
               }}>
-                Tu competencia ya está construyendo su sistema.{' '}
-                <strong style={{ color: 'rgba(255,255,255,0.72)' }}>
-                  En 7 días hábiles, el tuyo está funcionando.
-                </strong>
+                Tu competencia ya está construyendo su sistema.
               </p>
-
-              <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 20 }}>
-                <a href="/precios" className="btn-primary" style={{ fontSize: 14, padding: '14px 36px' }}>
-                  Iniciar el Camino
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </a>
-                <a href="https://wa.me/message/seen-labs" target="_blank" rel="noopener noreferrer" className="btn-ghost" style={{ fontSize: 14, padding: '14px 36px' }}>
-                  Agendar Llamada
-                </a>
-              </div>
-
               <p style={{
-                fontFamily: 'var(--font-sub)', fontSize: 11,
-                color: 'rgba(255,255,255,0.2)', letterSpacing: '0.05em',
+                fontFamily: 'var(--font-sub)', fontSize: 'clamp(15px, 1.8vw, 19px)',
+                fontWeight: 600, lineHeight: 1.45,
               }}>
-                Garantía Hotmart 7 días · Sin contratos · Sin riesgo
+                Cada día que esperas es{' '}
+                <span style={{ color: 'var(--purple)', textShadow: '0 0 20px rgba(123,97,255,0.5)' }}>
+                  un día que ellos crecen.
+                </span>
               </p>
-            </motion.div>
-          </div>
+            </div>
+
+            <p style={{
+              fontSize: 15, lineHeight: 1.75,
+              color: 'rgba(255,255,255,0.6)',
+              maxWidth: 480, marginBottom: 36,
+            }}>
+              En 7 días hábiles tienes tu sistema completo funcionando —
+              <strong style={{ color: 'rgba(255,255,255,0.85)' }}> o te devolvemos el 100%.</strong>
+            </p>
+
+            {/* CTAs */}
+            <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center', marginBottom: 40 }}>
+              <a href="/precios" className="btn-primary" style={{ fontSize: 14 }}>
+                Iniciar el Camino
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </a>
+              <a href="https://wa.me/message/seen-labs" target="_blank" rel="noopener noreferrer" className="btn-ghost" style={{ fontSize: 14 }}>
+                Agendar Llamada
+              </a>
+            </div>
+
+            {/* Stats — same as hero */}
+            <div style={{
+              display: 'flex', gap: 40,
+              paddingTop: 24,
+              borderTop: '1px solid rgba(255,255,255,0.1)',
+            }}>
+              {[
+                { value: '7',    label: 'días hábiles' },
+                { value: '100%', label: 'cashback garantizado' },
+                { value: '3x',   label: 'ROI promedio' },
+              ].map(s => (
+                <div key={s.label}>
+                  <div style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: 'clamp(20px, 2.5vw, 30px)', fontWeight: 800,
+                    color: 'var(--purple)', letterSpacing: '-0.03em',
+                    textShadow: '0 0 20px rgba(123,97,255,0.4)',
+                  }}>{s.value}</div>
+                  <div style={{
+                    fontFamily: 'var(--font-sub)', fontSize: 10,
+                    letterSpacing: '0.1em', textTransform: 'uppercase',
+                    color: 'rgba(255,255,255,0.3)',
+                  }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* Footer bar — solid dark, always readable */}
+      {/* Footer bar — solid dark */}
       <div style={{
         background: 'rgba(0,0,0,0.88)',
         backdropFilter: 'blur(16px)',
