@@ -18,18 +18,18 @@ export function Navbar() {
         style={{
           position: 'fixed',
           top: 16,
-          left: '50%',
-          transform: 'translateX(-50%)',
+          left: 24,
+          right: 24,
+          margin: '0 auto',
           zIndex: 1000,
-          width: 'calc(100% - 48px)',
-          maxWidth: 980,
+          maxWidth: 1100,
         }}
       >
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '12px 24px',
+          padding: '11px 20px',
           background: scrolled ? 'rgba(0,0,0,0.9)' : 'rgba(0,0,0,0.55)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
@@ -47,9 +47,9 @@ export function Navbar() {
             />
             <span style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 15,
+              fontSize: 14,
               fontWeight: 800,
-              letterSpacing: '0.12em',
+              letterSpacing: '0.1em',
               textTransform: 'uppercase',
               color: 'var(--text-primary)',
             }}>
@@ -58,7 +58,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop links */}
-          <div className="hidden-mobile" style={{ display: 'flex', gap: 28, alignItems: 'center' }}>
+          <div className="hidden-mobile" style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
             {NAV_LINKS.map(link => {
               const active = location.pathname === link.href
               return (
@@ -97,7 +97,7 @@ export function Navbar() {
 
           {/* CTA + Hamburger */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <Link to="/precios" className="btn-primary hidden-mobile" style={{ padding: '9px 20px', fontSize: 12 }}>
+            <Link to="/precios" className="btn-primary hidden-mobile" style={{ padding: '8px 16px', fontSize: 11 }}>
               Iniciar el Camino
             </Link>
             <button
@@ -182,11 +182,11 @@ export function Navbar() {
       </AnimatePresence>
 
       <style>{`
-        @media (max-width: 900px) {
+        @media (max-width: 860px) {
           .hidden-mobile { display: none !important; }
           .show-mobile { display: flex !important; }
         }
-        @media (min-width: 901px) {
+        @media (min-width: 861px) {
           .hidden-mobile { display: flex !important; }
           .show-mobile { display: none !important; }
         }
