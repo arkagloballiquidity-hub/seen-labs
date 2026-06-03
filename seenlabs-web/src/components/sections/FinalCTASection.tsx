@@ -87,35 +87,59 @@ export function FinalCTASection() {
               </a>
             </div>
 
-            {/* Stats — translucent strip */}
+            {/* Stats — full-width translucent strip with purple accent */}
             <div style={{
-              display: 'flex', gap: 40,
-              background: 'rgba(0,0,0,0.62)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              padding: '20px 28px',
-              borderTop: '1px solid rgba(255,255,255,0.08)',
-              borderBottom: '1px solid rgba(255,255,255,0.05)',
+              marginLeft: -52, marginRight: -52,
+              background: 'rgba(0,0,0,0.70)',
+              backdropFilter: 'blur(14px)',
+              WebkitBackdropFilter: 'blur(14px)',
+              borderTop: '2px solid var(--purple)',
+              borderBottom: '1px solid rgba(255,255,255,0.06)',
+              padding: '0 52px',
             }}>
-              {[
-                { value: '7',    label: 'días hábiles' },
-                { value: '100%', label: 'cashback garantizado' },
-                { value: '3x',   label: 'ROI promedio' },
-              ].map(s => (
-                <div key={s.label}>
-                  <div style={{
-                    fontFamily: 'var(--font-display)',
-                    fontSize: 'clamp(20px, 2.5vw, 30px)', fontWeight: 800,
-                    color: 'var(--purple)', letterSpacing: '-0.03em',
-                    textShadow: '0 0 20px rgba(123,97,255,0.4)',
-                  }}>{s.value}</div>
-                  <div style={{
-                    fontFamily: 'var(--font-sub)', fontSize: 10,
-                    letterSpacing: '0.1em', textTransform: 'uppercase',
-                    color: 'rgba(255,255,255,0.3)',
-                  }}>{s.label}</div>
-                </div>
-              ))}
+              {/* Label row */}
+              <div style={{
+                fontFamily: 'var(--font-sub)', fontSize: 9,
+                letterSpacing: '0.35em', textTransform: 'uppercase',
+                color: 'rgba(123,97,255,0.5)',
+                paddingTop: 14, paddingBottom: 6,
+              }}>
+                RESULTADOS SEEN LABS
+              </div>
+
+              {/* Numbers */}
+              <div style={{ display: 'flex', gap: 0, paddingBottom: 20 }}>
+                {[
+                  { value: '7',    label: 'Días hábiles',         sub: 'de entrega' },
+                  { value: '100%', label: 'Cashback',              sub: 'garantizado' },
+                  { value: '3x',   label: 'ROI promedio',          sub: 'primer mes' },
+                  { value: '+50',  label: 'Proyectos',             sub: 'entregados' },
+                ].map((s, i) => (
+                  <div key={s.label} style={{
+                    flex: 1,
+                    paddingRight: 24,
+                    borderRight: i < 3 ? '1px solid rgba(255,255,255,0.07)' : 'none',
+                    paddingLeft: i > 0 ? 24 : 0,
+                  }}>
+                    <div style={{
+                      fontFamily: 'var(--font-display)',
+                      fontSize: 'clamp(22px, 2.8vw, 36px)', fontWeight: 800,
+                      color: 'var(--purple)', letterSpacing: '-0.03em',
+                      textShadow: '0 0 24px rgba(123,97,255,0.45)',
+                      lineHeight: 1.1,
+                    }}>{s.value}</div>
+                    <div style={{
+                      fontFamily: 'var(--font-sub)', fontSize: 11, fontWeight: 600,
+                      color: 'rgba(255,255,255,0.7)', letterSpacing: '0.02em',
+                    }}>{s.label}</div>
+                    <div style={{
+                      fontFamily: 'var(--font-sub)', fontSize: 9,
+                      letterSpacing: '0.1em', textTransform: 'uppercase',
+                      color: 'rgba(255,255,255,0.25)',
+                    }}>{s.sub}</div>
+                  </div>
+                ))}
+              </div>
             </div>
           </motion.div>
         </div>
