@@ -68,11 +68,11 @@ export function VideoBackground() {
           objectFit: 'cover',
         }}
       />
-      {/* Base dark tint — keep light so video is visible */}
+      {/* Base dark tint — light at top, fades lighter toward bottom for logo */}
       <div style={{
         position: 'absolute',
         inset: 0,
-        background: 'rgba(0,0,0,0.38)',
+        background: 'linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.30) 60%, rgba(0,0,0,0.15) 100%)',
       }} />
     </div>
   )

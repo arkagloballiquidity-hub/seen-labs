@@ -247,20 +247,28 @@ body {
   z-index: 1;
 }
 
-/* ─── Home: sections semi-transparent over video ────────────── */
-body.home-page .section {
-  background: rgba(0, 0, 0, 0.58) !important;
-  backdrop-filter: blur(1px);
-  -webkit-backdrop-filter: blur(1px);
+/* ─── Home: sections fully transparent — video shows through ─── */
+body.home-page .section,
+body.home-page footer {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 body.home-page .glass {
   background: rgba(255,255,255,0.04) !important;
 }
-/* Final CTA: very light so video logo shows through */
-body.home-page footer {
-  background: rgba(0, 0, 0, 0.18) !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+
+/* ─── Text card: dark backdrop only behind text blocks ─────── */
+.text-card {
+  background: rgba(0, 0, 0, 0.68);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 2px;
+  padding: 48px 52px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+@media (max-width: 600px) {
+  .text-card { padding: 32px 24px; }
 }
 
 /* ─── Reduced Motion ────────────────────────────────────────── */
