@@ -247,6 +247,17 @@ body {
   z-index: 1;
 }
 
+/* ─── Home: sections semi-transparent over video ────────────── */
+body.home-page .section,
+body.home-page footer {
+  background: rgba(0, 0, 0, 0.72) !important;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+body.home-page .glass {
+  background: rgba(255,255,255,0.04) !important;
+}
+
 /* ─── Reduced Motion ────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
