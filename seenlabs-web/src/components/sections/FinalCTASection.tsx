@@ -31,7 +31,7 @@ export function FinalCTASection() {
               }}>El Camino</span>
             </div>
 
-            {/* Headline — hero scale */}
+            {/* Headline — 3 lines to push content down, logo breathes above */}
             <h2 style={{
               fontFamily: 'var(--font-display)',
               fontSize: 'clamp(36px, 5.5vw, 76px)',
@@ -39,7 +39,9 @@ export function FinalCTASection() {
               letterSpacing: '-0.04em', marginBottom: 24,
               textShadow: '0 2px 40px rgba(0,0,0,0.6)',
             }}>
-              <span style={{ color: 'rgba(255,255,255,0.45)' }}>Es hora de salir</span>
+              <span style={{ color: 'rgba(255,255,255,0.45)' }}>Es hora</span>
+              <br />
+              <span style={{ color: 'rgba(255,255,255,0.45)' }}>de salir</span>
               <br />
               <span className="text-chrome">de la oscuridad.</span>
             </h2>
@@ -85,11 +87,15 @@ export function FinalCTASection() {
               </a>
             </div>
 
-            {/* Stats — same as hero */}
+            {/* Stats — translucent strip */}
             <div style={{
               display: 'flex', gap: 40,
-              paddingTop: 24,
-              borderTop: '1px solid rgba(255,255,255,0.1)',
+              background: 'rgba(0,0,0,0.62)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              padding: '20px 28px',
+              borderTop: '1px solid rgba(255,255,255,0.08)',
+              borderBottom: '1px solid rgba(255,255,255,0.05)',
             }}>
               {[
                 { value: '7',    label: 'días hábiles' },
