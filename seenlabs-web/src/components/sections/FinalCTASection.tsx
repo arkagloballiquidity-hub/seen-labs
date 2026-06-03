@@ -10,7 +10,7 @@ export function FinalCTASection() {
       </div>
 
       {/* Empty space — video logo shows through here */}
-      <div style={{ height: 360 }} />
+      <div style={{ height: 560 }} />
 
       {/* CTA — centered below the logo */}
       <section className="section" style={{ paddingTop: 0 }}>
