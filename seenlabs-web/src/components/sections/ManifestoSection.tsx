@@ -22,7 +22,7 @@ export function ManifestoSection() {
   return (
     <section id="manifesto" className="section" style={{ background: 'transparent' }}>
       <div className="container">
-        <div className="text-card" style={{ maxWidth: 860, margin: '0 auto' }}>
+        <div className="text-card" style={{ maxWidth: 860 }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}

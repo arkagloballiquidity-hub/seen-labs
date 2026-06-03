@@ -40,15 +40,6 @@ export function HeroSection() {
         background: 'transparent',
       }}
     >
-      {/* Subtle bottom fade — no hard edge */}
-      <div style={{
-        position: 'absolute',
-        bottom: 0, left: 0, right: 0,
-        height: 160,
-        background: 'linear-gradient(180deg, transparent, rgba(0,0,0,0.3))',
-        pointerEvents: 'none',
-        zIndex: 1,
-      }} />
 
       <div className="container" ref={contentRef}
         style={{ position: 'relative', zIndex: 2, paddingTop: 140, paddingBottom: 100 }}

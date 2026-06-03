@@ -260,12 +260,12 @@ body.home-page .glass {
 
 /* ─── Text card: dark backdrop only behind text blocks ─────── */
 .text-card {
-  background: rgba(0, 0, 0, 0.68);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-radius: 2px;
   padding: 48px 52px;
-  border: 1px solid rgba(255,255,255,0.06);
+  border: none;
 }
 @media (max-width: 600px) {
   .text-card { padding: 32px 24px; }
