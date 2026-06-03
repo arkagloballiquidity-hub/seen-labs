@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import { DoorVisual } from '../ui/DoorVisual'
 import { Marquee } from '../ui/Marquee'
 import { NAV_LINKS } from '../../lib/constants'
 
@@ -14,12 +13,7 @@ export function FinalCTASection() {
       {/* CTA section */}
       <section className="section">
         <div className="container">
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr auto',
-            gap: 80,
-            alignItems: 'center',
-          }}>
+          <div style={{ maxWidth: 680 }}>
             {/* Text */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -62,15 +56,6 @@ export function FinalCTASection() {
               </div>
             </motion.div>
 
-            {/* Door */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <DoorVisual size="md" />
-            </motion.div>
           </div>
         </div>
       </section>
@@ -143,12 +128,6 @@ export function FinalCTASection() {
         </div>
       </div>
 
-      <style>{`
-        @media (max-width: 900px) {
-          footer .section .container > div { grid-template-columns: 1fr !important; }
-          footer .section .container > div > div:last-child { display: none !important; }
-        }
-      `}</style>
     </footer>
   )
 }
