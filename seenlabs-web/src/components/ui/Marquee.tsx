@@ -30,9 +30,11 @@ export function Marquee() {
             key={i}
             className="marquee-item"
             style={i % 2 === 0 ? {
-              color: 'rgba(255,255,255,0.06)',
+              color: 'rgba(255,255,255,0.22)',
               WebkitTextStroke: 'none',
-            } : {}}
+            } : {
+              WebkitTextStroke: '1px rgba(255,255,255,0.28)',
+            }}
           >
             {text}&nbsp;&nbsp;•&nbsp;&nbsp;
           </span>

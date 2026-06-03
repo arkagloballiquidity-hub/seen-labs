@@ -9,39 +9,36 @@ export function FinalCTASection() {
         <Marquee />
       </div>
 
-      {/* CTA — 2 columns: text card left, logo right (empty = video shows) */}
-      <section className="section">
-        <div className="container">
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: 48,
-            alignItems: 'center',
-            minHeight: 420,
-          }}>
+      {/* Empty space — video logo shows through here */}
+      <div style={{ height: 360 }} />
 
-            {/* LEFT — text card */}
+      {/* CTA — centered below the logo */}
+      <section className="section" style={{ paddingTop: 0 }}>
+        <div className="container">
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
             <motion.div
               className="text-card"
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.8 }}
+              style={{ maxWidth: 780, width: '100%', textAlign: 'center' }}
             >
               {/* Eyebrow */}
               <div style={{
                 fontFamily: 'var(--font-sub)', fontSize: 11, fontWeight: 700,
                 letterSpacing: '0.35em', textTransform: 'uppercase', color: 'var(--purple)',
-                display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24,
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginBottom: 24,
               }}>
                 <span style={{ width: 24, height: 1, background: 'var(--purple)', display: 'inline-block' }} />
                 El Camino
+                <span style={{ width: 24, height: 1, background: 'var(--purple)', display: 'inline-block' }} />
               </div>
 
               {/* Headline */}
               <h2 style={{
                 fontFamily: 'var(--font-display)',
-                fontSize: 'clamp(28px, 3.5vw, 56px)',
+                fontSize: 'clamp(32px, 5vw, 72px)',
                 fontWeight: 800, lineHeight: 1.02,
                 letterSpacing: '-0.04em', marginBottom: 20,
               }}>
@@ -51,9 +48,9 @@ export function FinalCTASection() {
               </h2>
 
               <p style={{
-                fontSize: 15, lineHeight: 1.75,
+                fontSize: 16, lineHeight: 1.75,
                 color: 'rgba(255,255,255,0.45)',
-                marginBottom: 32,
+                maxWidth: 520, margin: '0 auto 32px',
               }}>
                 Tu competencia ya está construyendo su sistema.{' '}
                 <strong style={{ color: 'rgba(255,255,255,0.72)' }}>
@@ -61,14 +58,14 @@ export function FinalCTASection() {
                 </strong>
               </p>
 
-              <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginBottom: 20 }}>
-                <a href="/precios" className="btn-primary" style={{ fontSize: 14 }}>
+              <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 20 }}>
+                <a href="/precios" className="btn-primary" style={{ fontSize: 14, padding: '14px 36px' }}>
                   Iniciar el Camino
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                     <path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </a>
-                <a href="https://wa.me/message/seen-labs" target="_blank" rel="noopener noreferrer" className="btn-ghost" style={{ fontSize: 14 }}>
+                <a href="https://wa.me/message/seen-labs" target="_blank" rel="noopener noreferrer" className="btn-ghost" style={{ fontSize: 14, padding: '14px 36px' }}>
                   Agendar Llamada
                 </a>
               </div>
@@ -80,35 +77,6 @@ export function FinalCTASection() {
                 Garantía Hotmart 7 días · Sin contratos · Sin riesgo
               </p>
             </motion.div>
-
-            {/* RIGHT — intentionally empty: video logo shows through */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.4 }}
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '100%',
-                gap: 12,
-              }}
-            >
-              {/* Subtle label pointing to the logo */}
-              <div style={{
-                fontFamily: 'var(--font-sub)', fontSize: 10,
-                letterSpacing: '0.3em', textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.18)',
-                textAlign: 'center',
-                marginTop: 'auto',
-                paddingTop: 40,
-              }}>
-                — Seen Labs —
-              </div>
-            </motion.div>
-
           </div>
         </div>
       </section>
