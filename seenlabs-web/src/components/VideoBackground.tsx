@@ -68,11 +68,11 @@ export function VideoBackground() {
           objectFit: 'cover',
         }}
       />
-      {/* Base dark tint so text is always readable */}
+      {/* Base dark tint — keep light so video is visible */}
       <div style={{
         position: 'absolute',
         inset: 0,
-        background: 'rgba(0,0,0,0.55)',
+        background: 'rgba(0,0,0,0.38)',
       }} />
     </div>
   )

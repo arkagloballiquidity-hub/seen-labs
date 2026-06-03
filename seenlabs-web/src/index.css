@@ -248,14 +248,19 @@ body {
 }
 
 /* ─── Home: sections semi-transparent over video ────────────── */
-body.home-page .section,
-body.home-page footer {
-  background: rgba(0, 0, 0, 0.72) !important;
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+body.home-page .section {
+  background: rgba(0, 0, 0, 0.58) !important;
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
 }
 body.home-page .glass {
   background: rgba(255,255,255,0.04) !important;
+}
+/* Final CTA: very light so video logo shows through */
+body.home-page footer {
+  background: rgba(0, 0, 0, 0.18) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 /* ─── Reduced Motion ────────────────────────────────────────── */

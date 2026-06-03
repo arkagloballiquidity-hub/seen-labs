@@ -20,7 +20,7 @@ const lines = [
 
 export function ManifestoSection() {
   return (
-    <section id="manifesto" className="section" style={{ background: 'var(--carbon)' }}>
+    <section id="manifesto" className="section" style={{ background: 'transparent' }}>
       <div className="container">
         <div style={{ maxWidth: 860, margin: '0 auto' }}>
           <motion.div
