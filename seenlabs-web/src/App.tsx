@@ -8,7 +8,6 @@ import { SolucionPage } from './pages/SolucionPage'
 import { PreciosPage } from './pages/PreciosPage'
 import { CasosPage } from './pages/CasosPage'
 import { FAQPage } from './pages/FAQPage'
-import { AgendarPage } from './pages/AgendarPage'
 
 const pageVariants = {
   initial: { opacity: 0, y: 16 },
@@ -42,11 +41,6 @@ function AnimatedRoutes() {
       <Route path="/faq" element={
         <motion.div key="faq" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.4 }}>
           <Layout><FAQPage /></Layout>
-        </motion.div>
-      } />
-      <Route path="/agendar" element={
-        <motion.div key="agendar" variants={pageVariants} initial="initial" animate="animate" exit="exit" transition={{ duration: 0.4 }}>
-          <Layout><AgendarPage /></Layout>
         </motion.div>
       } />
     </Routes>

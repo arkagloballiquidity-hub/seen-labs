@@ -75,16 +75,16 @@ export function FinalCTASection() {
               <strong style={{ color: 'rgba(255,255,255,0.85)' }}> o te devolvemos el 100%.</strong>
             </p>
 
-            {/* CTAs */}
+            {/* CTAs — primary opens Calendly (real action), secondary goes to pricing */}
             <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center', marginBottom: 40 }}>
-              <a href="/precios" className="btn-primary" style={{ fontSize: 14 }}>
-                Iniciar el Camino
+              <a href="#" className="btn-primary" style={{ fontSize: 14 }} onClick={openCalendly}>
+                Agendar Llamada
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </a>
-              <a href="#" className="btn-ghost" style={{ fontSize: 14 }} onClick={openCalendly}>
-                Agendar Llamada
+              <a href="/precios" className="btn-ghost" style={{ fontSize: 14 }}>
+                Ver Planes
               </a>
             </div>
 

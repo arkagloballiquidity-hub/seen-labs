@@ -1,5 +1,6 @@
 import { PageHero } from '../components/ui/PageHero'
 import { ProblemSection } from '../components/sections/ProblemSection'
+import { PainSection } from '../components/sections/PainSection'
 import { SolutionSection } from '../components/sections/SolutionSection'
 import { SystemSection } from '../components/sections/SystemSection'
 import { DifferentiatorSection } from '../components/sections/DifferentiatorSection'
@@ -13,6 +14,7 @@ export function SolucionPage() {
         subtitle="Entendemos por qué tu negocio no está creciendo — y sabemos exactamente cómo arreglarlo."
       />
       <ProblemSection />
+      <PainSection />
       <SolutionSection />
       <SystemSection />
       <DifferentiatorSection />
