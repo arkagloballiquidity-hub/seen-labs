@@ -136,36 +136,23 @@ export function LoadingScreen({ onComplete }: Props) {
               }}
               style={{ textAlign: 'center' }}
             >
-              {/* Glow ring behind logo */}
-              <motion.div
+              <motion.img
+                src="/logo.png"
+                alt="Seen Labs"
                 animate={{
-                  boxShadow: [
-                    '0 0 60px 10px rgba(123,97,255,0)',
-                    '0 0 120px 30px rgba(123,97,255,0.25)',
-                    '0 0 60px 10px rgba(123,97,255,0)',
+                  filter: [
+                    'drop-shadow(0 0 16px rgba(123,97,255,0.3))',
+                    'drop-shadow(0 0 48px rgba(123,97,255,0.75))',
+                    'drop-shadow(0 0 16px rgba(123,97,255,0.3))',
                   ],
                 }}
-                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-                style={{ borderRadius: '50%', display: 'inline-block' }}
-              >
-                <motion.img
-                  src="/logo.png"
-                  alt="Seen Labs"
-                  animate={{
-                    filter: [
-                      'drop-shadow(0 0 20px rgba(123,97,255,0.4))',
-                      'drop-shadow(0 0 50px rgba(123,97,255,0.9))',
-                      'drop-shadow(0 0 20px rgba(123,97,255,0.4))',
-                    ],
-                  }}
-                  transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
-                  style={{
-                    width: 'clamp(240px, 42vw, 520px)',
-                    height: 'auto',
-                    display: 'block',
-                  }}
-                />
-              </motion.div>
+                transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                style={{
+                  width: 'clamp(240px, 42vw, 520px)',
+                  height: 'auto',
+                  display: 'block',
+                }}
+              />
 
               {/* "Out of the dark" line fades in below logo */}
               <motion.div
