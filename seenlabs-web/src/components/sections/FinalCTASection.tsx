@@ -157,17 +157,8 @@ export function FinalCTASection() {
           display: 'flex', alignItems: 'center',
           justifyContent: 'space-between', flexWrap: 'wrap', gap: 12,
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--purple)', boxShadow: '0 0 8px var(--purple)' }} />
-            <span style={{
-              fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 800,
-              letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.75)',
-            }}>SEEN LABS</span>
-            <span style={{
-              fontFamily: 'var(--font-sub)', fontSize: 9,
-              color: 'rgba(255,255,255,0.25)', letterSpacing: '0.2em',
-              textTransform: 'uppercase', marginLeft: 4,
-            }}>Out of the Dark</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <img src="/logo.png" alt="Seen Labs" style={{ height: 28, width: 'auto', objectFit: 'contain', opacity: 0.75 }} />
           </div>
           <span style={{ fontFamily: 'var(--font-body)', fontSize: 11, color: 'rgba(255,255,255,0.2)' }}>
             © 2025 Seen Labs · Todos los derechos reservados

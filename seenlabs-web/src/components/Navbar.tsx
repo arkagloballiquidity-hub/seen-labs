@@ -39,22 +39,12 @@ export function Navbar() {
           transition: 'all 0.3s ease',
         }}>
           {/* Logo */}
-          <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-            <motion.div
-              animate={{ boxShadow: ['0 0 8px rgba(123,97,255,0.6)', '0 0 18px rgba(123,97,255,1)', '0 0 8px rgba(123,97,255,0.6)'] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--purple)', flexShrink: 0 }}
+          <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+            <img
+              src="/logo.png"
+              alt="Seen Labs"
+              style={{ height: 32, width: 'auto', objectFit: 'contain' }}
             />
-            <span style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 14,
-              fontWeight: 800,
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              color: 'var(--text-primary)',
-            }}>
-              SEEN LABS
-            </span>
           </Link>
 
           {/* Desktop links */}
