@@ -7,6 +7,7 @@ export interface PricingPlan {
   description: string
   features: string[]
   ctaLabel: string
+  ctaHref: string
   ctaStyle: 'ghost' | 'main' | 'outline'
   featured?: boolean
   badge?: string
@@ -32,6 +33,7 @@ export const PRICING_PLANS: PricingPlan[] = [
       'Entrega garantizada en 7 días hábiles',
     ],
     ctaLabel: 'Iniciar el Camino',
+    ctaHref: '/agendar', // TODO: reemplazar con link de Hotmart cuando esté listo
     ctaStyle: 'ghost',
   },
   {
@@ -52,6 +54,7 @@ export const PRICING_PLANS: PricingPlan[] = [
       'El costo de ads corre por el cliente',
     ],
     ctaLabel: 'Iniciar el Camino',
+    ctaHref: '/agendar', // TODO: reemplazar con link de Hotmart cuando esté listo
     ctaStyle: 'main',
     featured: true,
     badge: 'Más Elegido',
@@ -74,6 +77,7 @@ export const PRICING_PLANS: PricingPlan[] = [
       'Contrato personalizado',
     ],
     ctaLabel: 'Agendar Llamada',
+    ctaHref: '/agendar',
     ctaStyle: 'outline',
   },
 ]

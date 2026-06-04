@@ -122,9 +122,10 @@ export function PricingCard({ plan, index }: Props) {
       </div>
 
       <a
-        href="#"
+        href={plan.ctaHref}
         className={isFeatured ? 'btn-primary' : 'btn-ghost'}
         style={{ display: 'block', textAlign: 'center' }}
+        {...(plan.ctaHref?.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
       >
         {plan.ctaLabel}
       </a>

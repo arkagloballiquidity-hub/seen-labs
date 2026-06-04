@@ -38,7 +38,7 @@ export function FAQSection({ hideHero }: { hideHero?: boolean }) {
               <p style={{ fontSize: 15, lineHeight: 1.7, color: 'var(--text-muted)', marginBottom: 32 }}>
                 Resolvemos las dudas más comunes antes de que empieces el camino.
               </p>
-              <a href="#" className="btn-ghost" style={{ fontSize: 13, padding: '10px 20px' }}>
+              <a href="/agendar" className="btn-ghost" style={{ fontSize: 13, padding: '10px 20px' }}>
                 Hablar con un humano
               </a>
             </motion.div>
@@ -54,7 +54,7 @@ export function FAQSection({ hideHero }: { hideHero?: boolean }) {
           >
             {hideHero && (
               <div style={{ marginBottom: 16, textAlign: 'right' }}>
-                <a href="#" className="btn-ghost" style={{ fontSize: 13, padding: '10px 20px' }}>
+                <a href="/agendar" className="btn-ghost" style={{ fontSize: 13, padding: '10px 20px' }}>
                   Hablar con un humano
                 </a>
               </div>

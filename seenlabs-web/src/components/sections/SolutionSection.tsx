@@ -39,7 +39,7 @@ export function SolutionSection() {
             }}>
               No vendemos páginas web. Construimos sistemas de conversión: la web, el embudo, los anuncios y la automatización, todos conectados y optimizados para vender.
             </p>
-            <a href="#" className="btn-primary">
+            <a href="/precios" className="btn-primary">
               Ver Precios
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
