@@ -96,39 +96,71 @@ export function LoadingScreen({ onComplete }: Props) {
         </AnimatePresence>
       </div>
 
-      {/* Counter */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4 }}
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(80px, 18vw, 200px)',
-          fontWeight: 800,
-          lineHeight: 1,
-          letterSpacing: '-0.05em',
-          background: 'linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          backgroundClip: 'text',
-          fontVariantNumeric: 'tabular-nums',
-          userSelect: 'none',
-        }}
-      >
-        {String(count).padStart(2, '0')}
-      </motion.div>
+      {/* Counter — fades out at 100, logo fades in */}
+      <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
-      {/* Tagline */}
-      <div style={{
-        fontFamily: 'var(--font-sub)',
-        fontSize: 12,
-        fontWeight: 600,
-        letterSpacing: '0.4em',
-        textTransform: 'uppercase',
-        color: 'rgba(255,255,255,0.2)',
-        marginTop: 16,
-      }}>
-        OUT OF THE DARK
+        <AnimatePresence mode="wait">
+          {count < 100 ? (
+            <motion.div
+              key="counter"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.08, y: -20 }}
+              transition={{ duration: 0.35 }}
+              style={{
+                fontFamily: 'var(--font-display)',
+                fontSize: 'clamp(80px, 18vw, 200px)',
+                fontWeight: 800,
+                lineHeight: 1,
+                letterSpacing: '-0.05em',
+                background: 'linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                fontVariantNumeric: 'tabular-nums',
+                userSelect: 'none',
+              }}
+            >
+              {String(count).padStart(2, '0')}
+            </motion.div>
+          ) : (
+            <motion.div
+              key="logo"
+              initial={{ opacity: 0, scale: 0.85, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              style={{ textAlign: 'center' }}
+            >
+              <img
+                src="/logo.png"
+                alt="Seen Labs"
+                style={{
+                  width: 'clamp(220px, 40vw, 480px)',
+                  height: 'auto',
+                  filter: 'drop-shadow(0 0 40px rgba(123,97,255,0.6))',
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Tagline — always visible below */}
+        <motion.div
+          animate={{ opacity: count < 100 ? 1 : 0 }}
+          transition={{ duration: 0.3 }}
+          style={{
+            fontFamily: 'var(--font-sub)',
+            fontSize: 12,
+            fontWeight: 600,
+            letterSpacing: '0.4em',
+            textTransform: 'uppercase',
+            color: 'rgba(255,255,255,0.2)',
+            marginTop: 16,
+            position: count < 100 ? 'relative' : 'absolute',
+          }}
+        >
+          OUT OF THE DARK
+        </motion.div>
       </div>
 
       {/* Progress bar */}
