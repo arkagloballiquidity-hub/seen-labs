@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import type { PricingPlan } from '../../data/pricing'
+import { openCalendly } from '../../lib/calendly'
 
 interface Props {
   plan: PricingPlan
@@ -122,10 +123,12 @@ export function PricingCard({ plan, index }: Props) {
       </div>
 
       <a
-        href={plan.ctaHref}
+        href={plan.ctaHref?.startsWith('http') ? plan.ctaHref : '#'}
         className={isFeatured ? 'btn-primary' : 'btn-ghost'}
         style={{ display: 'block', textAlign: 'center' }}
-        {...(plan.ctaHref?.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        target={plan.ctaHref?.startsWith('http') ? '_blank' : undefined}
+        rel={plan.ctaHref?.startsWith('http') ? 'noopener noreferrer' : undefined}
+        onClick={plan.ctaHref?.startsWith('http') ? undefined : openCalendly}
       >
         {plan.ctaLabel}
       </a>

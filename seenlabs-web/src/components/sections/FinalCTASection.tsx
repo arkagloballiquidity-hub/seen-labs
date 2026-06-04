@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Marquee } from '../ui/Marquee'
+import { openCalendly } from '../../lib/calendly'
 
 export function FinalCTASection() {
   return (
@@ -82,7 +83,7 @@ export function FinalCTASection() {
                   <path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </a>
-              <a href="/agendar" className="btn-ghost" style={{ fontSize: 14 }}>
+              <a href="#" className="btn-ghost" style={{ fontSize: 14 }} onClick={openCalendly}>
                 Agendar Llamada
               </a>
             </div>
