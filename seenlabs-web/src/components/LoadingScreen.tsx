@@ -26,7 +26,7 @@ export function LoadingScreen({ onComplete }: Props) {
         rafRef.current = requestAnimationFrame(animate)
       } else {
         setCount(100)
-        setTimeout(onComplete, 400)
+        setTimeout(onComplete, 2600) // logo entrance + hold + exit
       }
     }
     rafRef.current = requestAnimationFrame(animate)
@@ -40,8 +40,8 @@ export function LoadingScreen({ onComplete }: Props) {
 
   return (
     <motion.div
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
+      exit={{ opacity: 0, scale: 1.04 }}
+      transition={{ duration: 0.8, ease: [0.4, 0, 1, 1] }}
       style={{
         position: 'fixed',
         inset: 0,
@@ -126,41 +126,85 @@ export function LoadingScreen({ onComplete }: Props) {
           ) : (
             <motion.div
               key="logo"
-              initial={{ opacity: 0, scale: 0.85, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0, scale: 0.7, y: 40, filter: 'blur(12px)' }}
+              animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, scale: 1.1, y: -30, filter: 'blur(8px)' }}
+              transition={{
+                duration: 0.9,
+                ease: [0.22, 1, 0.36, 1],
+                filter: { duration: 0.7 },
+              }}
               style={{ textAlign: 'center' }}
             >
-              <img
-                src="/logo.png"
-                alt="Seen Labs"
-                style={{
-                  width: 'clamp(220px, 40vw, 480px)',
-                  height: 'auto',
-                  filter: 'drop-shadow(0 0 40px rgba(123,97,255,0.6))',
+              {/* Glow ring behind logo */}
+              <motion.div
+                animate={{
+                  boxShadow: [
+                    '0 0 60px 10px rgba(123,97,255,0)',
+                    '0 0 120px 30px rgba(123,97,255,0.25)',
+                    '0 0 60px 10px rgba(123,97,255,0)',
+                  ],
                 }}
-              />
+                transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                style={{ borderRadius: '50%', display: 'inline-block' }}
+              >
+                <motion.img
+                  src="/logo.png"
+                  alt="Seen Labs"
+                  animate={{
+                    filter: [
+                      'drop-shadow(0 0 20px rgba(123,97,255,0.4))',
+                      'drop-shadow(0 0 50px rgba(123,97,255,0.9))',
+                      'drop-shadow(0 0 20px rgba(123,97,255,0.4))',
+                    ],
+                  }}
+                  transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut', delay: 0.5 }}
+                  style={{
+                    width: 'clamp(240px, 42vw, 520px)',
+                    height: 'auto',
+                    display: 'block',
+                  }}
+                />
+              </motion.div>
+
+              {/* "Out of the dark" line fades in below logo */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6, duration: 0.6 }}
+                style={{
+                  fontFamily: 'var(--font-sub)',
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: '0.45em',
+                  textTransform: 'uppercase',
+                  color: 'rgba(255,255,255,0.3)',
+                  marginTop: 20,
+                }}
+              >
+                OUT OF THE DARK
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Tagline — always visible below */}
-        <motion.div
-          animate={{ opacity: count < 100 ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
-          style={{
-            fontFamily: 'var(--font-sub)',
-            fontSize: 12,
-            fontWeight: 600,
-            letterSpacing: '0.4em',
-            textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.2)',
-            marginTop: 16,
-            position: count < 100 ? 'relative' : 'absolute',
-          }}
-        >
-          OUT OF THE DARK
-        </motion.div>
+        {/* Tagline under counter — hides at 100 */}
+        {count < 100 && (
+          <motion.div
+            exit={{ opacity: 0 }}
+            style={{
+              fontFamily: 'var(--font-sub)',
+              fontSize: 12,
+              fontWeight: 600,
+              letterSpacing: '0.4em',
+              textTransform: 'uppercase',
+              color: 'rgba(255,255,255,0.2)',
+              marginTop: 16,
+            }}
+          >
+            OUT OF THE DARK
+          </motion.div>
+        )}
       </div>
 
       {/* Progress bar */}
