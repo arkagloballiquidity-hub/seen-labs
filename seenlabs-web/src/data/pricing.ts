@@ -32,8 +32,8 @@ export const PRICING_PLANS: PricingPlan[] = [
       'Las primeras 3–5 ventas corren por Seen Labs',
       'Entrega garantizada en 7 días hábiles',
     ],
-    ctaLabel: 'Iniciar el Camino',
-    ctaHref: 'https://pay.hotmart.com/W106114116M?checkoutMode=2',
+    ctaLabel: 'Agendar Llamada',
+    ctaHref: 'calendly',
     ctaStyle: 'ghost',
   },
   {
