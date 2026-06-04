@@ -122,27 +122,16 @@ export function PricingCard({ plan, index }: Props) {
         ))}
       </div>
 
-      {plan.ctaHref?.includes('hotmart.com') ? (
-        // Hotmart checkout popup — widget intercepts the click
-        <a
-          href={plan.ctaHref}
-          className={`${isFeatured ? 'btn-primary' : 'btn-ghost'} hotmart-fb hotmart__button-checkout`}
-          style={{ display: 'block', textAlign: 'center', backgroundImage: 'none' }}
-          onClick={e => e.preventDefault()}
-        >
-          {plan.ctaLabel}
-        </a>
-      ) : (
-        // Calendly popup or internal route
-        <a
-          href={plan.ctaHref?.startsWith('http') ? plan.ctaHref : '#'}
-          className={isFeatured ? 'btn-primary' : 'btn-ghost'}
-          style={{ display: 'block', textAlign: 'center' }}
-          onClick={plan.ctaHref?.startsWith('http') ? undefined : openCalendly}
-        >
-          {plan.ctaLabel}
-        </a>
-      )}
+      <a
+        href={plan.ctaHref?.startsWith('http') ? plan.ctaHref : '#'}
+        className={isFeatured ? 'btn-primary' : 'btn-ghost'}
+        style={{ display: 'block', textAlign: 'center' }}
+        target={plan.ctaHref?.includes('hotmart.com') ? '_blank' : undefined}
+        rel={plan.ctaHref?.includes('hotmart.com') ? 'noopener noreferrer' : undefined}
+        onClick={plan.ctaHref?.startsWith('http') ? undefined : openCalendly}
+      >
+        {plan.ctaLabel}
+      </a>
     </motion.div>
   )
 }

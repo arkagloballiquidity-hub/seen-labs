@@ -271,28 +271,6 @@ body.home-page .glass {
   .text-card { padding: 32px 24px; }
 }
 
-/* ─── Hotmart widget override — keep our button styles ──────── */
-a.hotmart-fb.hotmart__button-checkout {
-  background-image: none !important;
-  background-color: var(--purple) !important;
-  border-radius: 0 !important;
-  padding: 14px 32px !important;
-  font-family: var(--font-sub) !important;
-  font-size: 14px !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.08em !important;
-  text-transform: uppercase !important;
-  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%) !important;
-  height: auto !important;
-  line-height: normal !important;
-  width: 100% !important;
-}
-a.hotmart-fb.hotmart__button-checkout.btn-ghost {
-  background-color: transparent !important;
-  border: 1px solid var(--border) !important;
-  color: var(--text-primary) !important;
-}
-
 /* ─── Reduced Motion ────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
