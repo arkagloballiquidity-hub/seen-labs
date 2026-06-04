@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 export function PainSection() {
   return (
@@ -138,12 +139,12 @@ export function PainSection() {
               Tu competidor con un producto inferior está ganando más que tú. No porque sea mejor. Porque lo ven. Seen Labs es tu puerta a la luz.
             </p>
 
-            <a href="/precios" className="btn-primary" style={{ fontSize: 15 }}>
+            <Link to="/precios" className="btn-primary" style={{ fontSize: 15 }}>
               Quiero ser visible
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </a>
+            </Link>
           </motion.div>
 
         </div>

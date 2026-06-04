@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 import { Marquee } from '../ui/Marquee'
 import { openCalendly } from '../../lib/calendly'
 
@@ -83,9 +84,9 @@ export function FinalCTASection() {
                   <path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </a>
-              <a href="/precios" className="btn-ghost" style={{ fontSize: 14 }}>
+              <Link to="/precios" className="btn-ghost" style={{ fontSize: 14 }}>
                 Ver Planes
-              </a>
+              </Link>
             </div>
 
             {/* Stats — full-width translucent strip with purple accent */}

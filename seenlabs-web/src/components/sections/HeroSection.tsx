@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { AnimatePresence, motion } from 'framer-motion'
 
@@ -119,13 +120,13 @@ export function HeroSection() {
 
         {/* CTAs */}
         <div className="hero-anim" style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center', marginBottom: 48 }}>
-          <a href="/precios" className="btn-primary" style={{ fontSize: 14 }}>
+          <Link to="/precios" className="btn-primary" style={{ fontSize: 14 }}>
             Quiero ser visible
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-          </a>
-          <a href="/solucion" className="btn-ghost" style={{ fontSize: 14 }}>Ver el Sistema</a>
+          </Link>
+          <Link to="/solucion" className="btn-ghost" style={{ fontSize: 14 }}>Ver el Sistema</Link>
         </div>
 
         {/* Tagline */}
