@@ -1,0 +1,8 @@
+node_modules
+crm/node_modules
+crm/.next
+seenlabs-web/node_modules
+seenlabs-web/dist
+*.env
+*.env.local
+.DS_Store
