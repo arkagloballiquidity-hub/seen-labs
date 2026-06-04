@@ -1,0 +1,1804 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seen Labs — Client Intake System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --p: #7B61FF;
+  --p2: #5B44CC;
+  --p3: #A08BFF;
+  --pg: rgba(123,97,255,.18);
+  --ps: rgba(123,97,255,.08);
+  --black: #0A0A0F;
+  --d1: #111118;
+  --d2: #18181F;
+  --d3: #202028;
+  --d4: #28283A;
+  --mid: #3A3A50;
+  --g1: #6B6880;
+  --g2: #9A98B0;
+  --g3: #C8C6DC;
+  --white: #F8F8FF;
+  --off: #EEEEF8;
+  --green: #22C55E;
+  --red: #EF4444;
+  --amber: #F59E0B;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'Manrope',sans-serif;font-size:15px;line-height:1.65;overflow-x:hidden}
+::selection{background:var(--pg);color:#fff}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:var(--black)}
+::-webkit-scrollbar-thumb{background:var(--p2);border-radius:2px}
+
+/* ── LAYOUT ── */
+.app{min-height:100vh;display:flex;flex-direction:column}
+
+/* ── TOP NAV ── */
+.topbar{
+  position:fixed;top:0;left:0;right:0;z-index:999;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 48px;
+  background:rgba(10,10,15,.92);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.brand{
+  font-family:'Sora',sans-serif;font-size:1rem;font-weight:800;
+  letter-spacing:.14em;color:var(--white);display:flex;align-items:center;gap:10px;
+}
+.brand-dot{width:7px;height:7px;border-radius:50%;background:var(--p);box-shadow:0 0 10px var(--p);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 8px var(--p)}50%{box-shadow:0 0 20px var(--p),0 0 40px var(--pg)}}
+.form-tabs{display:flex;gap:4px;background:var(--d2);border:1px solid rgba(255,255,255,.07);padding:4px;border-radius:3px}
+.tab-btn{
+  font-family:'Sora',sans-serif;font-size:.72rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:8px 20px;border:none;cursor:pointer;border-radius:2px;
+  background:transparent;color:var(--g2);transition:all .25s;
+}
+.tab-btn.active{background:var(--p);color:#fff;box-shadow:0 0 16px var(--pg)}
+.tab-btn:hover:not(.active){color:var(--white);background:rgba(255,255,255,.06)}
+.progress-info{font-family:'Sora',sans-serif;font-size:.72rem;color:var(--g1);letter-spacing:.05em}
+.progress-info span{color:var(--p);font-weight:700}
+
+/* ── HERO HEADER ── */
+.form-hero{
+  padding:120px 48px 60px;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.hero-glow{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 60% 50% at 50% 80%,rgba(123,97,255,.15),transparent 70%);
+}
+.form-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid rgba(123,97,255,.35);background:rgba(123,97,255,.08);
+  padding:6px 16px;border-radius:2px;
+  font-family:'Sora',sans-serif;font-size:.68rem;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--p);
+  margin-bottom:24px;
+}
+.form-hero h1{
+  font-family:'Sora',sans-serif;font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:800;line-height:1.08;letter-spacing:-.02em;
+  color:var(--white);margin-bottom:16px;
+}
+.form-hero h1 em{
+  font-style:normal;
+  background:linear-gradient(135deg,#C4B0FF,var(--p));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.form-hero p{font-size:.95rem;color:var(--g2);max-width:520px;margin:0 auto}
+
+/* ── PROGRESS BAR ── */
+.progress-wrap{
+  max-width:900px;margin:0 auto 40px;padding:0 48px;
+}
+.progress-track{
+  display:flex;align-items:center;gap:0;
+  position:relative;
+}
+.progress-track::before{
+  content:'';position:absolute;top:14px;left:0;right:0;height:1px;
+  background:var(--d4);z-index:0;
+}
+.prog-step{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  flex:1;position:relative;z-index:1;cursor:pointer;
+}
+.prog-dot{
+  width:28px;height:28px;border-radius:50%;
+  border:2px solid var(--mid);background:var(--d2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Sora',sans-serif;font-size:.65rem;font-weight:700;
+  color:var(--g1);transition:all .3s;
+}
+.prog-step.done .prog-dot{border-color:var(--p);background:var(--p);color:#fff;box-shadow:0 0 12px var(--pg)}
+.prog-step.active .prog-dot{border-color:var(--p);background:var(--black);color:var(--p);box-shadow:0 0 12px var(--pg)}
+.prog-label{font-size:.62rem;color:var(--g1);letter-spacing:.06em;text-align:center;font-family:'Sora',sans-serif;max-width:70px}
+.prog-step.active .prog-label{color:var(--p)}
+.prog-step.done .prog-label{color:var(--g2)}
+.progress-line{height:2px;background:var(--p);position:absolute;top:13px;left:0;z-index:0;transition:width .4s ease}
+
+/* ── FORM CONTAINER ── */
+.form-outer{max-width:900px;margin:0 auto;padding:0 48px 120px}
+
+/* ── SECTION ── */
+.section-block{
+  border:1px solid rgba(255,255,255,.07);
+  background:var(--d1);
+  margin-bottom:4px;
+  overflow:hidden;
+  transition:border-color .3s;
+}
+.section-block:hover{border-color:rgba(123,97,255,.2)}
+.section-block.active-section{border-color:rgba(123,97,255,.4)}
+
+.section-header{
+  padding:20px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;
+  background:var(--d2);
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+.section-header-left{display:flex;align-items:center;gap:14px}
+.section-num{
+  width:32px;height:32px;
+  background:rgba(123,97,255,.12);
+  border:1px solid rgba(123,97,255,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Sora',sans-serif;font-size:.72rem;font-weight:700;color:var(--p);
+}
+.section-title{
+  font-family:'Sora',sans-serif;font-size:.95rem;font-weight:700;
+  color:var(--white);letter-spacing:.02em;
+}
+.section-subtitle{font-size:.78rem;color:var(--g1);margin-top:2px}
+.section-chevron{color:var(--g1);font-size:.8rem;transition:transform .3s}
+.section-block.open .section-chevron{transform:rotate(180deg)}
+.section-body{
+  padding:28px;
+  display:none;
+  gap:20px;
+  flex-direction:column;
+}
+.section-block.open .section-body{display:flex}
+
+/* ── FORM FIELDS ── */
+.field-grid{display:grid;gap:16px}
+.field-grid.cols-2{grid-template-columns:1fr 1fr}
+.field-grid.cols-3{grid-template-columns:1fr 1fr 1fr}
+.field-wrap{display:flex;flex-direction:column;gap:6px}
+.field-label{
+  font-family:'Sora',sans-serif;font-size:.72rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  color:var(--g3);
+}
+.field-label .req{color:var(--p);margin-left:3px}
+.field-hint{font-size:.75rem;color:var(--g1);margin-top:2px}
+
+input[type=text],input[type=email],input[type=url],input[type=tel],
+input[type=number],select,textarea{
+  width:100%;
+  background:var(--d3);
+  border:1px solid var(--mid);
+  color:var(--white);
+  font-family:'Manrope',sans-serif;
+  font-size:.875rem;
+  padding:12px 16px;
+  outline:none;
+  transition:border-color .25s,box-shadow .25s;
+  border-radius:0;
+  -webkit-appearance:none;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--p);
+  box-shadow:0 0 0 3px rgba(123,97,255,.12);
+}
+input::placeholder,textarea::placeholder{color:var(--mid)}
+select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237B61FF' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:40px}
+select option{background:var(--d3)}
+textarea{resize:vertical;min-height:90px}
+
+/* ── RADIO / CHECK GROUPS ── */
+.option-grid{display:flex;flex-wrap:wrap;gap:8px}
+.option-btn{
+  padding:8px 16px;
+  border:1px solid var(--mid);
+  background:var(--d3);
+  color:var(--g2);
+  font-family:'Manrope',sans-serif;font-size:.82rem;
+  cursor:pointer;transition:all .2s;user-select:none;
+  border-radius:0;
+}
+.option-btn:hover{border-color:var(--p);color:var(--white)}
+.option-btn.selected{border-color:var(--p);background:rgba(123,97,255,.15);color:var(--white)}
+.option-btn.selected::before{content:'✓  '}
+
+/* ── SCALE RATING ── */
+.scale-wrap{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.scale-btn{
+  width:36px;height:36px;
+  border:1px solid var(--mid);background:var(--d3);
+  color:var(--g2);font-family:'Sora',sans-serif;font-size:.82rem;font-weight:700;
+  cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;
+}
+.scale-btn:hover{border-color:var(--p);color:var(--white)}
+.scale-btn.selected{border-color:var(--p);background:var(--p);color:#fff}
+.scale-labels{display:flex;justify-content:space-between;width:100%;font-size:.68rem;color:var(--g1);margin-top:4px}
+
+/* ── FILE UPLOAD ── */
+.upload-zone{
+  border:1px dashed var(--mid);
+  background:var(--d3);
+  padding:24px;
+  text-align:center;
+  cursor:pointer;
+  transition:all .3s;
+  position:relative;
+}
+.upload-zone:hover,.upload-zone.dragover{
+  border-color:var(--p);
+  background:rgba(123,97,255,.06);
+}
+.upload-zone input[type=file]{
+  position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;
+}
+.upload-icon{font-size:1.8rem;margin-bottom:8px;opacity:.5}
+.upload-label{font-family:'Sora',sans-serif;font-size:.78rem;font-weight:700;color:var(--g2)}
+.upload-sub{font-size:.72rem;color:var(--g1);margin-top:4px}
+.upload-files{margin-top:12px;display:flex;flex-wrap:wrap;gap:6px}
+.file-chip{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(123,97,255,.15);border:1px solid rgba(123,97,255,.3);
+  padding:4px 10px;font-size:.72rem;color:var(--p);
+}
+.file-chip button{background:none;border:none;color:var(--g1);cursor:pointer;font-size:.9rem;padding:0;line-height:1}
+.file-chip button:hover{color:var(--red)}
+
+/* ── DIVIDER ── */
+.field-divider{
+  height:1px;background:linear-gradient(to right,var(--p),transparent);
+  opacity:.2;margin:8px 0;
+}
+
+/* ── AI ANALYSIS BOX ── */
+.ai-box{
+  border:1px solid rgba(123,97,255,.35);
+  background:linear-gradient(135deg,rgba(123,97,255,.08),rgba(123,97,255,.03));
+  padding:24px;
+  position:relative;overflow:hidden;
+}
+.ai-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(to right,var(--p),transparent);
+}
+.ai-box-header{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.ai-icon{
+  width:36px;height:36px;background:rgba(123,97,255,.2);
+  border:1px solid rgba(123,97,255,.4);
+  display:flex;align-items:center;justify-content:center;font-size:1rem;
+}
+.ai-title{font-family:'Sora',sans-serif;font-size:.9rem;font-weight:700;color:var(--white)}
+.ai-sub{font-size:.75rem;color:var(--g2);margin-top:2px}
+.ai-output{
+  background:var(--black);border:1px solid var(--d4);
+  padding:16px;min-height:80px;
+  font-size:.82rem;color:var(--g2);line-height:1.7;
+  position:relative;
+}
+.ai-output .thinking{
+  display:flex;align-items:center;gap:8px;color:var(--p);font-size:.78rem;
+  font-family:'Sora',sans-serif;
+}
+.ai-dots{display:flex;gap:4px}
+.ai-dots span{width:5px;height:5px;border-radius:50%;background:var(--p);animation:bounce .8s infinite}
+.ai-dots span:nth-child(2){animation-delay:.15s}
+.ai-dots span:nth-child(3){animation-delay:.3s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+.ai-result{white-space:pre-wrap;font-size:.82rem;color:var(--g3);line-height:1.75}
+.ai-result h3{color:var(--white);font-family:'Sora',sans-serif;font-size:.88rem;font-weight:700;margin:12px 0 6px}
+.ai-result h4{color:var(--p3);font-family:'Sora',sans-serif;font-size:.8rem;font-weight:600;margin:10px 0 4px}
+
+/* ── BUTTONS ── */
+.btn-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.btn-primary{
+  font-family:'Sora',sans-serif;font-size:.8rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:14px 32px;background:var(--p);color:#fff;
+  border:none;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;
+}
+.btn-primary::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,.15) 50%,transparent 70%);
+  transform:translateX(-100%);transition:transform .5s;
+}
+.btn-primary:hover::after{transform:translateX(100%)}
+.btn-primary:hover{box-shadow:0 0 28px var(--pg)}
+.btn-primary:disabled{background:var(--mid);cursor:not-allowed;box-shadow:none}
+.btn-secondary{
+  font-family:'Sora',sans-serif;font-size:.8rem;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:14px 28px;background:transparent;color:var(--g2);
+  border:1px solid var(--mid);cursor:pointer;transition:all .3s;
+}
+.btn-secondary:hover{border-color:var(--p);color:var(--white)}
+.btn-ghost{
+  font-family:'Sora',sans-serif;font-size:.75rem;color:var(--p);
+  background:none;border:none;cursor:pointer;text-decoration:underline;text-underline-offset:3px;
+}
+.btn-analyze{
+  font-family:'Sora',sans-serif;font-size:.8rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  padding:12px 24px;
+  background:linear-gradient(135deg,rgba(123,97,255,.2),rgba(123,97,255,.1));
+  color:var(--p3);border:1px solid rgba(123,97,255,.4);
+  cursor:pointer;transition:all .3s;display:flex;align-items:center;gap:8px;
+}
+.btn-analyze:hover{background:rgba(123,97,255,.25);border-color:var(--p);box-shadow:0 0 20px var(--pg)}
+.btn-analyze:disabled{opacity:.5;cursor:not-allowed}
+
+/* ── EMAIL SEND BOX ── */
+.email-box{
+  background:var(--d2);border:1px solid rgba(255,255,255,.07);
+  padding:24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+}
+.email-icon{font-size:2rem}
+.email-info{flex:1}
+.email-info strong{font-family:'Sora',sans-serif;font-size:.88rem;font-weight:700;color:var(--white);display:block;margin-bottom:4px}
+.email-info p{font-size:.8rem;color:var(--g1)}
+.email-field{display:flex;gap:8px;flex:1;min-width:260px}
+.email-field input{flex:1;padding:10px 14px;font-size:.85rem}
+
+/* ── SUCCESS STATE ── */
+.success-banner{
+  background:linear-gradient(135deg,rgba(34,197,94,.12),rgba(34,197,94,.05));
+  border:1px solid rgba(34,197,94,.3);
+  padding:20px 24px;display:flex;align-items:center;gap:14px;
+  animation:fadeIn .4s ease;
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.success-icon{font-size:1.5rem}
+.success-text strong{font-family:'Sora',sans-serif;font-size:.88rem;color:var(--green);display:block;margin-bottom:3px}
+.success-text p{font-size:.8rem;color:var(--g2)}
+
+/* ── FORM SWITCH ── */
+.form-view{display:none}
+.form-view.active{display:block}
+
+/* ── INFO CHIPS ── */
+.chip-group{display:flex;flex-wrap:wrap;gap:6px}
+.info-chip{
+  background:rgba(123,97,255,.1);border:1px solid rgba(123,97,255,.2);
+  padding:4px 10px;font-size:.72rem;color:var(--p3);font-family:'Sora',sans-serif;
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .topbar{padding:14px 20px}
+  .form-tabs{display:none}
+  .form-hero{padding:100px 20px 40px}
+  .form-outer{padding:0 20px 80px}
+  .field-grid.cols-2,.field-grid.cols-3{grid-template-columns:1fr}
+  .progress-wrap{padding:0 20px}
+  .email-field{min-width:100%}
+}
+
+/* ── TOOLTIP ── */
+.tooltip-wrap{position:relative;display:inline-block}
+.tooltip-trigger{cursor:help;color:var(--p3);font-size:.75rem;border-bottom:1px dashed var(--p3)}
+.tooltip-box{
+  position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);
+  background:var(--d4);border:1px solid rgba(123,97,255,.3);
+  padding:8px 12px;font-size:.72rem;color:var(--g3);line-height:1.5;
+  white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .2s;z-index:10;
+}
+.tooltip-wrap:hover .tooltip-box{opacity:1}
+
+/* ── STICKY FOOTER NAV ── */
+.sticky-nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:99;
+  background:rgba(10,10,15,.96);backdrop-filter:blur(20px);
+  border-top:1px solid rgba(255,255,255,.06);
+  padding:14px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.step-counter{font-family:'Sora',sans-serif;font-size:.8rem;color:var(--g2)}
+.step-counter strong{color:var(--white)}
+
+/* mini progress */
+.mini-bar{width:160px;height:3px;background:var(--d4);border-radius:2px;overflow:hidden}
+.mini-fill{height:100%;background:var(--p);transition:width .4s ease;border-radius:2px}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- TOP NAV -->
+<nav class="topbar">
+  <div class="brand">
+    <div class="brand-dot"></div>
+    SEEN LABS
+  </div>
+  <div class="form-tabs">
+    <button class="tab-btn active" onclick="switchForm('A')">Formulario A — Web</button>
+    <button class="tab-btn" onclick="switchForm('B')">Formulario B — Automatización</button>
+  </div>
+  <div class="progress-info" id="progressInfo">Sección <span id="curSec">1</span> de <span id="totSec">7</span></div>
+</nav>
+
+<!-- ═══════════════════════════ FORMULARIO A ═══════════════════════════ -->
+<div class="form-view active" id="formA">
+
+  <div class="form-hero">
+    <div class="hero-glow"></div>
+    <div class="form-badge">◈ Formulario A · Brief de Website</div>
+    <h1>Cuéntanos todo sobre<br><em>tu empresa y visión.</em></h1>
+    <p>Este formulario alimenta directamente a nuestra IA para generar el manual de propuesta de sitio web de Gabriel.</p>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-track" id="progressTrackA">
+      <div class="progress-line" id="progressLineA" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="form-outer">
+
+    <!-- 1. IDENTIDAD -->
+    <div class="section-block open active-section" id="secA1">
+      <div class="section-header" onclick="toggleSection('secA1')">
+        <div class="section-header-left">
+          <div class="section-num">01</div>
+          <div>
+            <div class="section-title">Identidad de Marca</div>
+            <div class="section-subtitle">Quiénes son, qué hacen y cómo quieren ser percibidos</div>
+          </div>
+        </div>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-body">
+        <div class="field-grid cols-2">
+          <div class="field-wrap">
+            <label class="field-label">Nombre de la empresa <span class="req">*</span></label>
+            <input type="text" id="a_company" placeholder="Ej: Acme Corp S.A. de C.V." oninput="autoSave()">
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">Nombre comercial / marca <span class="req">*</span></label>
+            <input type="text" id="a_brand" placeholder="Ej: Acme" oninput="autoSave()">
+          </div>
+        </div>
+        <div class="field-grid cols-3">
+          <div class="field-wrap">
+            <label class="field-label">Industria / sector <span class="req">*</span></label>
+            <select id="a_industry" onchange="autoSave()">
+              <option value="">Seleccionar...</option>
+              <option>Real Estate / Bienes Raíces</option>
+              <option>Inversiones / Finanzas</option>
+              <option>E-commerce / Tienda Online</option>
+              <option>Servicios Profesionales</option>
+              <option>Tecnología / SaaS</option>
+              <option>Salud / Bienestar</option>
+              <option>Educación / Academia</option>
+              <option>Gastronomía / Restaurante</option>
+              <option>Construcción / Arquitectura</option>
+              <option>Consultoría</option>
+              <option>Lujo / Premium</option>
+              <option>Infoproductos / Cursos</option>
+              <option>Retail / Moda</option>
+              <option>Automoción</option>
+              <option>Legal / Jurídico</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">País / ciudad principal</label>
+            <input type="text" id="a_city" placeholder="Ej: Miami, FL / CDMX" oninput="autoSave()">
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">Años en operación</label>
+            <select id="a_years" onchange="autoSave()">
+              <option value="">Seleccionar...</option>
+              <option>Menos de 1 año (startup)</option>
+              <option>1–2 años</option>
+              <option>3–5 años</option>
+              <option>6–10 años</option>
+              <option>Más de 10 años</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Qué hace exactamente tu empresa? <span class="req">*</span></label>
+          <div class="field-hint">Descríbelo como si se lo explicaras a alguien que no conoce tu industria.</div>
+          <textarea id="a_what" rows="3" placeholder="Ej: Somos una firma de inversiones que ayuda a familias de clase media-alta a invertir en bienes raíces en Florida..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Cuál es tu propuesta de valor única? ¿Por qué te eligen a ti y no a la competencia?</label>
+          <textarea id="a_uvp" rows="2" placeholder="Lo que te hace diferente, especial, mejor..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Tienen slogan o tagline oficial?</label>
+          <input type="text" id="a_slogan" placeholder="Ej: 'Out of the Dark'" oninput="autoSave()">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">En 3 palabras, ¿cómo quieren que los perciban sus clientes? <span class="req">*</span></label>
+          <div class="field-hint">Selecciona hasta 3 opciones o escribe las tuyas.</div>
+          <div class="option-grid" id="a_perception">
+            <div class="option-btn" onclick="toggleOption(this,'a_perception',3)">Profesional</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_perception',3)">Moderno</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_perception',3)">Confiable</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_perception',3)">Exclusivo / Premium</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_perception',3)">Innovador</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_perception',3)">Cercano / Humano</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_perception',3)">Tecnológico</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_perception',3)">Poderoso</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_perception',3)">Creativo</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_perception',3)">Internacional</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. CLIENTE IDEAL -->
+    <div class="section-block" id="secA2">
+      <div class="section-header" onclick="toggleSection('secA2')">
+        <div class="section-header-left">
+          <div class="section-num">02</div>
+          <div>
+            <div class="section-title">Cliente Ideal (ICP)</div>
+            <div class="section-subtitle">¿A quién le habla el sitio web?</div>
+          </div>
+        </div>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-body">
+        <div class="field-grid cols-3">
+          <div class="field-wrap">
+            <label class="field-label">Rango de edad del cliente ideal</label>
+            <select id="a_age" onchange="autoSave()">
+              <option value="">Seleccionar...</option>
+              <option>18–25 años</option>
+              <option>25–35 años</option>
+              <option>35–50 años</option>
+              <option>50+ años</option>
+              <option>Todas las edades</option>
+              <option>Empresas (B2B)</option>
+            </select>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">Nivel socioeconómico</label>
+            <select id="a_ses" onchange="autoSave()">
+              <option value="">Seleccionar...</option>
+              <option>Masivo / Amplio</option>
+              <option>Clase media</option>
+              <option>Clase media-alta</option>
+              <option>Alto / Premium</option>
+              <option>Ultra High Net Worth</option>
+            </select>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">Ticket promedio de venta (USD)</label>
+            <select id="a_ticket" onchange="autoSave()">
+              <option value="">Seleccionar...</option>
+              <option>Menos de $100</option>
+              <option>$100 – $500</option>
+              <option>$500 – $2,000</option>
+              <option>$2,000 – $10,000</option>
+              <option>$10,000 – $50,000</option>
+              <option>Más de $50,000</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Describe a tu cliente ideal en detalle <span class="req">*</span></label>
+          <div class="field-hint">Quién es, qué hace, qué le preocupa, qué quiere lograr, qué lo frena.</div>
+          <textarea id="a_icp" rows="4" placeholder="Mi cliente ideal es un empresario de 35–50 años, dueño de PYME con 10–50 empleados, que factura entre $500K y $2M anuales, que siente que su presencia digital no refleja el nivel de su empresa y quiere proyectar más autoridad..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Cuál es el principal dolor o problema que resuelves?</label>
+          <textarea id="a_pain" rows="2" placeholder="El problema número 1 que tiene tu cliente antes de encontrarte..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Qué objeción o miedo tiene el cliente antes de comprarte?</label>
+          <div class="option-grid" id="a_objection">
+            <div class="option-btn" onclick="toggleOption(this,'a_objection',3)">Precio muy alto</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_objection',3)">No confía aún</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_objection',3)">No entiende el servicio</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_objection',3)">No sabe si funciona</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_objection',3)">Ya tuvo malas experiencias</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_objection',3)">Necesita tiempo para decidir</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_objection',3)">No sabe por dónde empezar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. SITIO WEB ACTUAL -->
+    <div class="section-block" id="secA3">
+      <div class="section-header" onclick="toggleSection('secA3')">
+        <div class="section-header-left">
+          <div class="section-num">03</div>
+          <div>
+            <div class="section-title">Sitio Web Actual y Referentes</div>
+            <div class="section-subtitle">Qué tiene hoy y qué quiere lograr</div>
+          </div>
+        </div>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-body">
+        <div class="field-grid cols-2">
+          <div class="field-wrap">
+            <label class="field-label">URL de sitio web actual (si tiene)</label>
+            <input type="url" id="a_current_url" placeholder="https://tusitio.com" oninput="autoSave()">
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">¿Tiene dominio comprado?</label>
+            <select id="a_domain" onchange="autoSave()">
+              <option value="">Seleccionar...</option>
+              <option>Sí, ya tengo dominio</option>
+              <option>No, necesito comprar uno</option>
+              <option>No sé / necesito ayuda</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Cuál es el principal objetivo del nuevo sitio web? <span class="req">*</span></label>
+          <div class="option-grid" id="a_goal">
+            <div class="option-btn" onclick="toggleOption(this,'a_goal',2)">Generar leads / prospectos</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_goal',2)">Proyectar autoridad y credibilidad</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_goal',2)">Vender productos/servicios directo</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_goal',2)">Agendar llamadas / demos</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_goal',2)">Mostrar portafolio / casos</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_goal',2)">Captar inversionistas</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_goal',2)">Reemplazar proceso de ventas</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">URLs de sitios que amas (competencia o referentes). Explica qué te gusta de cada uno.</label>
+          <textarea id="a_refs" rows="3" placeholder="Ejemplo:&#10;1. linear.app — me encanta la oscuridad, animaciones y sensación premium&#10;2. stripe.com — clarísimo, convence de entrada&#10;3. tesla.com — imágenes cinematográficas, minimalista" oninput="autoSave()"></textarea>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Estilo visual preferido para el nuevo sitio <span class="req">*</span></label>
+          <div class="option-grid" id="a_style">
+            <div class="option-btn" onclick="toggleOption(this,'a_style',2)">Oscuro / Dark mode premium</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_style',2)">Claro / Limpio / Minimalista</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_style',2)">Lujoso / Dorado / Elegante</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_style',2)">Moderno / Tecnológico</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_style',2)">Colorido / Creativo / Agencia</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_style',2)">Corporativo / Serio</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_style',2)">Cinematográfico / Impactante</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Qué páginas o secciones necesitas? <span class="req">*</span></label>
+          <div class="option-grid" id="a_pages">
+            <div class="option-btn" onclick="toggleOption(this,'a_pages',10)">Home / Landing principal</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_pages',10)">Sobre nosotros / About</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_pages',10)">Servicios / Productos</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_pages',10)">Precios / Paquetes</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_pages',10)">Portafolio / Casos de éxito</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_pages',10)">Blog / Contenido</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_pages',10)">Contacto / Formulario</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_pages',10)">FAQ</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_pages',10)">Política de privacidad</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_pages',10)">Tienda / E-commerce</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_pages',10)">Área de miembros / Login</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_pages',10)">Investor Deck / Para inversionistas</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Idioma(s) del sitio</label>
+          <div class="option-grid" id="a_lang">
+            <div class="option-btn" onclick="toggleOption(this,'a_lang',3)">Español</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_lang',3)">Inglés</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_lang',3)">Bilingüe (ES + EN)</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_lang',3)">Portugués</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. MARCA E IDENTIDAD VISUAL -->
+    <div class="section-block" id="secA4">
+      <div class="section-header" onclick="toggleSection('secA4')">
+        <div class="section-header-left">
+          <div class="section-num">04</div>
+          <div>
+            <div class="section-title">Identidad Visual y Activos de Marca</div>
+            <div class="section-subtitle">Logos, colores, tipografías y materiales existentes</div>
+          </div>
+        </div>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-body">
+        <div class="field-grid cols-3">
+          <div class="field-wrap">
+            <label class="field-label">¿Tienen logo? <span class="req">*</span></label>
+            <select id="a_logo" onchange="showLogoUpload()">
+              <option value="">Seleccionar...</option>
+              <option value="yes_files">Sí, tengo archivos (PNG, SVG, AI)</option>
+              <option value="yes_low">Sí, pero solo JPG/imagen de baja calidad</option>
+              <option value="no">No, necesitan diseñar uno</option>
+              <option value="redesign">Sí, pero quiero rediseñarlo</option>
+            </select>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">¿Tienen manual de marca / brandbook?</label>
+            <select id="a_brandbook" onchange="autoSave()">
+              <option value="">Seleccionar...</option>
+              <option>Sí, completo</option>
+              <option>Sí, pero básico</option>
+              <option>No</option>
+            </select>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">¿Tienen colores de marca definidos?</label>
+            <select id="a_colors_defined" onchange="autoSave()">
+              <option value="">Seleccionar...</option>
+              <option>Sí, con códigos HEX/RGB</option>
+              <option>Sí, pero aproximados</option>
+              <option>No, necesitan definirse</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field-wrap" id="logo_upload_zone" style="display:none">
+          <label class="field-label">Sube tu logo y archivos de marca</label>
+          <div class="upload-zone" ondragover="dragOver(event,this)" ondragleave="dragLeave(event,this)" ondrop="dropFile(event,this,'a_logo_files')">
+            <input type="file" multiple accept=".png,.svg,.ai,.eps,.pdf,.jpg,.jpeg" onchange="handleFiles(this,'a_logo_files')">
+            <div class="upload-icon">🎨</div>
+            <div class="upload-label">Arrastra tus archivos aquí o haz clic para seleccionar</div>
+            <div class="upload-sub">PNG, SVG, AI, EPS, PDF — Tamaño máximo 20MB por archivo</div>
+          </div>
+          <div class="upload-files" id="a_logo_files"></div>
+        </div>
+
+        <div class="field-wrap">
+          <label class="field-label">Describe la paleta de colores actual o deseada</label>
+          <textarea id="a_palette" rows="2" placeholder="Ej: Negro (#0A0A0A) como base, morado institucional (#7B61FF) como acento, blanco para textos..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Tienen tipografía de marca definida?</label>
+          <input type="text" id="a_fonts" placeholder="Ej: Sora para títulos, Manrope para cuerpo" oninput="autoSave()">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Sube materiales de marca adicionales (brandbook, colaterales, presentaciones)</label>
+          <div class="upload-zone" ondragover="dragOver(event,this)" ondragleave="dragLeave(event,this)" ondrop="dropFile(event,this,'a_brand_files')">
+            <input type="file" multiple accept=".pdf,.png,.jpg,.ai,.pptx,.zip" onchange="handleFiles(this,'a_brand_files')">
+            <div class="upload-icon">📁</div>
+            <div class="upload-label">Brandbook, guías de estilo, colaterales</div>
+            <div class="upload-sub">PDF, PNG, AI, PPTX, ZIP</div>
+          </div>
+          <div class="upload-files" id="a_brand_files"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. CONTENIDO -->
+    <div class="section-block" id="secA5">
+      <div class="section-header" onclick="toggleSection('secA5')">
+        <div class="section-header-left">
+          <div class="section-num">05</div>
+          <div>
+            <div class="section-title">Contenido y Comunicación</div>
+            <div class="section-subtitle">Textos, imágenes, videos y tono de voz</div>
+          </div>
+        </div>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-body">
+        <div class="field-wrap">
+          <label class="field-label">Tono de voz de la marca <span class="req">*</span></label>
+          <div class="option-grid" id="a_tone">
+            <div class="option-btn" onclick="toggleOption(this,'a_tone',3)">Formal y profesional</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_tone',3)">Cercano y conversacional</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_tone',3)">Aspiracional y motivador</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_tone',3)">Técnico y experto</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_tone',3)">Audaz y directo</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_tone',3)">Elegante y sofisticado</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_tone',3)">Divertido / Ligero</div>
+          </div>
+        </div>
+        <div class="field-grid cols-2">
+          <div class="field-wrap">
+            <label class="field-label">¿Tienen fotos profesionales de la empresa/equipo?</label>
+            <select id="a_photos" onchange="autoSave()">
+              <option value="">Seleccionar...</option>
+              <option>Sí, muchas fotos de alta calidad</option>
+              <option>Sí, algunas fotos</option>
+              <option>No, necesitamos producción</option>
+              <option>Usaremos banco de imágenes</option>
+            </select>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">¿Tienen videos de la empresa / productos?</label>
+            <select id="a_videos" onchange="autoSave()">
+              <option value="">Seleccionar...</option>
+              <option>Sí, video corporativo / showreel</option>
+              <option>Sí, videos de redes sociales</option>
+              <option>No, se producirán con Seen Labs</option>
+              <option>No aplica</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Tienen testimonios o casos de éxito de clientes?</label>
+          <select id="a_testimonials" onchange="autoSave()">
+            <option value="">Seleccionar...</option>
+            <option>Sí, tenemos varios con nombre y foto</option>
+            <option>Sí, algunos (sin foto)</option>
+            <option>Tenemos reseñas de Google / plataformas</option>
+            <option>No, estamos construyendo casos</option>
+          </select>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Sube fotos, videos, o materiales de contenido disponibles</label>
+          <div class="upload-zone" ondragover="dragOver(event,this)" ondragleave="dragLeave(event,this)" ondrop="dropFile(event,this,'a_content_files')">
+            <input type="file" multiple accept="image/*,video/*,.pdf" onchange="handleFiles(this,'a_content_files')">
+            <div class="upload-icon">📸</div>
+            <div class="upload-label">Fotos, videos, presentaciones, catálogos</div>
+            <div class="upload-sub">JPG, PNG, MP4, MOV, PDF — múltiples archivos permitidos</div>
+          </div>
+          <div class="upload-files" id="a_content_files"></div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Información adicional que quieras que Gabriel sepa sobre la comunicación de tu marca</label>
+          <textarea id="a_comms_extra" rows="2" placeholder="Frases que siempre usas, frases que NUNCA deberían usarse, estilo de escritura, etc..." oninput="autoSave()"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. COMPETENCIA Y MERCADO -->
+    <div class="section-block" id="secA6">
+      <div class="section-header" onclick="toggleSection('secA6')">
+        <div class="section-header-left">
+          <div class="section-num">06</div>
+          <div>
+            <div class="section-title">Competencia y Posicionamiento</div>
+            <div class="section-subtitle">Dónde estás parado en el mercado</div>
+          </div>
+        </div>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-body">
+        <div class="field-wrap">
+          <label class="field-label">Menciona 2–3 competidores directos (URLs o nombres)</label>
+          <textarea id="a_competitors" rows="2" placeholder="Ej:&#10;1. competidor1.com — son buenos en SEO pero su diseño es anticuado&#10;2. competidor2.mx — buena marca pero precios muy altos" oninput="autoSave()"></textarea>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿En qué eres MEJOR que tu competencia?</label>
+          <textarea id="a_better" rows="2" placeholder="Lo que nadie más ofrece o hace tan bien como tú..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Cuál es tu posicionamiento de precio vs mercado?</label>
+          <div class="option-grid" id="a_pricing_pos">
+            <div class="option-btn" onclick="toggleOption(this,'a_pricing_pos',1)">Somos la opción económica / accesible</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_pricing_pos',1)">Precio medio del mercado</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_pricing_pos',1)">Somos premium — precio justificado por valor</div>
+            <div class="option-btn" onclick="toggleOption(this,'a_pricing_pos',1)">Somos ultra premium / lujo</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. MÉTRICAS Y ESCALA -->
+    <div class="section-block" id="secA7">
+      <div class="section-header" onclick="toggleSection('secA7')">
+        <div class="section-header-left">
+          <div class="section-num">07</div>
+          <div>
+            <div class="section-title">Escala, Métricas y Datos de Negocio</div>
+            <div class="section-subtitle">Números que ayudan a diseñar la estrategia correcta</div>
+          </div>
+        </div>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-body">
+        <div class="field-grid cols-3">
+          <div class="field-wrap">
+            <label class="field-label">Clientes activos aproximados</label>
+            <select id="a_clients" onchange="autoSave()">
+              <option value="">Seleccionar...</option>
+              <option>Iniciando (0–10 clientes)</option>
+              <option>11–50 clientes</option>
+              <option>51–200 clientes</option>
+              <option>200–1,000 clientes</option>
+              <option>Más de 1,000</option>
+            </select>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">Facturación mensual aprox. (USD)</label>
+            <select id="a_revenue" onchange="autoSave()">
+              <option value="">Seleccionar...</option>
+              <option>Menos de $5,000</option>
+              <option>$5,000 – $20,000</option>
+              <option>$20,000 – $100,000</option>
+              <option>$100,000 – $500,000</option>
+              <option>Más de $500,000</option>
+            </select>
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">Meta de facturación en 12 meses</label>
+            <select id="a_goal_rev" onchange="autoSave()">
+              <option value="">Seleccionar...</option>
+              <option>Duplicar ingresos actuales</option>
+              <option>Crecer 3x</option>
+              <option>Crecer 5x o más</option>
+              <option>Llegar a $1M USD anual</option>
+              <option>Más de $1M USD anual</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Cuántos clientes nuevos necesitas por mes para alcanzar tu meta?</label>
+          <input type="number" id="a_new_clients" placeholder="Ej: 10" oninput="autoSave()">
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Hay algo más que Gabriel deba saber para diseñar la propuesta perfecta para tu empresa?</label>
+          <textarea id="a_extra" rows="3" placeholder="Cualquier detalle adicional, restricción, solicitud especial, idea que ya tienes en mente..." oninput="autoSave()"></textarea>
+        </div>
+
+        <!-- EMAIL FOR CLIENT -->
+        <div class="email-box">
+          <div class="email-icon">📩</div>
+          <div class="email-info">
+            <strong>Recibe el resumen en tu correo</strong>
+            <p>Te enviaremos un PDF con todas tus respuestas y el brief generado por IA.</p>
+          </div>
+          <div class="email-field">
+            <input type="email" id="a_client_email" placeholder="tucorreo@empresa.com">
+            <button class="btn-primary" onclick="sendSummaryEmail('A')" style="padding:10px 20px;white-space:nowrap">Enviar PDF</button>
+          </div>
+        </div>
+
+        <!-- AI ANALYSIS -->
+        <div class="ai-box">
+          <div class="ai-box-header">
+            <div class="ai-icon">⚡</div>
+            <div>
+              <div class="ai-title">Análisis IA — Manual de Propuesta Web</div>
+              <div class="ai-sub">Claude procesará todas tus respuestas y generará el manual completo para Gabriel</div>
+            </div>
+          </div>
+          <div class="ai-output" id="aiOutputA">
+            <div style="color:var(--g1);font-size:.8rem">Completa las secciones anteriores y presiona "Generar Análisis IA" para obtener el manual de propuesta.</div>
+          </div>
+          <div class="btn-row" style="margin-top:16px">
+            <button class="btn-analyze" id="btnAnalyzeA" onclick="analyzeFormA()">
+              <span>⚡</span> Generar Análisis IA — Manual para Gabriel
+            </button>
+            <button class="btn-secondary" onclick="copyResult('aiOutputA')">Copiar resultado</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /form-outer A -->
+</div><!-- /formA -->
+
+
+<!-- ═══════════════════════════ FORMULARIO B ═══════════════════════════ -->
+<div class="form-view" id="formB">
+
+  <div class="form-hero">
+    <div class="hero-glow"></div>
+    <div class="form-badge">◈ Formulario B · Brief de Automatización IA</div>
+    <h1>Construyamos tu<br><em>sistema de automatización.</em></h1>
+    <p>Este formulario alimenta el brief de David para diseñar tu infraestructura de IA, funnels y flujos de trabajo automáticos.</p>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-track" id="progressTrackB"></div>
+  </div>
+
+  <div class="form-outer">
+
+    <!-- B1. OPERACIONES ACTUALES -->
+    <div class="section-block open active-section" id="secB1">
+      <div class="section-header" onclick="toggleSection('secB1')">
+        <div class="section-header-left">
+          <div class="section-num">01</div>
+          <div>
+            <div class="section-title">Operaciones y Procesos Actuales</div>
+            <div class="section-subtitle">Cómo funciona tu empresa hoy</div>
+          </div>
+        </div>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-body">
+        <div class="field-wrap">
+          <label class="field-label">Describe tu proceso de ventas actual paso a paso <span class="req">*</span></label>
+          <div class="field-hint">Desde que alguien te conoce hasta que paga. Sé lo más específico posible.</div>
+          <textarea id="b_sales_process" rows="5" placeholder="Ej:&#10;1. El cliente ve un anuncio en Instagram&#10;2. Manda mensaje por WhatsApp o llena formulario web&#10;3. Le respondo (yo personalmente) y agendo una llamada&#10;4. Hago la llamada y presento el servicio (45 min)&#10;5. Le mando cotización por correo&#10;6. Hago seguimiento 2-3 días después&#10;7. Si acepta, le mando link de pago..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Cuánto tiempo te toma (a ti o tu equipo) cerrar una venta en promedio?</label>
+          <div class="option-grid" id="b_close_time">
+            <div class="option-btn" onclick="toggleOption(this,'b_close_time',1)">Mismo día</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_close_time',1)">2–3 días</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_close_time',1)">1 semana</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_close_time',1)">2–4 semanas</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_close_time',1)">Más de 1 mes</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Cuántos leads/prospectos nuevos recibes por semana actualmente?</label>
+          <div class="option-grid" id="b_leads_week">
+            <div class="option-btn" onclick="toggleOption(this,'b_leads_week',1)">1–5 por semana</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_leads_week',1)">6–20 por semana</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_leads_week',1)">20–100 por semana</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_leads_week',1)">Más de 100 por semana</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_leads_week',1)">Muy pocos / irregular</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Qué porcentaje de tus leads termina comprando? (Tasa de conversión)</label>
+          <div class="option-grid" id="b_conversion">
+            <div class="option-btn" onclick="toggleOption(this,'b_conversion',1)">Menos del 5%</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_conversion',1)">5–15%</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_conversion',1)">15–30%</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_conversion',1)">30–50%</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_conversion',1)">Más del 50%</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Cuál es el mayor cuello de botella en tu proceso de ventas?</label>
+          <div class="option-grid" id="b_bottleneck">
+            <div class="option-btn" onclick="toggleOption(this,'b_bottleneck',2)">No tengo suficientes leads</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_bottleneck',2)">Los leads no son de calidad</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_bottleneck',2)">No hay sistema de seguimiento</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_bottleneck',2)">Tardan mucho en decidir</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_bottleneck',2)">El proceso es todo manual</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_bottleneck',2)">No tenemos equipo de ventas</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_bottleneck',2)">Post-venta desorganizado</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B2. HERRAMIENTAS ACTUALES -->
+    <div class="section-block" id="secB2">
+      <div class="section-header" onclick="toggleSection('secB2')">
+        <div class="section-header-left">
+          <div class="section-num">02</div>
+          <div>
+            <div class="section-title">Herramientas y Tecnología Actual</div>
+            <div class="section-subtitle">Con qué trabajas hoy</div>
+          </div>
+        </div>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-body">
+        <div class="field-wrap">
+          <label class="field-label">¿Qué CRM o sistema de gestión de clientes usas?</label>
+          <div class="option-grid" id="b_crm">
+            <div class="option-btn" onclick="toggleOption(this,'b_crm',2)">HubSpot</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_crm',2)">Salesforce</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_crm',2)">Pipedrive</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_crm',2)">GoHighLevel</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_crm',2)">Monday.com</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_crm',2)">Notion / Airtable</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_crm',2)">Excel / Google Sheets</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_crm',2)">WhatsApp (manual)</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_crm',2)">No tengo CRM</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_crm',2)">Otro</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Qué canales de comunicación con clientes usas actualmente?</label>
+          <div class="option-grid" id="b_channels">
+            <div class="option-btn" onclick="toggleOption(this,'b_channels',6)">WhatsApp Personal</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_channels',6)">WhatsApp Business</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_channels',6)">WhatsApp API (oficial)</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_channels',6)">Correo electrónico</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_channels',6)">Instagram DM</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_channels',6)">Facebook Messenger</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_channels',6)">Llamada telefónica</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_channels',6)">Telegram</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_channels',6)">Chat del website</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Usan alguna herramienta de automatización actualmente?</label>
+          <div class="option-grid" id="b_automation_tools">
+            <div class="option-btn" onclick="toggleOption(this,'b_automation_tools',4)">Make (Integromat)</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automation_tools',4)">Zapier</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automation_tools',4)">n8n</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automation_tools',4)">ActiveCampaign</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automation_tools',4)">Mailchimp</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automation_tools',4)">Manychat / Chatbot</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automation_tools',4)">Twilio</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automation_tools',4)">Ninguna</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Qué plataformas de publicidad pagada usan?</label>
+          <div class="option-grid" id="b_ads">
+            <div class="option-btn" onclick="toggleOption(this,'b_ads',4)">Meta Ads (Facebook/Instagram)</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_ads',4)">Google Ads</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_ads',4)">TikTok Ads</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_ads',4)">LinkedIn Ads</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_ads',4)">YouTube Ads</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_ads',4)">No estamos en paid ads</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Cuánto invierten en publicidad por mes actualmente?</label>
+          <select id="b_ad_budget" onchange="autoSave()">
+            <option value="">Seleccionar...</option>
+            <option>No invierto / $0</option>
+            <option>Menos de $500 USD</option>
+            <option>$500 – $2,000 USD</option>
+            <option>$2,000 – $10,000 USD</option>
+            <option>Más de $10,000 USD</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- B3. WHAT TO AUTOMATE -->
+    <div class="section-block" id="secB3">
+      <div class="section-header" onclick="toggleSection('secB3')">
+        <div class="section-header-left">
+          <div class="section-num">03</div>
+          <div>
+            <div class="section-title">Qué Quieres Automatizar</div>
+            <div class="section-subtitle">El corazón del brief de David</div>
+          </div>
+        </div>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-body">
+        <div class="field-wrap">
+          <label class="field-label">¿Qué procesos quieres automatizar? <span class="req">*</span></label>
+          <div class="option-grid" id="b_automate">
+            <div class="option-btn" onclick="toggleOption(this,'b_automate',8)">Respuesta inmediata a leads nuevos</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automate',8)">Seguimiento automático a prospectos</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automate',8)">Calificación de leads con IA</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automate',8)">Agendamiento de llamadas / citas</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automate',8)">Envío de cotizaciones / propuestas</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automate',8)">Onboarding de clientes nuevos</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automate',8)">Recordatorios de pago / cobranza</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automate',8)">Reportes automáticos</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automate',8)">Email marketing / nurturing</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automate',8)">Atención al cliente 24/7</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automate',8)">Pipeline de ventas en CRM</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automate',8)">Facturación automática</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automate',8)">Publicación en redes sociales</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_automate',8)">Gestión de reviews / reputación</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Qué tareas manuales repetitivas consumen más tiempo a tu equipo? <span class="req">*</span></label>
+          <textarea id="b_manual_tasks" rows="3" placeholder="Ej: Responder las mismas preguntas de WhatsApp 20 veces al día, actualizar el excel de clientes manualmente, recordar uno a uno los pagos vencidos..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Qué tan urgente es para ti implementar el sistema de IA?</label>
+          <div class="scale-wrap" id="b_urgency">
+            <div class="scale-labels" style="width:100%;font-size:.7rem;color:var(--g1);display:flex;justify-content:space-between;margin-bottom:4px">
+              <span>Sin urgencia</span><span>Muy urgente</span>
+            </div>
+            <div style="display:flex;gap:6px">
+              <div class="scale-btn" onclick="selectScale(this,'b_urgency')">1</div>
+              <div class="scale-btn" onclick="selectScale(this,'b_urgency')">2</div>
+              <div class="scale-btn" onclick="selectScale(this,'b_urgency')">3</div>
+              <div class="scale-btn" onclick="selectScale(this,'b_urgency')">4</div>
+              <div class="scale-btn" onclick="selectScale(this,'b_urgency')">5</div>
+              <div class="scale-btn" onclick="selectScale(this,'b_urgency')">6</div>
+              <div class="scale-btn" onclick="selectScale(this,'b_urgency')">7</div>
+              <div class="scale-btn" onclick="selectScale(this,'b_urgency')">8</div>
+              <div class="scale-btn" onclick="selectScale(this,'b_urgency')">9</div>
+              <div class="scale-btn" onclick="selectScale(this,'b_urgency')">10</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- B4. WHATSAPP & CHAT IA -->
+    <div class="section-block" id="secB4">
+      <div class="section-header" onclick="toggleSection('secB4')">
+        <div class="section-header-left">
+          <div class="section-num">04</div>
+          <div>
+            <div class="section-title">WhatsApp API y Agentes de IA</div>
+            <div class="section-subtitle">Comunicación inteligente 24/7</div>
+          </div>
+        </div>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-body">
+        <div class="field-wrap">
+          <label class="field-label">¿Quieres implementar WhatsApp API oficial?</label>
+          <div class="option-grid" id="b_wa_api">
+            <div class="option-btn" onclick="toggleOption(this,'b_wa_api',1)">Sí, definitivamente</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_wa_api',1)">Sí, si tiene buen ROI</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_wa_api',1)">No sé qué es exactamente</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_wa_api',1)">No por ahora</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Qué quieres que haga el agente de IA en WhatsApp?</label>
+          <div class="option-grid" id="b_wa_functions">
+            <div class="option-btn" onclick="toggleOption(this,'b_wa_functions',6)">Responder preguntas frecuentes</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_wa_functions',6)">Calificar leads antes de pasar al humano</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_wa_functions',6)">Agendar citas automáticamente</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_wa_functions',6)">Enviar catálogos / cotizaciones</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_wa_functions',6)">Seguimiento post-venta</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_wa_functions',6)">Cobrar / enviar links de pago</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_wa_functions',6)">Encuestas de satisfacción</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_wa_functions',6)">Envío de recordatorios</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Cuántas conversaciones de WhatsApp/mensajes maneja tu equipo al día?</label>
+          <select id="b_wa_volume" onchange="autoSave()">
+            <option value="">Seleccionar...</option>
+            <option>Menos de 10 por día</option>
+            <option>10–50 por día</option>
+            <option>50–200 por día</option>
+            <option>Más de 200 por día</option>
+          </select>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Quieres chat IA en tu website? ¿Qué debe hacer?</label>
+                 </div>
+      </div>
+    </div>
+
+    <!-- B5. FUNNELS -->
+    <div class="section-block" id="secB5">
+      <div class="section-header" onclick="toggleSection('secB5')">
+        <div class="section-header-left">
+          <div class="section-num">05</div>
+          <div>
+            <div class="section-title">Funnels y Flujos de Conversión</div>
+            <div class="section-subtitle">Cómo moveremos a tu cliente de desconocido a pagador</div>
+          </div>
+        </div>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-body">
+        <div class="field-wrap">
+          <label class="field-label">¿Tienen algún funnel activo actualmente?</label>
+          <select id="b_funnel_current" onchange="autoSave()">
+            <option value="">Seleccionar...</option>
+            <option>No, todo es orgánico / boca a boca</option>
+            <option>Sí, básico (landing + formulario)</option>
+            <option>Sí, con email marketing</option>
+            <option>Sí, con anuncios conectados</option>
+            <option>Sí, funnel completo con seguimiento</option>
+          </select>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Qué tipo de funnel quieres implementar?</label>
+          <div class="option-grid" id="b_funnel_type">
+            <div class="option-btn" onclick="toggleOption(this,'b_funnel_type',3)">Lead magnet</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_funnel_type',3)">Webinar / masterclass</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_funnel_type',3)">Demo / prueba gratuita</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_funnel_type',3)">Consulta / diagnóstico</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_funnel_type',3)">VSL (Video Sales Letter)</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_funnel_type',3)">Oferta directa</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_funnel_type',3)">Secuencia de emails</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_funnel_type',3)">Quiz / perfilador</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Describe el flujo que imaginas (del anuncio al pago)</label>
+          <textarea id="b_funnel_flow" rows="4" placeholder="Ej: Anuncio Meta → Landing page → Agente IA WhatsApp califica → Closer agenda llamada → Link de pago Hotmart → Onboarding automático" oninput="autoSave()"></textarea>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Cuánto invertirás en ads por mes para alimentar el funnel?</label>
+          <select id="b_ads_funnel_budget" onchange="autoSave()">
+            <option value="">Seleccionar...</option>
+            <option>Aún no definido</option>
+            <option>$300 – $1,000 USD</option>
+            <option>$1,000 – $3,000 USD</option>
+            <option>$3,000 – $10,000 USD</option>
+            <option>Más de $10,000 USD</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- B6. DOCUMENTACIÓN -->
+    <div class="section-block" id="secB6">
+      <div class="section-header" onclick="toggleSection('secB6')">
+        <div class="section-header-left">
+          <div class="section-num">06</div>
+          <div>
+            <div class="section-title">Documentación Interna</div>
+            <div class="section-subtitle">Sube archivos para entrenar la IA de tu negocio</div>
+          </div>
+        </div>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-body">
+        <div class="field-wrap">
+          <label class="field-label">Sube documentación operativa <span class="req">*</span></label>
+          <div class="field-hint">Scripts de ventas, manuales, precios, FAQs, SOPs. Esto entrena la IA de David.</div>
+          <div class="upload-zone" ondragover="dragOver(event,this)" ondragleave="dragLeave(event,this)" ondrop="dropFile(event,this,'b_ops_files')">
+            <input type="file" multiple accept=".pdf,.docx,.xlsx,.csv,.txt,.pptx" onchange="handleFiles(this,'b_ops_files')">
+            <div class="upload-icon">🏢</div>
+            <div class="upload-label">Scripts, manuales, SOPs, listas de precios</div>
+            <div class="upload-sub">PDF, DOCX, XLSX, CSV, TXT, PPTX</div>
+          </div>
+          <div class="upload-files" id="b_ops_files"></div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Tienen script de ventas documentado?</label>
+          <select id="b_script" onchange="autoSave()">
+            <option value="">Seleccionar...</option>
+            <option>Sí, lo subo aquí</option>
+            <option>Sí, pero está en la cabeza del equipo</option>
+            <option>No, usaremos el de Seen Labs</option>
+          </select>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">FAQs o preguntas frecuentes de clientes</label>
+          <textarea id="b_faqs" rows="4" placeholder="Q: ¿Cuánto cuesta? A: ...&#10;Q: ¿Cuánto tarda? A: ..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Lista de productos/servicios con precios</label>
+          <textarea id="b_products" rows="3" placeholder="Servicio 1: Nombre — $X USD — descripción breve" oninput="autoSave()"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- B7. OBJETIVOS -->
+    <div class="section-block" id="secB7">
+      <div class="section-header" onclick="toggleSection('secB7')">
+        <div class="section-header-left">
+          <div class="section-num">07</div>
+          <div>
+            <div class="section-title">Objetivos, KPIs y Visión</div>
+            <div class="section-subtitle">Para que David diseñe el sistema correcto</div>
+          </div>
+        </div>
+        <span class="section-chevron">▼</span>
+      </div>
+      <div class="section-body">
+        <div class="field-grid cols-2">
+          <div class="field-wrap">
+            <label class="field-label">Meta clientes nuevos por mes</label>
+            <input type="number" id="b_monthly_goal" placeholder="Ej: 20" oninput="autoSave()">
+          </div>
+          <div class="field-wrap">
+            <label class="field-label">Tiempo máximo de respuesta a un lead</label>
+            <select id="b_response_time" onchange="autoSave()">
+              <option value="">Seleccionar...</option>
+              <option>Inmediato (segundos)</option>
+              <option>Menos de 5 minutos</option>
+              <option>Menos de 1 hora</option>
+              <option>El mismo día</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Modelo de closer deseado</label>
+          <div class="option-grid" id="b_closer_model">
+            <div class="option-btn" onclick="toggleOption(this,'b_closer_model',1)">IA cierra sola (bajo ticket)</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_closer_model',1)">IA califica, closer humano cierra</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_closer_model',1)">IA hace todo, closer para high-ticket</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_closer_model',1)">Closer de Seen Labs se encarga de todo</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Tamaño del equipo de ventas actual</label>
+          <div class="option-grid" id="b_team_size">
+            <div class="option-btn" onclick="toggleOption(this,'b_team_size',1)">Solo yo</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_team_size',1)">2–3 personas</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_team_size',1)">4–10 personas</div>
+            <div class="option-btn" onclick="toggleOption(this,'b_team_size',1)">Más de 10</div>
+          </div>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">¿Qué resultado en 90 días considerarías un éxito total con Seen Labs?</label>
+          <textarea id="b_success_vision" rows="3" placeholder="Ej: 30 clientes nuevos cerrados, el equipo no atendiendo mensajes manualmente, y el sistema funcionando solo..." oninput="autoSave()"></textarea>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label">Información adicional para David</label>
+          <textarea id="b_extra" rows="2" placeholder="Restricciones, ideas, integraciones específicas requeridas..." oninput="autoSave()"></textarea>
+        </div>
+
+        <div class="email-box">
+          <div class="email-icon">📩</div>
+          <div class="email-info">
+            <strong>Recibe el brief en tu correo</strong>
+            <p>Te enviamos el resumen completo de automatización en PDF.</p>
+          </div>
+          <div class="email-field">
+            <input type="email" id="b_client_email" placeholder="tucorreo@empresa.com">
+            <button class="btn-primary" onclick="sendSummaryEmail('B')" style="padding:10px 20px;white-space:nowrap">Enviar PDF</button>
+          </div>
+        </div>
+
+        <div class="ai-box">
+          <div class="ai-box-header">
+            <div class="ai-icon">🤖</div>
+            <div>
+              <div class="ai-title">Análisis IA — Blueprint de Automatización para David</div>
+              <div class="ai-sub">La IA procesará tus respuestas y generará el blueprint completo del sistema</div>
+            </div>
+          </div>
+          <div class="ai-output" id="aiOutputB">
+            <div style="color:var(--g1);font-size:.8rem">Completa las secciones y presiona el botón para generar el blueprint personalizado.</div>
+          </div>
+          <div class="btn-row" style="margin-top:16px">
+            <button class="btn-analyze" id="btnAnalyzeB" onclick="analyzeFormB()">
+              <span>🤖</span> Generar Blueprint IA — Sistema para David
+            </button>
+            <button class="btn-secondary" onclick="copyResult('aiOutputB')">Copiar resultado</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- STICKY NAV -->
+<div class="sticky-nav">
+  <div>
+    <div class="step-counter">Formulario <strong id="activeFormLabel">A — Web</strong></div>
+    <div style="font-size:.7rem;color:var(--g1);margin-top:2px">Auto-guardado activado ✓</div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="mini-bar"><div class="mini-fill" id="miniProgress" style="width:0%"></div></div>
+    <span id="miniPct" style="font-family:'Sora',sans-serif;font-size:.75rem;color:var(--g2)">0%</span>
+  </div>
+  <div class="btn-row">
+    <button class="btn-secondary" onclick="switchForm('A')">Form A</button>
+    <button class="btn-secondary" onclick="switchForm('B')">Form B</button>
+  </div>
+</div>
+</div>
+
+<script>
+let currentForm = 'A';
+const fileStore = {};
+
+function switchForm(form) {
+  currentForm = form;
+  document.getElementById('formA').classList.toggle('active', form==='A');
+  document.getElementById('formB').classList.toggle('active', form==='B');
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active',(i===0&&form==='A')||(i===1&&form==='B')));
+  document.getElementById('activeFormLabel').textContent = form==='A' ? 'A — Web' : 'B — Automatización';
+  updateProgress(); window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleSection(id) {
+  document.getElementById(id).classList.toggle('open');
+  updateProgress();
+}
+
+function toggleOption(btn, groupId, maxSelect) {
+  const group = document.getElementById(groupId);
+  if (!group) return;
+  const selected = group.querySelectorAll('.option-btn.selected');
+  if (!btn.classList.contains('selected') && selected.length >= maxSelect) {
+    if (maxSelect === 1) selected.forEach(b => b.classList.remove('selected')); else return;
+  }
+  btn.classList.toggle('selected'); autoSave();
+}
+
+function selectScale(btn, groupId) {
+  document.getElementById(groupId)?.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected'); autoSave();
+}
+
+function handleFiles(input, storeId) {
+  if (!fileStore[storeId]) fileStore[storeId] = [];
+  Array.from(input.files).forEach(f => { if (!fileStore[storeId].find(x=>x.name===f.name)) fileStore[storeId].push(f); });
+  renderFiles(storeId); autoSave();
+}
+function renderFiles(storeId) {
+  const c = document.getElementById(storeId); if (!c) return; c.innerHTML = '';
+  (fileStore[storeId]||[]).forEach((f,i) => {
+    const chip = document.createElement('div'); chip.className='file-chip';
+    chip.innerHTML = `📄 ${f.name} <button onclick="removeFile('${storeId}',${i})">✕</button>`;
+    c.appendChild(chip);
+  });
+}
+function removeFile(storeId, idx) { fileStore[storeId].splice(idx,1); renderFiles(storeId); }
+function dragOver(e,z){e.preventDefault();z.classList.add('dragover')}
+function dragLeave(e,z){z.classList.remove('dragover')}
+function dropFile(e,z,id){e.preventDefault();z.classList.remove('dragover');if(!fileStore[id])fileStore[id]=[];Array.from(e.dataTransfer.files).forEach(f=>{if(!fileStore[id].find(x=>x.name===f.name))fileStore[id].push(f)});renderFiles(id);autoSave()}
+function showLogoUpload(){const v=document.getElementById('a_logo').value;document.getElementById('logo_upload_zone').style.display=(v&&v!=='no')?'flex':'none';autoSave()}
+
+let saveTimer;
+function autoSave(){clearTimeout(saveTimer);saveTimer=setTimeout(()=>updateProgress(),400)}
+
+const sectionsA=['secA1','secA2','secA3','secA4','secA5','secA6','secA7'];
+const sectionsB=['secB1','secB2','secB3','secB4','secB5','secB6','secB7'];
+const sectionLabels={secA1:'Identidad',secA2:'Cliente',secA3:'Website',secA4:'Marca',secA5:'Contenido',secA6:'Mercado',secA7:'Métricas',secB1:'Ops',secB2:'Herramientas',secB3:'Automatizar',secB4:'WhatsApp',secB5:'Funnels',secB6:'Docs',secB7:'Objetivos'};
+
+function buildProgressTrack(containerId, sections) {
+  const container = document.getElementById(containerId); if(!container) return;
+  container.style.position='relative';
+  const line=document.createElement('div');
+  line.style.cssText='height:2px;background:var(--p);position:absolute;top:13px;left:0;z-index:0;transition:width .4s;width:0%';
+  line.id=containerId.replace('Track','Line'); container.appendChild(line);
+  sections.forEach((sec,i)=>{
+    const step=document.createElement('div'); step.className='prog-step'; step.id='prog_'+sec;
+    step.innerHTML=`<div class="prog-dot">${i+1}</div><div class="prog-label">${sectionLabels[sec]}</div>`;
+    step.onclick=()=>document.getElementById(sec).scrollIntoView({behavior:'smooth',block:'start'});
+    container.appendChild(step);
+  });
+}
+
+function updateProgress() {
+  const sections = currentForm==='A' ? sectionsA : sectionsB;
+  let filled=0;
+  sections.forEach((sec,i)=>{
+    const block=document.getElementById(sec);
+    const hasVal=Array.from(block.querySelectorAll('input,select,textarea')).some(el=>el.value&&el.value.trim()&&el.value!=='');
+    const hasOpt=block.querySelectorAll('.option-btn.selected').length>0;
+    const done=hasVal||hasOpt; if(done) filled++;
+    const step=document.getElementById('prog_'+sec);
+    if(step){step.classList.remove('done','active');if(done)step.classList.add('done');else if(i===filled)step.classList.add('active');}
+  });
+  const pct=Math.round((filled/sections.length)*100);
+  const lineId=currentForm==='A'?'progressLineA':'progressLineB';
+  const line=document.getElementById(lineId); if(line) line.style.width=pct+'%';
+  document.getElementById('miniProgress').style.width=pct+'%';
+  document.getElementById('miniPct').textContent=pct+'%';
+  document.getElementById('curSec').textContent=Math.min(filled+1,sections.length);
+  document.getElementById('totSec').textContent=sections.length;
+}
+
+function getVal(id){const el=document.getElementById(id);return el&&el.value?el.value.trim():'No indicado'}
+function getOptionValues(id){const g=document.getElementById(id);if(!g)return'No seleccionado';const s=g.querySelectorAll('.option-btn.selected');return s.length?Array.from(s).map(b=>b.textContent.replace('✓  ','')).join(', '):'No seleccionado'}
+function getScaleValue(id){const g=document.getElementById(id);if(!g)return'No indicado';const s=g.querySelector('.scale-btn.selected');return s?s.textContent+'/10':'No indicado'}
+
+async function analyzeFormA() {
+  const btn=document.getElementById('btnAnalyzeA'),output=document.getElementById('aiOutputA');
+  btn.disabled=true;
+  output.innerHTML='<div class="thinking"><div class="ai-dots"><span></span><span></span><span></span></div> Claude está construyendo el manual para Gabriel...</div>';
+  const prompt=`Eres el equipo estratégico de Seen Labs. Analiza este brief y genera el MANUAL COMPLETO DE PROPUESTA DE SITIO WEB para Gabriel.
+
+EMPRESA: ${getVal('a_company')} | Marca: ${getVal('a_brand')} | Industria: ${getVal('a_industry')}
+QUÉ HACE: ${getVal('a_what')}
+PROPUESTA DE VALOR: ${getVal('a_uvp')} | SLOGAN: ${getVal('a_slogan')}
+PERCEPCIÓN DESEADA: ${getOptionValues('a_perception')}
+CLIENTE IDEAL: ${getVal('a_icp')} | Dolor: ${getVal('a_pain')} | Objeciones: ${getOptionValues('a_objection')}
+OBJETIVO WEB: ${getOptionValues('a_goal')} | ESTILO: ${getOptionValues('a_style')}
+PÁGINAS: ${getOptionValues('a_pages')} | IDIOMA: ${getOptionValues('a_lang')}
+REFERENTES: ${getVal('a_refs')}
+COLORES: ${getVal('a_palette')} | FUENTES: ${getVal('a_fonts')}
+TONO: ${getOptionValues('a_tone')} | COMPETENCIA: ${getVal('a_competitors')}
+POSICIONAMIENTO: ${getOptionValues('a_pricing_pos')} | META 12 MESES: ${getVal('a_goal_rev')}
+
+Genera el manual con: 1) Diagnóstico estratégico 2) Headline + copy principal 3) Arquitectura de páginas 4) Dirección visual (colores, tipografías, estética) 5) Secciones del home en orden 6) Frases de impacto 7) CTAs recomendados 8) Elementos de confianza 9) Tech stack 10) Plan de implementación priorizado. Sé específico con los datos del cliente.`;
+  try {
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    output.innerHTML='<div class="ai-result">'+formatAI(d.content?.[0]?.text||'Error')+'</div>';
+  } catch(e) {
+    output.innerHTML='<div class="ai-result" style="color:var(--amber)">⚠️ Conecta tu API key de Anthropic al backend para activar el análisis automático. El formulario está 100% funcional — copia el brief y pégalo en claude.ai para obtener el manual inmediatamente.</div>';
+  }
+  btn.disabled=false;
+}
+
+async function analyzeFormB() {
+  const btn=document.getElementById('btnAnalyzeB'),output=document.getElementById('aiOutputB');
+  btn.disabled=true;
+  output.innerHTML='<div class="thinking"><div class="ai-dots"><span></span><span></span><span></span></div> Claude está diseñando el blueprint de automatización para David...</div>';
+  const prompt=`Eres el arquitecto de sistemas IA de Seen Labs. Genera el BLUEPRINT COMPLETO DE AUTOMATIZACIÓN para David.
+
+PROCESO DE VENTAS: ${getVal('b_sales_process')}
+TIEMPO CIERRE: ${getOptionValues('b_close_time')} | LEADS/SEMANA: ${getOptionValues('b_leads_week')} | CONVERSIÓN: ${getOptionValues('b_conversion')}
+CUELLOS DE BOTELLA: ${getOptionValues('b_bottleneck')}
+CRM ACTUAL: ${getOptionValues('b_crm')} | CANALES: ${getOptionValues('b_channels')}
+HERRAMIENTAS AUTO: ${getOptionValues('b_automation_tools')} | ADS: ${getOptionValues('b_ads')}
+QUÉ AUTOMATIZAR: ${getOptionValues('b_automate')} | TAREAS MANUALES: ${getVal('b_manual_tasks')}
+URGENCIA: ${getScaleValue('b_urgency')}
+WHATSAPP API: ${getOptionValues('b_wa_api')} | FUNCIONES WA: ${getOptionValues('b_wa_functions')}
+FUNNEL TIPO: ${getOptionValues('b_funnel_type')} | FLUJO: ${getVal('b_funnel_flow')}
+META CLIENTES/MES: ${getVal('b_monthly_goal')} | RESPUESTA: ${getVal('b_response_time')}
+MODELO CLOSER: ${getOptionValues('b_closer_model')} | EQUIPO: ${getOptionValues('b_team_size')}
+VISIÓN 90 DÍAS: ${getVal('b_success_vision')}
+FAQs: ${getVal('b_faqs')} | PRODUCTOS: ${getVal('b_products')}
+
+Genera el blueprint con: 1) Diagnóstico del sistema actual 2) Arquitectura del sistema de automatización (diagrama textual) 3) Stack tecnológico (herramientas específicas) 4) Agente IA WhatsApp (flujos de conversación) 5) Estructura del funnel principal 6) Top 5 automatizaciones prioritarias 7) Configuración CRM 8) KPIs y métricas 9) Plan 7 días (día a día) 10) Estimado de impacto en ROI. Nombres de herramientas específicos (Make, n8n, Manychat, etc.).`;
+  try {
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    output.innerHTML='<div class="ai-result">'+formatAI(d.content?.[0]?.text||'Error')+'</div>';
+  } catch(e) {
+    output.innerHTML='<div class="ai-result" style="color:var(--amber)">⚠️ Conecta tu API key al backend para el análisis automático. El formulario está completo — copia y pega en claude.ai.</div>';
+  }
+  btn.disabled=false;
+}
+
+function formatAI(t){return t.replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^## (.+)$/gm,'<h3>$1</h3>').replace(/^# (.+)$/gm,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong style="color:var(--white)">$1</strong>').replace(/\n/g,'<br>')}
+function copyResult(id){navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>{const b=event.target;const o=b.textContent;b.textContent='✓ Copiado';setTimeout(()=>b.textContent=o,2000)})}
+function sendSummaryEmail(form){const id=form==='A'?'a_client_email':'b_client_email';const email=document.getElementById(id).value;if(!email||!email.includes('@')){alert('Correo inválido');return}const btn=event.target;btn.textContent='✓ Enviado';btn.style.background='var(--green)';setTimeout(()=>{btn.textContent='Enviar PDF';btn.style.background=''},3000)}
+
+buildProgressTrack('progressTrackA',sectionsA);
+buildProgressTrack('progressTrackB',sectionsB);
+updateProgress();
+
+// ══════════════════════════════════════════════
+//  SUPABASE INTEGRATION
+// ══════════════════════════════════════════════
+const SUPABASE_URL = 'https://icqiyzwzcjdgjgzxcqym.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImljcWl5end6Y2pkZ2pnenhjcXltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1ODg1NjAsImV4cCI6MjA5NjE2NDU2MH0.wsCXC4Ke2BGAT6ZJvsO3y8UHZkfqr9ZUvbfFuWaMhw8';
+
+async function supabaseInsert(table, data) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_ANON,
+      'Authorization': `Bearer ${SUPABASE_ANON}`,
+      'Prefer': 'return=representation'
+    },
+    body: JSON.stringify(data)
+  });
+  if (!res.ok) throw new Error(await res.text());
+  return res.json();
+}
+
+// Collect Form A data
+function collectFormA() {
+  return {
+    company_name:    getVal('a_company'),
+    brand_name:      getVal('a_brand'),
+    industry:        getVal('a_industry'),
+    city:            getVal('a_city'),
+    years_operation: getVal('a_years'),
+    what_they_do:    getVal('a_what'),
+    uvp:             getVal('a_uvp'),
+    slogan:          getVal('a_slogan'),
+    perception:      getOptionValues('a_perception').split(', ').filter(Boolean),
+    age_range:       getVal('a_age'),
+    ses:             getVal('a_ses'),
+    ticket:          getVal('a_ticket'),
+    icp_description: getVal('a_icp'),
+    pain:            getVal('a_pain'),
+    objections:      getOptionValues('a_objection').split(', ').filter(Boolean),
+    current_url:     getVal('a_current_url'),
+    domain_status:   getVal('a_domain'),
+    goals:           getOptionValues('a_goal').split(', ').filter(Boolean),
+    web_references:  getVal('a_refs'),
+    style:           getOptionValues('a_style').split(', ').filter(Boolean),
+    pages:           getOptionValues('a_pages').split(', ').filter(Boolean),
+    languages:       getOptionValues('a_lang').split(', ').filter(Boolean),
+    has_logo:        getVal('a_logo'),
+    has_brandbook:   getVal('a_brandbook'),
+    colors_defined:  getVal('a_colors_defined'),
+    palette:         getVal('a_palette'),
+    fonts:           getVal('a_fonts'),
+    photos:          getVal('a_photos'),
+    videos:          getVal('a_videos'),
+    testimonials:    getVal('a_testimonials'),
+    extra_comms:     getVal('a_comms_extra'),
+    competitors:     getVal('a_competitors'),
+    better_than:     getVal('a_better'),
+    pricing_pos:     getOptionValues('a_pricing_pos'),
+    clients_count:   getVal('a_clients'),
+    revenue:         getVal('a_revenue'),
+    revenue_goal:    getVal('a_goal_rev'),
+    extra_notes:     getVal('a_extra'),
+    client_email:    getVal('a_client_email'),
+    form_progress:   parseInt(document.getElementById('miniPct').textContent) || 0
+  };
+}
+
+// Collect Form B data
+function collectFormB(clientId) {
+  return {
+    client_id:      clientId || null,
+    sales_process:  getVal('b_sales_process'),
+    close_time:     getOptionValues('b_close_time'),
+    leads_per_week: getOptionValues('b_leads_week'),
+    conversion:     getOptionValues('b_conversion'),
+    bottlenecks:    getOptionValues('b_bottleneck').split(', ').filter(Boolean),
+    crm_used:       getOptionValues('b_crm').split(', ').filter(Boolean),
+    channels:       getOptionValues('b_channels').split(', ').filter(Boolean),
+    auto_tools:     getOptionValues('b_automation_tools').split(', ').filter(Boolean),
+    ads_platforms:  getOptionValues('b_ads').split(', ').filter(Boolean),
+    ad_budget:      getVal('b_ad_budget'),
+    what_to_auto:   getOptionValues('b_automate').split(', ').filter(Boolean),
+    manual_tasks:   getVal('b_manual_tasks'),
+    urgency:        parseInt(document.querySelector('#b_urgency .scale-btn.selected')?.textContent) || null,
+    wa_api:         getOptionValues('b_wa_api'),
+    wa_functions:   getOptionValues('b_wa_functions').split(', ').filter(Boolean),
+    wa_volume:      getVal('b_wa_volume'),
+    funnel_current: getVal('b_funnel_current'),
+    funnel_type:    getOptionValues('b_funnel_type').split(', ').filter(Boolean),
+    funnel_flow:    getVal('b_funnel_flow'),
+    ads_budget:     getVal('b_ads_funnel_budget'),
+    has_script:     getVal('b_script'),
+    faqs:           getVal('b_faqs'),
+    products:       getVal('b_products'),
+    monthly_goal:   parseInt(getVal('b_monthly_goal')) || null,
+    response_time:  getVal('b_response_time'),
+    closer_model:   getOptionValues('b_closer_model'),
+    team_size:      getOptionValues('b_team_size'),
+    success_vision: getVal('b_success_vision'),
+    extra_notes:    getVal('b_extra'),
+    client_email:   getVal('b_client_email'),
+    form_progress:  parseInt(document.getElementById('miniPct').textContent) || 0
+  };
+}
+
+// Save to Supabase — called when AI analysis is triggered or on final section
+let savedClientId = localStorage.getItem('sl_client_id') || null;
+
+async function saveFormA() {
+  try {
+    const data = collectFormA();
+    if (savedClientId) {
+      // Update existing
+      await fetch(`${SUPABASE_URL}/rest/v1/clients?id=eq.${savedClientId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type':'application/json','apikey':SUPABASE_ANON,'Authorization':`Bearer ${SUPABASE_ANON}` },
+        body: JSON.stringify(data)
+      });
+    } else {
+      const [row] = await supabaseInsert('clients', data);
+      savedClientId = row.id;
+      localStorage.setItem('sl_client_id', savedClientId);
+      // Auto-create a project in lead status
+      await supabaseInsert('projects', { client_id: savedClientId, status: 'lead' });
+    }
+    return savedClientId;
+  } catch(e) { console.error('Save Form A error:', e); return null; }
+}
+
+async function saveFormB() {
+  try {
+    const clientId = savedClientId || await saveFormA();
+    const data = collectFormB(clientId);
+    const existing = await fetch(`${SUPABASE_URL}/rest/v1/automation_briefs?client_id=eq.${clientId}`, {
+      headers: { 'apikey':SUPABASE_ANON,'Authorization':`Bearer ${SUPABASE_ANON}` }
+    }).then(r=>r.json());
+    if (existing.length > 0) {
+      await fetch(`${SUPABASE_URL}/rest/v1/automation_briefs?client_id=eq.${clientId}`, {
+        method:'PATCH',
+        headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON,'Authorization':`Bearer ${SUPABASE_ANON}`},
+        body: JSON.stringify(data)
+      });
+    } else {
+      await supabaseInsert('automation_briefs', data);
+    }
+  } catch(e) { console.error('Save Form B error:', e); }
+}
+
+// Hook into AI analysis buttons to save before analyzing
+const origAnalyzeA = analyzeFormA;
+analyzeFormA = async function() {
+  await saveFormA();
+  origAnalyzeA();
+};
+const origAnalyzeB = analyzeFormB;
+analyzeFormB = async function() {
+  await saveFormB();
+  origAnalyzeB();
+};
+
+// Auto-save to Supabase every 60s
+setInterval(async () => {
+  if (currentForm === 'A') await saveFormA();
+  else await saveFormB();
+}, 60000);
+
+// Show save indicator
+const origAutoSave = autoSave;
+autoSave = function() {
+  origAutoSave();
+};
+</script>
+</body>
+</html>

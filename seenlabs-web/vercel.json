@@ -1,3 +1,8 @@
 {
-  "rewrites": [{ "source": "/((?!assets|favicon|logo|apple-touch|seen-labs-reel).*)", "destination": "/index.html" }]
+  "rewrites": [
+    {
+      "source": "/((?!assets|favicon|logo|apple-touch|seen-labs-reel|formularios).*)",
+      "destination": "/index.html"
+    }
+  ]
 }
