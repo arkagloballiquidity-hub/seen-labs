@@ -33,7 +33,7 @@ export const PRICING_PLANS: PricingPlan[] = [
       'Entrega garantizada en 7 días hábiles',
     ],
     ctaLabel: 'Iniciar el Camino',
-    ctaHref: '/agendar', // TODO: reemplazar con link de Hotmart cuando esté listo
+    ctaHref: 'https://pay.hotmart.com/W106114116M?checkoutMode=2',
     ctaStyle: 'ghost',
   },
   {
@@ -54,7 +54,7 @@ export const PRICING_PLANS: PricingPlan[] = [
       'El costo de ads corre por el cliente',
     ],
     ctaLabel: 'Iniciar el Camino',
-    ctaHref: '/agendar', // TODO: reemplazar con link de Hotmart cuando esté listo
+    ctaHref: 'https://pay.hotmart.com/W106114116M?checkoutMode=2',
     ctaStyle: 'main',
     featured: true,
     badge: 'Más Elegido',
