@@ -16,6 +16,12 @@ export function LoadingScreen({ onComplete }: Props) {
   const rafRef   = useRef<number | null>(null)
 
   useEffect(() => {
+    // Fallback: si RAF se throttlea (iframe/bg tab), forzar complete a los 7s
+    const maxTimer = setTimeout(() => {
+      setCount(100)
+      onComplete()
+    }, 7000)
+
     const animate = (ts: number) => {
       if (!startRef.current) startRef.current = ts
       const elapsed = ts - startRef.current
@@ -25,12 +31,16 @@ export function LoadingScreen({ onComplete }: Props) {
       if (progress < 1) {
         rafRef.current = requestAnimationFrame(animate)
       } else {
+        clearTimeout(maxTimer)
         setCount(100)
         setTimeout(onComplete, 2600) // logo entrance + hold + exit
       }
     }
     rafRef.current = requestAnimationFrame(animate)
-    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current) }
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current)
+      clearTimeout(maxTimer)
+    }
   }, [onComplete])
 
   useEffect(() => {
