@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { AuthProvider } from './lib/auth'
@@ -65,13 +65,14 @@ function PublicRoutes() {
 
 export default function App() {
   const [loading, setLoading] = useState(true)
+  const handleLoadComplete = useCallback(() => setLoading(false), [])
 
   return (
     <BrowserRouter>
       <AuthProvider>
         <AnimatePresence mode="wait">
           {loading
-            ? <LoadingScreen key="loading" onComplete={() => setLoading(false)} />
+            ? <LoadingScreen key="loading" onComplete={handleLoadComplete} />
             : <PublicRoutes key="app" />
           }
         </AnimatePresence>
