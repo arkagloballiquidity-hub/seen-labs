@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
 import { Marquee } from '../ui/Marquee'
 import { openCalendly } from '../../lib/calendly'
 
@@ -76,7 +75,7 @@ export function FinalCTASection() {
               <strong style={{ color: 'rgba(255,255,255,0.85)' }}> o te devolvemos el 100%.</strong>
             </p>
 
-            {/* CTAs — primary opens Calendly (real action), secondary goes to pricing */}
+            {/* CTAs */}
             <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', alignItems: 'center', marginBottom: 40 }}>
               <a href="#" className="btn-primary" style={{ fontSize: 14 }} onClick={openCalendly}>
                 Agendar Llamada
@@ -84,9 +83,9 @@ export function FinalCTASection() {
                   <path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </a>
-              <Link to="/precios" className="btn-ghost" style={{ fontSize: 14 }}>
-                Ver Planes
-              </Link>
+              <a href="/formularios.html" className="btn-ghost" style={{ fontSize: 14 }}>
+                Empezar el Brief
+              </a>
             </div>
 
             {/* Stats — full-width translucent strip with purple accent */}

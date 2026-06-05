@@ -126,7 +126,9 @@ export function HeroSection() {
               <path d="M3 7H11M11 7L7.5 3.5M11 7L7.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </Link>
-          <Link to="/solucion" className="btn-ghost" style={{ fontSize: 14 }}>Ver el Sistema</Link>
+          <a href="/formularios.html" className="btn-ghost" style={{ fontSize: 14 }}>
+            Empezar el Brief
+          </a>
         </div>
 
         {/* Tagline */}

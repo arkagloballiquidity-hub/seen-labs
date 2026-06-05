@@ -97,9 +97,17 @@ export function Navbar() {
                 {dashboardLabel}
               </Link>
             ) : (
-              <Link to="/precios" className="btn-primary hidden-mobile" style={{ padding: '8px 16px', fontSize: 11 }}>
-                Iniciar el Camino
-              </Link>
+              <>
+                <Link to="/acceso" className="hidden-mobile" style={{ fontSize: 11, color: 'var(--text-dim)', letterSpacing: '0.08em', textTransform: 'uppercase', textDecoration: 'none', transition: 'color .2s' }}
+                  onMouseEnter={e => e.currentTarget.style.color = 'var(--text-muted)'}
+                  onMouseLeave={e => e.currentTarget.style.color = 'var(--text-dim)'}
+                >
+                  Acceso
+                </Link>
+                <Link to="/precios" className="btn-primary hidden-mobile" style={{ padding: '8px 16px', fontSize: 11 }}>
+                  Iniciar el Camino
+                </Link>
+              </>
             )}
             <button
               onClick={() => setOpen(v => !v)}
@@ -180,9 +188,14 @@ export function Navbar() {
                 {dashboardLabel}
               </Link>
             ) : (
-              <Link to="/precios" className="btn-primary" onClick={() => setOpen(false)}>
-                Iniciar el Camino
-              </Link>
+              <>
+                <Link to="/precios" className="btn-primary" onClick={() => setOpen(false)}>
+                  Iniciar el Camino
+                </Link>
+                <Link to="/acceso" onClick={() => setOpen(false)} style={{ fontSize: 13, color: 'var(--text-dim)', textDecoration: 'none', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+                  Acceso
+                </Link>
+              </>
             )}
           </motion.div>
         )}
