@@ -230,10 +230,26 @@ export function LoginPage() {
         </div>
       </div>
 
+      {/* Mobile branding header */}
+      <div className="login-mobile-header" style={{
+        display: 'none',
+        position: 'absolute',
+        top: 0, left: 0, right: 0,
+        padding: '28px 32px 24px',
+        borderBottom: '1px solid rgba(255,255,255,.05)',
+        background: 'rgba(255,255,255,.02)',
+      }}>
+        <img src="/logo.png" alt="Seen Labs" style={{ height: 30, marginBottom: 10 }}/>
+        <p style={{ fontSize: 11, color: '#7B61FF', letterSpacing: '0.25em', textTransform: 'uppercase', fontWeight: 600, margin: 0 }}>
+          Tu sistema ya está funcionando
+        </p>
+      </div>
+
       <style>{`
         @media (max-width: 768px) {
           .login-left { display: none !important; }
-          .login-right { max-width: 100% !important; padding: 48px 32px !important; }
+          .login-right { max-width: 100% !important; padding: 120px 32px 48px !important; }
+          .login-mobile-header { display: block !important; }
         }
       `}</style>
     </div>
