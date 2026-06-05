@@ -124,7 +124,7 @@ export function PricingCard({ plan, index }: Props) {
 
       <a
         href={plan.ctaHref?.startsWith('http') ? plan.ctaHref : '#'}
-        className={isFeatured ? 'btn-primary' : 'btn-ghost'}
+        className={plan.ctaStyle === 'main' ? 'btn-primary' : plan.ctaStyle === 'outline' ? 'btn-outline' : 'btn-ghost'}
         style={{ display: 'block', textAlign: 'center' }}
         target={plan.ctaHref?.includes('hotmart.com') ? '_blank' : undefined}
         rel={plan.ctaHref?.includes('hotmart.com') ? 'noopener noreferrer' : undefined}
