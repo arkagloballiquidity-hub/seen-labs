@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { supabase, STATUS_LABELS, STATUS_COLORS, PLAN_LABELS, type Project, type ProjectStep } from '../../lib/supabase'
+import { supabase, STATUS_LABELS, STATUS_COLORS, PLAN_LABELS, type Project, type ProjectStep, type Client } from '../../lib/supabase'
 import { useAuth } from '../../lib/auth'
-import { LogOut, CheckCircle, Circle } from 'lucide-react'
+import { LogOut, CheckCircle, Circle, FileText } from 'lucide-react'
 
 export function MiProyecto() {
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
-  const [project, setProject] = useState<Project | null>(null)
-  const [steps,   setSteps]   = useState<ProjectStep[]>([])
-  const [loading, setLoading] = useState(true)
+  const [project, setProject]   = useState<Project | null>(null)
+  const [client,  setClient]    = useState<Client | null>(null)
+  const [steps,   setSteps]     = useState<ProjectStep[]>([])
+  const [loading, setLoading]   = useState(true)
   const [notFound, setNotFound] = useState(false)
 
   useEffect(() => {
@@ -25,6 +26,7 @@ export function MiProyecto() {
       .maybeSingle()
 
     if (!client) { setNotFound(true); setLoading(false); return }
+    setClient(client as Client)
 
     const { data: proj } = await supabase
       .from('projects')
@@ -93,6 +95,24 @@ export function MiProyecto() {
                 <span style={{ fontSize:12, color:'#7B61FF', fontWeight:600 }}>{PLAN_LABELS[project.plan]}</span>
               )}
             </div>
+
+            {/* Brief CTA — if not filled yet */}
+            {(!client?.what_they_do) && (
+              <div style={{ background:'rgba(123,97,255,.1)', border:'1px solid rgba(123,97,255,.35)', padding:'20px 24px', marginBottom:24, display:'flex', alignItems:'center', justifyContent:'space-between', gap:16, flexWrap:'wrap' as const }}>
+                <div>
+                  <div style={{ fontWeight:700, fontSize:14, color:'#fff', marginBottom:4, display:'flex', alignItems:'center', gap:8 }}>
+                    <FileText size={15} color="#7B61FF"/> Paso siguiente: llena tu brief
+                  </div>
+                  <p style={{ fontSize:12, color:'#9A98B0', margin:0 }}>
+                    Para que podamos empezar, necesitamos conocer tu negocio. Toma ~10 minutos.
+                  </p>
+                </div>
+                <a href="/formularios.html" target="_blank" rel="noopener noreferrer"
+                  style={{ background:'#7B61FF', color:'#fff', padding:'10px 20px', fontSize:12, fontWeight:700, letterSpacing:'0.08em', textTransform:'uppercase' as const, textDecoration:'none', whiteSpace:'nowrap' as const, flexShrink:0 }}>
+                  Llenar Brief →
+                </a>
+              </div>
+            )}
 
             {/* Progress */}
             <div style={{ background:'#18181F', border:'1px solid rgba(255,255,255,.06)', padding:'24px', marginBottom:24 }}>

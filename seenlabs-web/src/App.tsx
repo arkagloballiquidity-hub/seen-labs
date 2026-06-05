@@ -10,6 +10,7 @@ import { SolucionPage } from './pages/SolucionPage'
 import { PreciosPage } from './pages/PreciosPage'
 import { CasosPage } from './pages/CasosPage'
 import { FAQPage } from './pages/FAQPage'
+import { AgendarPage } from './pages/AgendarPage'
 import { LoginPage } from './pages/crm/LoginPage'
 import { CrmDashboard } from './pages/crm/CrmDashboard'
 import { ProjectDetail } from './pages/crm/ProjectDetail'
@@ -39,8 +40,12 @@ function PublicRoutes() {
       <Route path="/casos"    element={<AnimatedRoute><Layout><CasosPage /></Layout></AnimatedRoute>} />
       <Route path="/faq"      element={<AnimatedRoute><Layout><FAQPage /></Layout></AnimatedRoute>} />
 
-      {/* Auth */}
-      <Route path="/login" element={<LoginPage />} />
+      {/* Agendar */}
+      <Route path="/agendar" element={<AnimatedRoute><Layout><AgendarPage /></Layout></AnimatedRoute>} />
+
+      {/* Auth — /acceso es el alias público para clientes */}
+      <Route path="/login"  element={<LoginPage />} />
+      <Route path="/acceso" element={<LoginPage />} />
 
       {/* Admin CRM — solo equipo Seen Labs */}
       <Route path="/crm" element={

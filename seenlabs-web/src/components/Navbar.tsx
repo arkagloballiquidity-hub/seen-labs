@@ -3,11 +3,16 @@ import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useScrollNavbar } from '../hooks/useScrollNavbar'
 import { NAV_LINKS } from '../lib/constants'
+import { useAuth } from '../lib/auth'
 
 export function Navbar() {
   const scrolled = useScrollNavbar()
   const [open, setOpen] = useState(false)
   const location = useLocation()
+  const { user, role } = useAuth()
+
+  const dashboardHref = role === 'admin' ? '/crm' : '/mi-proyecto'
+  const dashboardLabel = role === 'admin' ? 'Dashboard' : 'Mi Proyecto'
 
   return (
     <>
@@ -86,10 +91,16 @@ export function Navbar() {
           </div>
 
           {/* CTA + Hamburger */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <Link to="/precios" className="btn-primary hidden-mobile" style={{ padding: '8px 16px', fontSize: 11 }}>
-              Iniciar el Camino
-            </Link>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            {user ? (
+              <Link to={dashboardHref} className="btn-primary hidden-mobile" style={{ padding: '8px 16px', fontSize: 11 }}>
+                {dashboardLabel}
+              </Link>
+            ) : (
+              <Link to="/precios" className="btn-primary hidden-mobile" style={{ padding: '8px 16px', fontSize: 11 }}>
+                Iniciar el Camino
+              </Link>
+            )}
             <button
               onClick={() => setOpen(v => !v)}
               aria-label="Menú"
@@ -164,9 +175,15 @@ export function Navbar() {
                 </Link>
               </motion.div>
             ))}
-            <Link to="/precios" className="btn-primary" onClick={() => setOpen(false)}>
-              Iniciar el Camino
-            </Link>
+            {user ? (
+              <Link to={dashboardHref} className="btn-primary" onClick={() => setOpen(false)}>
+                {dashboardLabel}
+              </Link>
+            ) : (
+              <Link to="/precios" className="btn-primary" onClick={() => setOpen(false)}>
+                Iniciar el Camino
+              </Link>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

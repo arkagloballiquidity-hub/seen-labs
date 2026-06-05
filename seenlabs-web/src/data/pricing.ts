@@ -32,8 +32,8 @@ export const PRICING_PLANS: PricingPlan[] = [
       'Las primeras 3–5 ventas corren por Seen Labs',
       'Entrega garantizada en 7 días hábiles',
     ],
-    ctaLabel: 'Agendar Llamada',
-    ctaHref: 'calendly',
+    ctaLabel: 'Empezar Ahora',
+    ctaHref: 'https://pay.hotmart.com/A106132920X',
     ctaStyle: 'ghost',
   },
   {
@@ -77,7 +77,7 @@ export const PRICING_PLANS: PricingPlan[] = [
       'Contrato personalizado',
     ],
     ctaLabel: 'Agendar Llamada',
-    ctaHref: '/agendar',
+    ctaHref: 'calendly',
     ctaStyle: 'outline',
   },
 ]
