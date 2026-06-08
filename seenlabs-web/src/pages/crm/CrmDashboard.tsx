@@ -41,7 +41,7 @@ export function CrmDashboard() {
 
   async function handleSignOut() {
     await signOut()
-    navigate('/login', { replace: true })
+    navigate('/acceso', { replace: true })
   }
 
   return (

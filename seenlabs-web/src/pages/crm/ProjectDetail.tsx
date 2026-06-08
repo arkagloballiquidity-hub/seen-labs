@@ -211,17 +211,35 @@ export function ProjectDetail() {
 
         {/* Right: Brief */}
         <div>
-          <div style={{ ...S.card, marginBottom:0, position:'sticky' as const, top:90 }}>
-            <div style={{ fontWeight:700, fontSize:13, marginBottom:16, color:'#7B61FF' }}>Brief del Cliente</div>
+          <div style={{ ...S.card, marginBottom:0, position:'sticky' as const, top:90, maxHeight:'calc(100vh - 120px)', overflowY:'auto' as const }}>
+            <div style={{ fontWeight:700, fontSize:13, marginBottom:4, color:'#7B61FF' }}>Brief del Cliente</div>
+            {client?.form_progress != null && (
+              <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:14 }}>
+                <div style={{ flex:1, height:3, background:'#28283A', borderRadius:2, overflow:'hidden' }}>
+                  <div style={{ height:'100%', background:'#7B61FF', width:`${client.form_progress}%` }}/>
+                </div>
+                <span style={{ fontSize:10, color:'#6B6880' }}>{client.form_progress}%</span>
+              </div>
+            )}
             {[
-              { label:'¿Qué hace?',    value: client?.what_they_do },
-              { label:'UVP',           value: client?.uvp },
-              { label:'Cliente ideal', value: client?.icp_description },
-              { label:'Tono',          value: Array.isArray(client?.tone) ? client.tone.join(', ') : client?.tone },
-              { label:'Competidores',  value: client?.competitors },
-              { label:'Meta revenue',  value: client?.revenue_goal },
+              { label:'¿Qué hace?',      value: client?.what_they_do },
+              { label:'UVP',             value: client?.uvp },
+              { label:'Slogan',          value: client?.slogan },
+              { label:'Cliente ideal',   value: client?.icp_description },
+              { label:'Dolor principal', value: client?.pain },
+              { label:'Tono de voz',     value: Array.isArray(client?.tone) ? client.tone.join(', ') : client?.tone },
+              { label:'Percepción',      value: Array.isArray(client?.perception) ? client.perception.join(', ') : null },
+              { label:'Objetivo web',    value: Array.isArray(client?.goals) ? (client.goals as string[]).join(', ') : null },
+              { label:'Estilo visual',   value: Array.isArray(client?.style) ? (client.style as string[]).join(', ') : null },
+              { label:'Idioma(s)',       value: Array.isArray(client?.languages) ? (client.languages as string[]).join(', ') : null },
+              { label:'Competidores',    value: client?.competitors },
+              { label:'Mejor que ellos', value: client?.better_than },
+              { label:'Posicionamiento', value: client?.pricing_pos },
+              { label:'Meta revenue',    value: client?.revenue_goal },
+              { label:'Sitio actual',    value: client?.current_url },
+              { label:'Referentes',      value: client?.web_references },
             ].map(f => f.value ? (
-              <div key={f.label} style={{ marginBottom:14 }}>
+              <div key={f.label} style={{ marginBottom:12 }}>
                 <div style={S.label}>{f.label}</div>
                 <div style={{ fontSize:12, color:'#C8C6DC', lineHeight:1.55 }}>{f.value}</div>
               </div>

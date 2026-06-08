@@ -1718,25 +1718,63 @@ function showSaveStatus(msg, ok) {
   el._t = setTimeout(() => el.style.opacity = '0', 3500);
 }
 
-// Sólo los campos que existen en la tabla `clients`
+// Recoge TODOS los campos del formulario A — la tabla clients los soporta todos
 function collectClientData() {
   return {
+    // Identidad
     company_name:    getValOrNull('a_company') || 'Sin nombre',
     brand_name:      getValOrNull('a_brand') || getValOrNull('a_company') || 'Sin nombre',
     industry:        getValOrNull('a_industry'),
     city:            getValOrNull('a_city'),
+    years_operation: getValOrNull('a_years'),
     what_they_do:    getValOrNull('a_what'),
     uvp:             getValOrNull('a_uvp'),
+    slogan:          getValOrNull('a_slogan'),
+    perception:      getOptionsArray('a_perception'),
+    // Cliente ideal
+    age_range:       getValOrNull('a_age'),
+    ses:             getValOrNull('a_ses'),
+    ticket:          getValOrNull('a_ticket'),
     icp_description: getValOrNull('a_icp'),
+    pain:            getValOrNull('a_pain'),
+    objections:      getOptionsArray('a_objection'),
+    // Website
+    current_url:     getValOrNull('a_current_url'),
+    domain_status:   getValOrNull('a_domain'),
+    goals:           getOptionsArray('a_goal'),
+    web_references:  getValOrNull('a_refs'),
+    style:           getOptionsArray('a_style'),
+    pages:           getOptionsArray('a_pages'),
+    languages:       getOptionsArray('a_lang'),
+    // Marca
+    has_logo:        getValOrNull('a_logo'),
+    has_brandbook:   getValOrNull('a_brandbook'),
+    colors_defined:  getValOrNull('a_colors_defined'),
+    palette:         getValOrNull('a_palette'),
+    fonts:           getValOrNull('a_fonts'),
+    // Contenido
+    photos:          getValOrNull('a_photos'),
+    videos:          getValOrNull('a_videos'),
+    testimonials:    getValOrNull('a_testimonials'),
+    extra_comms:     getValOrNull('a_comms_extra'),
+    // Tono de voz
     tone:            getOptionsArray('a_tone'),
+    // Competencia
     competitors:     getValOrNull('a_competitors'),
+    better_than:     getValOrNull('a_better'),
+    pricing_pos:     getOptionValues('a_pricing_pos') !== 'No seleccionado' ? getOptionValues('a_pricing_pos') : null,
+    // Métricas
+    clients_count:   getValOrNull('a_clients'),
+    revenue:         getValOrNull('a_revenue'),
     revenue_goal:    getValOrNull('a_goal_rev'),
+    new_clients_pm:  parseInt(getVal('a_new_clients')) || null,
+    extra_notes:     getValOrNull('a_extra'),
+    // Contacto
     client_email:    getValOrNull('a_client_email'),
     form_progress:   parseInt(document.getElementById('miniPct').textContent) || 0
   };
 }
 
-// collectFormA sigue existiendo para compatibilidad con el contexto del análisis IA
 function collectFormA() { return collectClientData(); }
 
 // Collect Form B — guarda en automation_briefs

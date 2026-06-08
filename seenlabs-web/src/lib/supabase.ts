@@ -14,11 +14,32 @@ export type TeamRole      = 'dev'|'ai'|'video'|'qa'|'sales'
 
 export interface Client {
   id: string; created_at: string
+  // Core identity
   company_name: string; brand_name: string; industry: string
   city: string; client_email: string; form_progress: number
-  what_they_do: string; uvp?: string; icp_description?: string
-  tone?: string[]; competitors?: string; revenue_goal?: string
-  plan?: PlanType
+  years_operation?: string; slogan?: string; plan?: string
+  // What they do
+  what_they_do?: string; uvp?: string; icp_description?: string
+  pain?: string
+  // Audiences
+  age_range?: string; ses?: string; ticket?: string
+  // Tone & perception
+  tone?: string[]; perception?: string[]; objections?: string[]
+  // Web brief
+  current_url?: string; domain_status?: string; goals?: string[]
+  web_references?: string; style?: string[]; pages?: string[]
+  languages?: string[]
+  // Brand assets
+  has_logo?: string; has_brandbook?: string; colors_defined?: string
+  palette?: string; fonts?: string
+  // Content
+  photos?: string; videos?: string; testimonials?: string; extra_comms?: string
+  // Market
+  competitors?: string; better_than?: string; pricing_pos?: string
+  clients_count?: string; revenue?: string; revenue_goal?: string
+  new_clients_pm?: number; extra_notes?: string
+  // AI
+  ai_analysis?: string
 }
 
 export interface Project {
