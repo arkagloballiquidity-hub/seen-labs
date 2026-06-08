@@ -50,9 +50,8 @@ export function CrmClientes() {
       {/* Sidebar */}
       <aside style={S.sidebar}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24, padding: '0 8px' }}>
-          <div style={{ width: 7, height: 7, borderRadius: '50%', background: '#7B61FF', boxShadow: '0 0 10px #7B61FF' }}/>
-          <span style={{ fontWeight: 800, fontSize: 13, letterSpacing: '0.12em', color: '#fff' }}>SEEN LABS</span>
-          <span style={{ fontSize: 9, color: '#6B6880', letterSpacing: '0.1em' }}>CRM</span>
+          <img src="/logo.png" alt="Seen Labs" style={{ height: 22, width: 'auto', objectFit: 'contain', filter: 'brightness(0) invert(1)', opacity: 0.9 }}/>
+          <span style={{ fontSize: 9, color: '#6B6880', letterSpacing: '0.12em', textTransform: 'uppercase' as const, marginLeft: 2 }}>CRM</span>
         </div>
 
         {[

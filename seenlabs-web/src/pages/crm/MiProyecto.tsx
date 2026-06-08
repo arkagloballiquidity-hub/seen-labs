@@ -65,7 +65,7 @@ export function MiProyecto() {
       {/* Header */}
       <header style={{ borderBottom:'1px solid rgba(255,255,255,.06)', background:'#111118', padding:'16px 24px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
         <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-          <img src="/logo.png" alt="Seen Labs" style={{ height:28, filter:'brightness(0) invert(1)' }}/>
+          <img src="/logo.png" alt="Seen Labs" style={{ height:28, width:'auto', objectFit:'contain' }}/>
         </div>
         <div style={{ display:'flex', alignItems:'center', gap:16 }}>
           <span style={{ fontSize:12, color:'#6B6880' }}>{user?.email}</span>

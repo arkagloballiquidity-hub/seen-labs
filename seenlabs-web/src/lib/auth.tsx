@@ -9,7 +9,8 @@ interface AuthCtx {
   session: Session | null
   role: Role
   loading: boolean
-  signIn: (email: string, password: string) => Promise<{ error: string | null }>
+  signIn:  (email: string, password: string) => Promise<{ error: string | null }>
+  signUp:  (email: string, password: string) => Promise<{ error: string | null; needsConfirmation: boolean }>
   signOut: () => Promise<void>
 }
 
@@ -51,11 +52,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error: error?.message ?? null }
   }
 
+  async function signUp(email: string, password: string) {
+    const { data, error } = await supabase.auth.signUp({ email, password })
+    if (error) return { error: error.message, needsConfirmation: false }
+    // If session is null after signUp, email confirmation is required
+    const needsConfirmation = !data.session
+    return { error: null, needsConfirmation }
+  }
+
   async function signOut() {
     await supabase.auth.signOut()
   }
 
-  return <Ctx.Provider value={{ user, session, role, loading, signIn, signOut }}>{children}</Ctx.Provider>
+  return <Ctx.Provider value={{ user, session, role, loading, signIn, signUp, signOut }}>{children}</Ctx.Provider>
 }
 
 export const useAuth = () => useContext(Ctx)
