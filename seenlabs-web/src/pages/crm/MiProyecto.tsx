@@ -18,10 +18,10 @@ export function MiProyecto() {
   }, [user])
 
   async function fetchProject() {
-    // Find client by email
+    // Find client by email — select all fields so what_they_do etc. are available
     const { data: client } = await supabase
       .from('clients')
-      .select('id')
+      .select('*')
       .eq('client_email', user!.email)
       .maybeSingle()
 

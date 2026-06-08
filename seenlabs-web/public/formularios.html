@@ -452,6 +452,23 @@ textarea{resize:vertical;min-height:90px}
 
   <div class="form-outer">
 
+    <!-- EMAIL INICIAL — requerido para acceso al portal cliente -->
+    <div style="background:rgba(123,97,255,.08);border:1px solid rgba(123,97,255,.3);padding:20px 28px;margin-bottom:4px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:260px">
+        <div style="font-family:'Sora',sans-serif;font-size:.82rem;font-weight:700;color:#fff;margin-bottom:4px">
+          📧 Tu correo de acceso al portal <span style="color:#7B61FF">*</span>
+        </div>
+        <div style="font-size:.75rem;color:#9A98B0">
+          Con este email podrás acceder a <strong style="color:#fff">/mi-proyecto</strong> para ver el progreso de tu proyecto en tiempo real.
+        </div>
+      </div>
+      <div style="flex:1;min-width:260px">
+        <input type="email" id="a_client_email_top" placeholder="tucorreo@empresa.com"
+          style="width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(123,97,255,.4);color:#fff;padding:12px 16px;font-size:.88rem;outline:none;font-family:'Manrope',sans-serif;box-sizing:border-box;"
+          oninput="syncEmail(this.value); autoSave()">
+      </div>
+    </div>
+
     <!-- 1. IDENTIDAD -->
     <div class="section-block open active-section" id="secA1">
       <div class="section-header" onclick="toggleSection('secA1')">
@@ -1624,12 +1641,31 @@ function formatAI(t){return t.replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/^##
 function copyResult(id){navigator.clipboard.writeText(document.getElementById(id).innerText).then(()=>{const b=event.target;const o=b.textContent;b.textContent='✓ Copiado';setTimeout(()=>b.textContent=o,2000)})}
 function sendSummaryEmail(form){const id=form==='A'?'a_client_email':'b_client_email';const email=document.getElementById(id).value;if(!email||!email.includes('@')){alert('Correo inválido');return}const btn=event.target;btn.textContent='✓ Enviado';btn.style.background='var(--green)';setTimeout(()=>{btn.textContent='Enviar PDF';btn.style.background=''},3000)}
 
+// Sync email field top ↔ section 7
+function syncEmail(val) {
+  const s7 = document.getElementById('a_client_email');
+  const top = document.getElementById('a_client_email_top');
+  if (s7 && document.activeElement !== s7) s7.value = val;
+  if (top && document.activeElement !== top) top.value = val;
+}
+// Override getValOrNull for client_email to check both fields
+const _origGetValOrNull = getValOrNull;
+function getValOrNull(id) {
+  if (id === 'a_client_email') {
+    const v1 = document.getElementById('a_client_email_top')?.value?.trim();
+    const v2 = document.getElementById('a_client_email')?.value?.trim();
+    return v1 || v2 || null;
+  }
+  return _origGetValOrNull(id);
+}
+
 buildProgressTrack('progressTrackA',sectionsA);
 buildProgressTrack('progressTrackB',sectionsB);
 updateProgress();
 
 // ══════════════════════════════════════════════
-//  SUPABASE INTEGRATION
+//  SUPABASE INTEGRATION — v2
+//  Solo guarda columnas que existen en la tabla clients
 // ══════════════════════════════════════════════
 const SUPABASE_URL = 'https://icqiyzwzcjdgjgzxcqym.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImljcWl5end6Y2pkZ2pnenhjcXltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA1ODg1NjAsImV4cCI6MjA5NjE2NDU2MH0.wsCXC4Ke2BGAT6ZJvsO3y8UHZkfqr9ZUvbfFuWaMhw8';
@@ -1649,122 +1685,140 @@ async function supabaseInsert(table, data) {
   return res.json();
 }
 
-// Collect Form A data
-function collectFormA() {
+// Helper: null en vez de 'No indicado' para campos vacíos
+function getValOrNull(id) {
+  const el = document.getElementById(id);
+  const v = el && el.value ? el.value.trim() : null;
+  return v || null;
+}
+
+// Helper: array limpio para grupos de opciones
+function getOptionsArray(id) {
+  const v = getOptionValues(id);
+  if (!v || v === 'No seleccionado') return [];
+  return v.split(', ').filter(Boolean);
+}
+
+// Toast de estado de guardado
+function showSaveStatus(msg, ok) {
+  let el = document.getElementById('sl_save_toast');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'sl_save_toast';
+    el.style.cssText = 'position:fixed;bottom:76px;right:20px;z-index:9999;font-family:Sora,sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.08em;padding:8px 16px;border-radius:2px;transition:opacity .5s;pointer-events:none;';
+    document.body.appendChild(el);
+  }
+  ok = ok !== false;
+  el.textContent = msg;
+  el.style.background = ok ? 'rgba(34,197,94,.15)' : 'rgba(239,68,68,.15)';
+  el.style.border     = ok ? '1px solid rgba(34,197,94,.35)' : '1px solid rgba(239,68,68,.35)';
+  el.style.color      = ok ? '#22C55E' : '#fca5a5';
+  el.style.opacity    = '1';
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.style.opacity = '0', 3500);
+}
+
+// Sólo los campos que existen en la tabla `clients`
+function collectClientData() {
   return {
-    company_name:    getVal('a_company'),
-    brand_name:      getVal('a_brand'),
-    industry:        getVal('a_industry'),
-    city:            getVal('a_city'),
-    years_operation: getVal('a_years'),
-    what_they_do:    getVal('a_what'),
-    uvp:             getVal('a_uvp'),
-    slogan:          getVal('a_slogan'),
-    perception:      getOptionValues('a_perception').split(', ').filter(Boolean),
-    age_range:       getVal('a_age'),
-    ses:             getVal('a_ses'),
-    ticket:          getVal('a_ticket'),
-    icp_description: getVal('a_icp'),
-    pain:            getVal('a_pain'),
-    objections:      getOptionValues('a_objection').split(', ').filter(Boolean),
-    current_url:     getVal('a_current_url'),
-    domain_status:   getVal('a_domain'),
-    goals:           getOptionValues('a_goal').split(', ').filter(Boolean),
-    web_references:  getVal('a_refs'),
-    style:           getOptionValues('a_style').split(', ').filter(Boolean),
-    pages:           getOptionValues('a_pages').split(', ').filter(Boolean),
-    languages:       getOptionValues('a_lang').split(', ').filter(Boolean),
-    has_logo:        getVal('a_logo'),
-    has_brandbook:   getVal('a_brandbook'),
-    colors_defined:  getVal('a_colors_defined'),
-    palette:         getVal('a_palette'),
-    fonts:           getVal('a_fonts'),
-    photos:          getVal('a_photos'),
-    videos:          getVal('a_videos'),
-    testimonials:    getVal('a_testimonials'),
-    extra_comms:     getVal('a_comms_extra'),
-    competitors:     getVal('a_competitors'),
-    better_than:     getVal('a_better'),
-    pricing_pos:     getOptionValues('a_pricing_pos'),
-    clients_count:   getVal('a_clients'),
-    revenue:         getVal('a_revenue'),
-    revenue_goal:    getVal('a_goal_rev'),
-    extra_notes:     getVal('a_extra'),
-    client_email:    getVal('a_client_email'),
+    company_name:    getValOrNull('a_company') || 'Sin nombre',
+    brand_name:      getValOrNull('a_brand') || getValOrNull('a_company') || 'Sin nombre',
+    industry:        getValOrNull('a_industry'),
+    city:            getValOrNull('a_city'),
+    what_they_do:    getValOrNull('a_what'),
+    uvp:             getValOrNull('a_uvp'),
+    icp_description: getValOrNull('a_icp'),
+    tone:            getOptionsArray('a_tone'),
+    competitors:     getValOrNull('a_competitors'),
+    revenue_goal:    getValOrNull('a_goal_rev'),
+    client_email:    getValOrNull('a_client_email'),
     form_progress:   parseInt(document.getElementById('miniPct').textContent) || 0
   };
 }
 
-// Collect Form B data
+// collectFormA sigue existiendo para compatibilidad con el contexto del análisis IA
+function collectFormA() { return collectClientData(); }
+
+// Collect Form B — guarda en automation_briefs
 function collectFormB(clientId) {
   return {
     client_id:      clientId || null,
-    sales_process:  getVal('b_sales_process'),
+    sales_process:  getValOrNull('b_sales_process'),
     close_time:     getOptionValues('b_close_time'),
     leads_per_week: getOptionValues('b_leads_week'),
     conversion:     getOptionValues('b_conversion'),
-    bottlenecks:    getOptionValues('b_bottleneck').split(', ').filter(Boolean),
-    crm_used:       getOptionValues('b_crm').split(', ').filter(Boolean),
-    channels:       getOptionValues('b_channels').split(', ').filter(Boolean),
-    auto_tools:     getOptionValues('b_automation_tools').split(', ').filter(Boolean),
-    ads_platforms:  getOptionValues('b_ads').split(', ').filter(Boolean),
-    ad_budget:      getVal('b_ad_budget'),
-    what_to_auto:   getOptionValues('b_automate').split(', ').filter(Boolean),
-    manual_tasks:   getVal('b_manual_tasks'),
+    bottlenecks:    getOptionsArray('b_bottleneck'),
+    crm_used:       getOptionsArray('b_crm'),
+    channels:       getOptionsArray('b_channels'),
+    auto_tools:     getOptionsArray('b_automation_tools'),
+    ads_platforms:  getOptionsArray('b_ads'),
+    ad_budget:      getValOrNull('b_ad_budget'),
+    what_to_auto:   getOptionsArray('b_automate'),
+    manual_tasks:   getValOrNull('b_manual_tasks'),
     urgency:        parseInt(document.querySelector('#b_urgency .scale-btn.selected')?.textContent) || null,
     wa_api:         getOptionValues('b_wa_api'),
-    wa_functions:   getOptionValues('b_wa_functions').split(', ').filter(Boolean),
-    wa_volume:      getVal('b_wa_volume'),
-    funnel_current: getVal('b_funnel_current'),
-    funnel_type:    getOptionValues('b_funnel_type').split(', ').filter(Boolean),
-    funnel_flow:    getVal('b_funnel_flow'),
-    ads_budget:     getVal('b_ads_funnel_budget'),
-    has_script:     getVal('b_script'),
-    faqs:           getVal('b_faqs'),
-    products:       getVal('b_products'),
+    wa_functions:   getOptionsArray('b_wa_functions'),
+    wa_volume:      getValOrNull('b_wa_volume'),
+    funnel_current: getValOrNull('b_funnel_current'),
+    funnel_type:    getOptionsArray('b_funnel_type'),
+    funnel_flow:    getValOrNull('b_funnel_flow'),
+    ads_budget:     getValOrNull('b_ads_funnel_budget'),
+    has_script:     getValOrNull('b_script'),
+    faqs:           getValOrNull('b_faqs'),
+    products:       getValOrNull('b_products'),
     monthly_goal:   parseInt(getVal('b_monthly_goal')) || null,
-    response_time:  getVal('b_response_time'),
+    response_time:  getValOrNull('b_response_time'),
     closer_model:   getOptionValues('b_closer_model'),
     team_size:      getOptionValues('b_team_size'),
-    success_vision: getVal('b_success_vision'),
-    extra_notes:    getVal('b_extra'),
-    client_email:   getVal('b_client_email'),
+    success_vision: getValOrNull('b_success_vision'),
+    extra_notes:    getValOrNull('b_extra'),
+    client_email:   getValOrNull('b_client_email'),
     form_progress:  parseInt(document.getElementById('miniPct').textContent) || 0
   };
 }
 
-// Save to Supabase — called when AI analysis is triggered or on final section
 let savedClientId = localStorage.getItem('sl_client_id') || null;
 
 async function saveFormA() {
   try {
-    const data = collectFormA();
+    const data = collectClientData();
     if (savedClientId) {
-      // Update existing
-      await fetch(`${SUPABASE_URL}/rest/v1/clients?id=eq.${savedClientId}`, {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/clients?id=eq.${savedClientId}`, {
         method: 'PATCH',
         headers: { 'Content-Type':'application/json','apikey':SUPABASE_ANON,'Authorization':`Bearer ${SUPABASE_ANON}` },
         body: JSON.stringify(data)
       });
+      if (!res.ok) throw new Error(await res.text());
     } else {
       const [row] = await supabaseInsert('clients', data);
       savedClientId = row.id;
       localStorage.setItem('sl_client_id', savedClientId);
-      // Auto-create a project in lead status
-      await supabaseInsert('projects', { client_id: savedClientId, status: 'lead' });
+      // Crear proyecto con los 10 pasos por defecto
+      const [proj] = await supabaseInsert('projects', { client_id: savedClientId, status: 'lead', current_step: 0 });
+      const steps = [
+        'Brief completo','Kickoff call','Estrategia y arquitectura','Diseño aprobado','Desarrollo web',
+        'Contenido visual / video','Automatizaciones y IA','Revisión con cliente','QA y pruebas','Entrega y launch'
+      ].map((name, i) => ({ project_id: proj.id, step_number: i + 1, step_name: name, completed: false }));
+      await supabaseInsert('project_steps', steps);
     }
+    showSaveStatus('✓ Guardado en Seen Labs');
     return savedClientId;
-  } catch(e) { console.error('Save Form A error:', e); return null; }
+  } catch(e) {
+    console.error('[SeenLabs] saveFormA error:', e);
+    showSaveStatus('⚠ Error al guardar', false);
+    return null;
+  }
 }
 
 async function saveFormB() {
   try {
     const clientId = savedClientId || await saveFormA();
+    if (!clientId) return;
     const data = collectFormB(clientId);
     const existing = await fetch(`${SUPABASE_URL}/rest/v1/automation_briefs?client_id=eq.${clientId}`, {
       headers: { 'apikey':SUPABASE_ANON,'Authorization':`Bearer ${SUPABASE_ANON}` }
-    }).then(r=>r.json());
-    if (existing.length > 0) {
+    }).then(r => r.ok ? r.json() : []).catch(() => []);
+    if (Array.isArray(existing) && existing.length > 0) {
       await fetch(`${SUPABASE_URL}/rest/v1/automation_briefs?client_id=eq.${clientId}`, {
         method:'PATCH',
         headers:{'Content-Type':'application/json','apikey':SUPABASE_ANON,'Authorization':`Bearer ${SUPABASE_ANON}`},
@@ -1773,10 +1827,15 @@ async function saveFormB() {
     } else {
       await supabaseInsert('automation_briefs', data);
     }
-  } catch(e) { console.error('Save Form B error:', e); }
+    showSaveStatus('✓ Brief de automatización guardado');
+  } catch(e) {
+    // Backup en localStorage si la tabla no existe aún
+    try { localStorage.setItem('sl_form_b_backup', JSON.stringify(collectFormB(savedClientId))); } catch(_) {}
+    console.error('[SeenLabs] saveFormB error (tabla automation_briefs puede no existir):', e);
+  }
 }
 
-// Hook into AI analysis buttons to save before analyzing
+// Hook: guardar antes del análisis IA
 const origAnalyzeA = analyzeFormA;
 analyzeFormA = async function() {
   await saveFormA();
@@ -1788,13 +1847,12 @@ analyzeFormB = async function() {
   origAnalyzeB();
 };
 
-// Auto-save to Supabase every 60s
+// Auto-save cada 90s
 setInterval(async () => {
   if (currentForm === 'A') await saveFormA();
   else await saveFormB();
-}, 60000);
+}, 90000);
 
-// Show save indicator
 const origAutoSave = autoSave;
 autoSave = function() {
   origAutoSave();

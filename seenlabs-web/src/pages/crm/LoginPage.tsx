@@ -21,7 +21,11 @@ export function LoginPage() {
     setError(null)
     setLoading(true)
     const { error: err } = await signIn(email, password)
-    if (err) { setError('Email o contraseña incorrectos'); setLoading(false) }
+    if (err) {
+      setError('Email o contraseña incorrectos')
+      setLoading(false)
+    }
+    // On success, useEffect watches role and navigates automatically
   }
 
   return (

@@ -13,6 +13,8 @@ import { FAQPage } from './pages/FAQPage'
 import { AgendarPage } from './pages/AgendarPage'
 import { LoginPage } from './pages/crm/LoginPage'
 import { CrmDashboard } from './pages/crm/CrmDashboard'
+import { CrmClientes } from './pages/crm/CrmClientes'
+import { CrmNuevo } from './pages/crm/CrmNuevo'
 import { ProjectDetail } from './pages/crm/ProjectDetail'
 import { MiProyecto } from './pages/crm/MiProyecto'
 
@@ -50,6 +52,12 @@ function PublicRoutes() {
       {/* Admin CRM — solo equipo Seen Labs */}
       <Route path="/crm" element={
         <ProtectedRoute require="admin"><CrmDashboard /></ProtectedRoute>
+      } />
+      <Route path="/crm/clientes" element={
+        <ProtectedRoute require="admin"><CrmClientes /></ProtectedRoute>
+      } />
+      <Route path="/crm/nuevo" element={
+        <ProtectedRoute require="admin"><CrmNuevo /></ProtectedRoute>
       } />
       <Route path="/crm/proyecto/:id" element={
         <ProtectedRoute require="admin"><ProjectDetail /></ProtectedRoute>
