@@ -48,7 +48,7 @@ export const STEPS: PathStep[] = [
   },
   {
     num: '09',
-    title: 'Lanzamiento — Día 7',
+    title: 'Lanzamiento — Día 15',
     description: 'Tu sistema sale al mundo. Monitoreo activo las primeras 72 horas por parte de Seen Labs.',
     highlight: true,
   },
