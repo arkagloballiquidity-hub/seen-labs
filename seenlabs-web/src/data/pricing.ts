@@ -51,7 +51,6 @@ export const PRICING_PLANS: PricingPlan[] = [
       'Reportes de conversión semanales',
       'Estrategia de escalado incluida',
       'Priority support 24/7',
-      'El costo de ads corre por el cliente',
     ],
     ctaLabel: 'Iniciar el Camino',
     ctaHref: 'https://pay.hotmart.com/W106114116M?checkoutMode=2',

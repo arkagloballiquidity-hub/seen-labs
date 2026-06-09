@@ -132,6 +132,19 @@ export function PricingCard({ plan, index }: Props) {
       >
         {plan.ctaLabel}
       </a>
+
+      <p style={{
+        marginTop: 16,
+        fontSize: 11,
+        lineHeight: 1.6,
+        color: 'var(--text-dim)',
+        textAlign: 'center',
+        opacity: 0.65,
+        fontFamily: 'var(--font-sub)',
+      }}>
+        * La inversión en campaña (ads) corre por cuenta del cliente.
+        <br />Seen Labs diseña y gestiona la estrategia.
+      </p>
     </motion.div>
   )
 }
