@@ -3,10 +3,13 @@
  * Creates Supabase Auth accounts for all team members in team_members table.
  * Run once: node scripts/create-admin-accounts.mjs
  *
+ * Pass the initial password as an env var — do NOT hardcode it:
+ *   ADMIN_INIT_PASSWORD="YourSecurePass!" node scripts/create-admin-accounts.mjs
+ *
  * Requires: VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in .env.local
  */
 
-import { readFileSync } from 'fs'
+import { readFileSync, randomBytes } from 'fs'
 import { createClient } from '@supabase/supabase-js'
 
 // Load .env.local manually
@@ -17,36 +20,45 @@ try {
     const [k, ...v] = line.split('=')
     if (k && v.length) env[k.trim()] = v.join('=').trim()
   })
-} catch { /* .env.local not found — values must be passed as env vars */ }
+} catch { /* .env.local not found */ }
 
-const SUPABASE_URL  = process.env.VITE_SUPABASE_URL  || env['VITE_SUPABASE_URL']
-const SUPABASE_KEY  = process.env.VITE_SUPABASE_ANON_KEY || env['VITE_SUPABASE_ANON_KEY']
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL  || env['VITE_SUPABASE_URL']
+const SUPABASE_KEY = process.env.VITE_SUPABASE_ANON_KEY || env['VITE_SUPABASE_ANON_KEY']
+
+// Password must be passed via env var — never hardcoded
+const INIT_PASSWORD = process.env.ADMIN_INIT_PASSWORD
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
   console.error('❌ Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY')
   process.exit(1)
 }
 
-// Team members and their temporary passwords
-// Change passwords after first login!
-const TEAM_ACCOUNTS = [
-  { email: 'gabriel@seenlabs.com',   password: 'SeenLabs2025!', name: 'Gabriel' },
-  { email: 'david@seenlabs.com',     password: 'SeenLabs2025!', name: 'David'   },
-  { email: 'luis@seenlabs.com',      password: 'SeenLabs2025!', name: 'Luis'    },
-  { email: 'alejandro@seenlabs.com', password: 'SeenLabs2025!', name: 'Alejandro' },
+if (!INIT_PASSWORD) {
+  // Generate a random secure password for this run and display it once
+  const generated = randomBytes(16).toString('base64url')
+  console.error(`❌ ADMIN_INIT_PASSWORD not set. Run with:`)
+  console.error(`   ADMIN_INIT_PASSWORD="${generated}" node scripts/create-admin-accounts.mjs`)
+  process.exit(1)
+}
+
+const TEAM_EMAILS = [
+  { email: 'gabriel@seenlabs.com',   name: 'Gabriel' },
+  { email: 'david@seenlabs.com',     name: 'David'   },
+  { email: 'luis@seenlabs.com',      name: 'Luis'    },
+  { email: 'alejandro@seenlabs.com', name: 'Alejandro' },
 ]
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
-async function createAccount({ email, password, name }) {
+async function createAccount({ email, name }) {
   console.log(`\n→ Creating account for ${name} (${email})...`)
 
-  const { data, error } = await supabase.auth.signUp({ email, password })
+  const { data, error } = await supabase.auth.signUp({ email, password: INIT_PASSWORD })
 
   if (error) {
     if (error.message.toLowerCase().includes('already registered') ||
         error.message.toLowerCase().includes('user already registered')) {
-      console.log(`  ✓ Already exists — skip (can log in with default password or reset it)`)
+      console.log(`  ✓ Already exists — skip`)
     } else {
       console.log(`  ✗ Error: ${error.message}`)
     }
@@ -54,27 +66,17 @@ async function createAccount({ email, password, name }) {
   }
 
   if (!data.session) {
-    // Email confirmation required
-    console.log(`  ✓ Account created — check ${email} inbox for confirmation link`)
+    console.log(`  ✓ Account created — email confirmation required`)
   } else {
-    // Auto-confirmed
     console.log(`  ✓ Account created & confirmed — ready to log in`)
     await supabase.auth.signOut()
   }
 }
 
 console.log('🚀 Creating Seen Labs team accounts...')
-console.log(`   Supabase project: ${SUPABASE_URL}`)
-
-for (const account of TEAM_ACCOUNTS) {
+for (const account of TEAM_EMAILS) {
   await createAccount(account)
 }
 
-console.log('\n✅ Done!')
-console.log('\n📋 Credentials (change after first login):')
-console.log('   Password: SeenLabs2025!')
+console.log('\n✅ Done! Change passwords after first login.')
 console.log('   URL: https://seen-labs-web.vercel.app/acceso')
-console.log('\n⚠️  If email confirmation is required:')
-console.log('   1. Check inbox for confirmation link')
-console.log('   2. Click the link to activate')
-console.log('   3. Then log in at /acceso')
