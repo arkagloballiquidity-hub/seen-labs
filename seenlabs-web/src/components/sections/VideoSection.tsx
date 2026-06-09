@@ -226,7 +226,7 @@ export function VideoSection() {
         }}>
           <span className="text-chrome">De 0 a fuera de la oscuridad</span>
           <br />
-          <span style={{ color: 'rgba(255,255,255,0.9)' }}>en 7 días hábiles.</span>
+          <span style={{ color: 'rgba(255,255,255,0.9)' }}>en 15 días hábiles.</span>
         </h2>
         <p style={{
           fontFamily: 'var(--font-sub)',

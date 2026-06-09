@@ -8,7 +8,7 @@ export function CasosPage() {
       <PageHero
         label="Casos de Éxito"
         title="Resultados reales, no promesas."
-        subtitle="Negocios que salieron de la oscuridad con un sistema digital construido en 7 días."
+        subtitle="Negocios que salieron de la oscuridad con un sistema digital construido en 15 días hábiles."
       />
       <CasesSection hideHero />
       <TeamSection />

@@ -7,8 +7,8 @@ export interface FAQEntry {
 export const FAQ: FAQEntry[] = [
   {
     id: 'f1',
-    question: '¿Realmente entregan en 7 días hábiles?',
-    answer: 'Sí. Nuestro proceso está diseñado para la velocidad sin sacrificar calidad. Trabajamos con un sprint intensivo de 7 días donde tú recibes actualizaciones diarias. Esto solo es posible porque tenemos un sistema de producción probado y un equipo especializado para cada fase.',
+    question: '¿Realmente entregan en 15 días hábiles?',
+    answer: 'Sí. Nuestro proceso está diseñado para la velocidad sin sacrificar calidad. Trabajamos con un sprint intensivo de 15 días hábiles donde tú recibes actualizaciones diarias. Esto solo es posible porque tenemos un sistema de producción probado y un equipo especializado para cada fase.',
   },
   {
     id: 'f2',

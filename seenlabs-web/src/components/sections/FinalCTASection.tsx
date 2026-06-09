@@ -71,7 +71,7 @@ export function FinalCTASection() {
               color: 'rgba(255,255,255,0.6)',
               maxWidth: 480, marginBottom: 36,
             }}>
-              En 7 días hábiles tienes tu sistema completo funcionando —
+              En 15 días hábiles tienes tu sistema completo funcionando —
               <strong style={{ color: 'rgba(255,255,255,0.85)' }}> o te devolvemos el 100%.</strong>
             </p>
 

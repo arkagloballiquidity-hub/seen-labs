@@ -14,7 +14,7 @@ const lines = [
   {
     num: '03',
     title: 'No necesitas más tiempo. Necesitas un sistema.',
-    text: 'De 0 a fuera de la oscuridad en 7 días hábiles. Esa es nuestra promesa, nuestra garantía y nuestra forma de penetrar el mercado: precios muy por debajo, soluciones 100,000 veces por encima.',
+    text: 'De 0 a fuera de la oscuridad en 15 días hábiles. Esa es nuestra promesa, nuestra garantía y nuestra forma de penetrar el mercado: precios muy por debajo, soluciones 100,000 veces por encima.',
   },
 ]
 

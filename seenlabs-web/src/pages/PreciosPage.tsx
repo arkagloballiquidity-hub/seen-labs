@@ -8,7 +8,7 @@ export function PreciosPage() {
       <PageHero
         label="Precios"
         title="Inversión, no gasto."
-        subtitle="Cada plan incluye todo lo que necesitas para salir a la luz y generar resultados reales en 7 días hábiles."
+        subtitle="Cada plan incluye todo lo que necesitas para salir a la luz y generar resultados reales en 15 días hábiles."
       />
       <PricingSection hideHero />
       <GuaranteeSection />

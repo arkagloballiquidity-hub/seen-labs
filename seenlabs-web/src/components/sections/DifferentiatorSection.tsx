@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 const DIFFERENTIATORS = [
   {
     title: 'Velocidad sin compromisos',
-    description: '7 días hábiles de entrega no es un truco de marketing. Es el resultado de un proceso de producción en sprint que hemos probado y perfeccionado en más de 20 proyectos.',
+    description: '15 días hábiles de entrega no es un truco de marketing. Es el resultado de un proceso de producción en sprint que hemos probado y perfeccionado en más de 20 proyectos.',
     icon: (
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
         <path d="M13 2L4.5 13.5H12L11 22L19.5 10.5H12L13 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

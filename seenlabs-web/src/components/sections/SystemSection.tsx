@@ -24,7 +24,7 @@ export function SystemSection() {
             marginBottom: 16,
           }}>
             Del cero al sistema en{' '}
-            <span className="text-chrome">7 días</span>.
+            <span className="text-chrome">15 días</span>.
           </h2>
           <p style={{ fontSize: 16, color: 'var(--text-muted)', maxWidth: 480, margin: '0 auto' }}>
             Nuestro proceso probado que convierte tu visión en un sistema digital funcional.

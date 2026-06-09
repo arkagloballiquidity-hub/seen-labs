@@ -4,7 +4,7 @@ import { gsap } from 'gsap'
 import { AnimatePresence, motion } from 'framer-motion'
 
 const CYCLING_SOLUTIONS = [
-  'en 7 días hábiles.',
+  'en 15 días hábiles.',
   'con IA.',
   'sin excusas.',
   'o te devolvemos el 100%.',
