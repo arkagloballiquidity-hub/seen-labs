@@ -47,7 +47,7 @@ export function MiProyecto() {
 
     const { data: proj } = await supabase
       .from('projects')
-      .select('*')
+      .select('id, client_id, created_at, status, plan, current_step, payment_status, payment_amount, start_date, deadline')
       .eq('client_id', cl.id)
       .order('created_at', { ascending: false })
       .limit(1)
