@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../../lib/auth'
+import { supabase } from '../../lib/supabase'
 
 const INPUT_STYLE: React.CSSProperties = {
   width: '100%',
@@ -31,6 +32,9 @@ export function LoginPage() {
   const [error, setError]       = useState<string | null>(null)
   const [loading, setLoading]   = useState(false)
   const [confirmed, setConfirmed] = useState(false) // email confirmation sent
+  const [needsEmailConfirm, setNeedsEmailConfirm] = useState(false) // existing account not confirmed
+  const [resendLoading, setResendLoading] = useState(false)
+  const [resendSent, setResendSent] = useState(false)
 
   useEffect(() => {
     if (!authLoading && user && role) {
@@ -42,8 +46,17 @@ export function LoginPage() {
     setMode(m)
     setError(null)
     setConfirmed(false)
+    setNeedsEmailConfirm(false)
+    setResendSent(false)
     setPassword('')
     setConfirm('')
+  }
+
+  async function handleResendConfirmation() {
+    setResendLoading(true)
+    await supabase.auth.resend({ type: 'signup', email })
+    setResendLoading(false)
+    setResendSent(true)
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -62,11 +75,16 @@ export function LoginPage() {
       setLoading(true)
       const { error: err, needsConfirmation } = await signUp(email, password)
       if (err) {
-        setError(
-          err.includes('already registered')
-            ? 'Este email ya tiene una cuenta. Inicia sesión.'
-            : 'Error al crear cuenta. Intenta de nuevo.'
-        )
+        const msg = err.toLowerCase()
+        if (msg.includes('already registered') || msg.includes('user already registered')) {
+          // Account exists — guide them to login
+          setError(null)
+          switchMode('login')
+          setEmail(email)
+          setTimeout(() => setError('Este email ya tiene cuenta. Ingresa tu contraseña.'), 50)
+        } else {
+          setError('No pudimos crear tu cuenta. Intenta de nuevo o escríbenos.')
+        }
         setLoading(false)
         return
       }
@@ -80,7 +98,16 @@ export function LoginPage() {
       setLoading(true)
       const { error: err } = await signIn(email, password)
       if (err) {
-        setError('Email o contraseña incorrectos.')
+        const msg = err.toLowerCase()
+        if (msg.includes('email not confirmed') || msg.includes('not confirmed')) {
+          // Account exists but email not confirmed
+          setNeedsEmailConfirm(true)
+          setError(null)
+        } else if (msg.includes('invalid login') || msg.includes('invalid credentials') || msg.includes('invalid_credentials')) {
+          setError('Email o contraseña incorrectos. ¿Aún no tienes cuenta? Usa "Crear cuenta".')
+        } else {
+          setError('Error al iniciar sesión. Intenta de nuevo.')
+        }
         setLoading(false)
       }
     }
@@ -182,7 +209,7 @@ export function LoginPage() {
           ))}
         </div>
 
-        {/* Email confirmation sent state */}
+        {/* Email confirmation sent state (after signup) */}
         {confirmed ? (
           <div style={{ textAlign:'center', padding:'32px 0' }}>
             <div style={{ fontSize:36, marginBottom:16 }}>📩</div>
@@ -195,6 +222,30 @@ export function LoginPage() {
             <button onClick={() => { setConfirmed(false); switchMode('login') }}
               style={{ background:'transparent', border:'1px solid rgba(255,255,255,.15)', color:'rgba(255,255,255,.5)', padding:'10px 20px', fontSize:12, cursor:'pointer', fontFamily:'inherit' }}>
               ← Volver al login
+            </button>
+          </div>
+        ) : needsEmailConfirm ? (
+          /* Account exists but email not confirmed */
+          <div style={{ textAlign:'center', padding:'32px 0' }}>
+            <div style={{ fontSize:36, marginBottom:16 }}>✉️</div>
+            <h2 style={{ fontSize:20, fontWeight:800, color:'#fff', marginBottom:12 }}>Confirma tu correo</h2>
+            <p style={{ fontSize:13, color:'rgba(255,255,255,.5)', lineHeight:1.7, marginBottom:24 }}>
+              Tu cuenta existe pero necesitas confirmar<br/>
+              <strong style={{ color:'#7B61FF' }}>{email}</strong><br/>
+              Revisa tu bandeja (y spam).
+            </p>
+            {resendSent ? (
+              <p style={{ fontSize:12, color:'#22C55E', marginBottom:16 }}>✓ Correo reenviado</p>
+            ) : (
+              <button onClick={handleResendConfirmation} disabled={resendLoading}
+                style={{ background:'#7B61FF', border:'none', color:'#fff', padding:'11px 24px', fontSize:12, fontWeight:700, cursor:'pointer', fontFamily:'inherit', marginBottom:16, opacity: resendLoading ? 0.6 : 1 }}>
+                {resendLoading ? 'Enviando...' : 'Reenviar enlace de confirmación'}
+              </button>
+            )}
+            <br/>
+            <button onClick={() => { setNeedsEmailConfirm(false) }}
+              style={{ background:'transparent', border:'1px solid rgba(255,255,255,.15)', color:'rgba(255,255,255,.5)', padding:'10px 20px', fontSize:12, cursor:'pointer', fontFamily:'inherit' }}>
+              ← Volver
             </button>
           </div>
         ) : (
