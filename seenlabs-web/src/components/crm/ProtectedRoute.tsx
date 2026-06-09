@@ -6,17 +6,26 @@ interface Props {
   require: 'admin' | 'client' | 'any'
 }
 
+const Spinner = () => (
+  <div style={{
+    display:'flex', alignItems:'center', justifyContent:'center',
+    height:'100vh', background:'#0A0A0F', color:'#6B6880',
+    fontFamily:'sans-serif', fontSize:13,
+  }}>
+    Cargando...
+  </div>
+)
+
 export function ProtectedRoute({ children, require }: Props) {
   const { user, role, loading } = useAuth()
 
-  if (loading) return (
-    <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100vh', background:'#0A0A0F', color:'#6B6880', fontFamily:'sans-serif', fontSize:13 }}>
-      Cargando...
-    </div>
-  )
+  // Wait for auth state AND role resolution before making any routing decisions
+  if (loading) return <Spinner />
 
-  if (!user) return <Navigate to="/login" replace />
+  // Not authenticated at all
+  if (!user) return <Navigate to="/acceso" replace />
 
+  // Authenticated but wrong role
   if (require === 'admin' && role !== 'admin') return <Navigate to="/mi-proyecto" replace />
   if (require === 'client' && role !== 'client') return <Navigate to="/crm" replace />
 
