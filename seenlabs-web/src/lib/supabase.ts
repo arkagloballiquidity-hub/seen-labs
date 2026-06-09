@@ -61,6 +61,7 @@ export interface ProjectStep {
 export interface Note {
   id: string; project_id: string; created_at: string
   author_name: string; content: string; type: NoteType
+  client_visible: boolean; title?: string
 }
 
 export interface TeamMember {

@@ -15,6 +15,7 @@ import { LoginPage } from './pages/crm/LoginPage'
 import { CrmDashboard } from './pages/crm/CrmDashboard'
 import { CrmClientes } from './pages/crm/CrmClientes'
 import { CrmNuevo } from './pages/crm/CrmNuevo'
+import { CrmBriefs } from './pages/crm/CrmBriefs'
 import { ProjectDetail } from './pages/crm/ProjectDetail'
 import { MiProyecto } from './pages/crm/MiProyecto'
 
@@ -58,6 +59,9 @@ function PublicRoutes() {
       } />
       <Route path="/crm/nuevo" element={
         <ProtectedRoute require="admin"><CrmNuevo /></ProtectedRoute>
+      } />
+      <Route path="/crm/briefs" element={
+        <ProtectedRoute require="admin"><CrmBriefs /></ProtectedRoute>
       } />
       <Route path="/crm/proyecto/:id" element={
         <ProtectedRoute require="admin"><ProjectDetail /></ProtectedRoute>

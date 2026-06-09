@@ -55,8 +55,9 @@ export function CrmClientes() {
         </div>
 
         {[
-          { label: 'Pipeline',  href: '/crm',          icon: '▦', active: false },
-          { label: 'Clientes',  href: '/crm/clientes',  icon: '◉', active: true  },
+          { label: 'Pipeline', href: '/crm',          icon: '▦', active: false },
+          { label: 'Clientes', href: '/crm/clientes', icon: '◉', active: true  },
+          { label: 'Briefs',   href: '/crm/briefs',   icon: '◈', active: false },
         ].map(item => (
           <Link key={item.label} to={item.href} style={{
             display: 'flex', alignItems: 'center', gap: 10, padding: '9px 12px',
@@ -72,7 +73,7 @@ export function CrmClientes() {
           display: 'flex', alignItems: 'center', gap: 10, padding: '9px 12px',
           color: '#9A98B0', fontSize: 13, textDecoration: 'none',
         }}>
-          <span style={{ fontSize: 11 }}>◈</span>Formularios
+          <span style={{ fontSize: 11 }}>⬡</span>Ver formulario
           <ExternalLink size={10} style={{ marginLeft: 'auto', opacity: 0.4 }}/>
         </a>
 
