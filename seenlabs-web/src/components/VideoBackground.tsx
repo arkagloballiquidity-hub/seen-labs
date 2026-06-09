@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useReducedMotion } from '../hooks/useReducedMotion'
@@ -7,9 +7,25 @@ gsap.registerPlugin(ScrollTrigger)
 
 const VIDEO_DURATION = 15
 
+function useMobileVideo() {
+  const [isMobile, setIsMobile] = useState(
+    () => window.matchMedia('(max-width: 768px)').matches
+  )
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)')
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+  return isMobile
+}
+
 export function VideoBackground() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const reduced  = useReducedMotion()
+  const isMobile = useMobileVideo()
+
+  const src = isMobile ? '/hero-mobile.mp4' : '/hero-desktop.mp4'
 
   useEffect(() => {
     const video = videoRef.current
@@ -22,8 +38,11 @@ export function VideoBackground() {
       return
     }
 
-    // Wait for enough data to scrub
     const init = () => {
+      ScrollTrigger.getAll()
+        .filter(st => st.vars?.trigger === document.documentElement)
+        .forEach(st => st.kill())
+
       gsap.to(video, {
         currentTime: VIDEO_DURATION,
         ease: 'none',
@@ -47,7 +66,7 @@ export function VideoBackground() {
         .filter(st => st.vars?.trigger === document.documentElement)
         .forEach(st => st.kill())
     }
-  }, [reduced])
+  }, [reduced, src])
 
   return (
     <div style={{
@@ -57,8 +76,9 @@ export function VideoBackground() {
       pointerEvents: 'none',
     }}>
       <video
+        key={src}
         ref={videoRef}
-        src="/seen-labs-reel.mp4"
+        src={src}
         muted
         playsInline
         preload="auto"
@@ -68,7 +88,6 @@ export function VideoBackground() {
           objectFit: 'cover',
         }}
       />
-      {/* Base dark tint — light at top, fades lighter toward bottom for logo */}
       <div style={{
         position: 'absolute',
         inset: 0,
