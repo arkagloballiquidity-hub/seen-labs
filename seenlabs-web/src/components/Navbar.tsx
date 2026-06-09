@@ -9,9 +9,9 @@ export function Navbar() {
   const scrolled = useScrollNavbar()
   const [open, setOpen] = useState(false)
   const location = useLocation()
-  const { user, role } = useAuth()
+  const { user, role, loading: authLoading } = useAuth()
 
-  const dashboardHref = role === 'admin' ? '/crm' : '/mi-proyecto'
+  const dashboardHref  = role === 'admin' ? '/crm' : '/mi-proyecto'
   const dashboardLabel = role === 'admin' ? 'Dashboard' : 'Mi Proyecto'
 
   return (
@@ -92,11 +92,11 @@ export function Navbar() {
 
           {/* CTA + Hamburger */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            {user ? (
+            {user && !authLoading ? (
               <Link to={dashboardHref} className="btn-primary hidden-mobile" style={{ padding: '8px 16px', fontSize: 11 }}>
                 {dashboardLabel}
               </Link>
-            ) : (
+            ) : !user ? (
               <>
                 <Link to="/acceso" className="hidden-mobile" style={{ fontSize: 11, color: 'var(--text-dim)', letterSpacing: '0.08em', textTransform: 'uppercase', textDecoration: 'none', transition: 'color .2s' }}
                   onMouseEnter={e => e.currentTarget.style.color = 'var(--text-muted)'}
@@ -108,7 +108,7 @@ export function Navbar() {
                   Iniciar el Camino
                 </Link>
               </>
-            )}
+            ) : null}
             <button
               onClick={() => setOpen(v => !v)}
               aria-label="Menú"
@@ -183,11 +183,11 @@ export function Navbar() {
                 </Link>
               </motion.div>
             ))}
-            {user ? (
+            {user && !authLoading ? (
               <Link to={dashboardHref} className="btn-primary" onClick={() => setOpen(false)}>
                 {dashboardLabel}
               </Link>
-            ) : (
+            ) : !user ? (
               <>
                 <Link to="/precios" className="btn-primary" onClick={() => setOpen(false)}>
                   Iniciar el Camino
@@ -196,7 +196,7 @@ export function Navbar() {
                   Acceso
                 </Link>
               </>
-            )}
+            ) : null}
           </motion.div>
         )}
       </AnimatePresence>

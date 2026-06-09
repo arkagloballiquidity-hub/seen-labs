@@ -9,7 +9,7 @@ export const supabase = createClient(url, anon)
 export type ProjectStatus = 'lead'|'brief_sent'|'brief_complete'|'proposal'|'closed_won'|'in_progress'|'delivered'|'closed_lost'
 export type PlanType      = 'ootd'|'partner_light'|'enterprise'
 export type PaymentStatus = 'pending'|'partial'|'paid'|'refunded'
-export type NoteType      = 'call'|'message'|'decision'|'note'|'milestone'
+export type NoteType      = 'call'|'message'|'decision'|'note'|'milestone'|'deliverable'|'revision'
 export type TeamRole      = 'dev'|'ai'|'video'|'qa'|'sales'
 
 export interface Client {
