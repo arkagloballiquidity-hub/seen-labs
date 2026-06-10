@@ -146,7 +146,7 @@ export function HeroSection() {
           borderTop: '1px solid rgba(255,255,255,0.1)',
         }}>
           {[
-            { value: '7',    label: 'días hábiles' },
+            { value: '15',   label: 'días hábiles' },
             { value: '3x',   label: 'ROI promedio' },
             { value: '100%', label: 'cashback garantizado' },
           ].map(s => (

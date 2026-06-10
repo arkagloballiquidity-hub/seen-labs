@@ -111,7 +111,7 @@ export function FinalCTASection() {
               {/* Numbers */}
               <div style={{ display: 'flex', gap: 0, paddingBottom: 20 }}>
                 {[
-                  { value: '7',    label: 'Días hábiles',         sub: 'de entrega' },
+                  { value: '15',   label: 'Días hábiles',         sub: 'de entrega' },
                   { value: '100%', label: 'Cashback',              sub: 'garantizado' },
                   { value: '3x',   label: 'ROI promedio',          sub: 'primer mes' },
                   { value: '+50',  label: 'Proyectos',             sub: 'entregados' },
