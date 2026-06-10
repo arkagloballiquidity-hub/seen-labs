@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { motion } from 'framer-motion'
 import type { CaseStudy } from '../../data/cases'
 
@@ -8,8 +7,6 @@ interface Props {
 }
 
 export function CaseCard({ caseStudy, index }: Props) {
-  const [blocked, setBlocked] = useState(false)
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -108,23 +105,18 @@ export function CaseCard({ caseStudy, index }: Props) {
           overflow: 'hidden',
           background: 'var(--carbon)',
         }}>
-          {!blocked && (
+          {!caseStudy.noEmbed && (
             <iframe
               src={caseStudy.url}
               title={caseStudy.label}
               style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
               loading="lazy"
-              onError={() => setBlocked(true)}
-              onLoad={e => {
-                try {
-                  const doc = (e.target as HTMLIFrameElement).contentDocument
-                  if (!doc || !doc.body || doc.body.childElementCount === 0) setBlocked(true)
-                } catch { setBlocked(true) }
-              }}
+              sandbox="allow-scripts allow-same-origin"
+              referrerPolicy="no-referrer"
             />
           )}
 
-          {blocked && (
+          {caseStudy.noEmbed && (
             <a
               href={caseStudy.url}
               target="_blank"

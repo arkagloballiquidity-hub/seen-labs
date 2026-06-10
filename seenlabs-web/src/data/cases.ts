@@ -7,6 +7,7 @@ export interface CaseStudy {
   author: string
   authorRole: string
   result: string
+  noEmbed?: boolean  // true when site blocks iframe via X-Frame-Options
 }
 
 export const CASES: CaseStudy[] = [
@@ -25,6 +26,7 @@ export const CASES: CaseStudy[] = [
     domain: 'alphadrivers.mx',
     url: 'https://alphadrivers.mx',
     label: 'ALPHA DRIVERS',
+    noEmbed: true,
     quote: 'El embudo de IA transformó completamente nuestro proceso de ventas. Ahora cerramos 3 veces más clientes con el mismo equipo. Lo que me sorprendió fue la velocidad — en 15 días hábiles teníamos todo funcionando.',
     author: 'Fundador, Alpha Drivers',
     authorRole: 'Fundador & CEO',
