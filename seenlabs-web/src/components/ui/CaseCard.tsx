@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import type { CaseStudy } from '../../data/cases'
 
@@ -7,6 +8,8 @@ interface Props {
 }
 
 export function CaseCard({ caseStudy, index }: Props) {
+  const [blocked, setBlocked] = useState(false)
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -105,25 +108,79 @@ export function CaseCard({ caseStudy, index }: Props) {
           overflow: 'hidden',
           background: 'var(--carbon)',
         }}>
-          <iframe
-            src={caseStudy.url}
-            title={caseStudy.label}
-            style={{
-              width: '100%',
-              height: '100%',
-              border: 'none',
-              display: 'block',
-            }}
-            loading="lazy"
-            sandbox="allow-scripts allow-same-origin"
-          />
-          {/* Subtle overlay to capture mouse for card hover without blocking iframe scroll */}
-          <div style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'transparent',
-            pointerEvents: 'none',
-          }} />
+          {!blocked && (
+            <iframe
+              src={caseStudy.url}
+              title={caseStudy.label}
+              style={{ width: '100%', height: '100%', border: 'none', display: 'block' }}
+              loading="lazy"
+              onError={() => setBlocked(true)}
+              onLoad={e => {
+                try {
+                  const doc = (e.target as HTMLIFrameElement).contentDocument
+                  if (!doc || !doc.body || doc.body.childElementCount === 0) setBlocked(true)
+                } catch { setBlocked(true) }
+              }}
+            />
+          )}
+
+          {blocked && (
+            <a
+              href={caseStudy.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+                gap: 16,
+                background: 'linear-gradient(135deg, #0d0d15 0%, #111120 60%, #16102a 100%)',
+                textDecoration: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              <div style={{
+                width: 56,
+                height: 56,
+                borderRadius: '50%',
+                border: '1px solid rgba(123,97,255,0.35)',
+                background: 'rgba(123,97,255,0.08)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontFamily: 'var(--font-display)',
+                fontSize: 22,
+                fontWeight: 800,
+                color: 'var(--purple)',
+              }}>
+                {caseStudy.label[0]}
+              </div>
+              <span style={{
+                fontFamily: 'var(--font-sub)',
+                fontSize: 13,
+                color: 'rgba(255,255,255,0.35)',
+                letterSpacing: '0.05em',
+              }}>
+                {caseStudy.domain}
+              </span>
+              <span style={{
+                fontFamily: 'var(--font-sub)',
+                fontSize: 11,
+                fontWeight: 600,
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: 'var(--purple)',
+                border: '1px solid rgba(123,97,255,0.3)',
+                padding: '6px 14px',
+              }}>
+                Visitar sitio →
+              </span>
+            </a>
+          )}
+
+          <div style={{ position: 'absolute', inset: 0, background: 'transparent', pointerEvents: 'none' }} />
         </div>
       </div>
 
